@@ -1,8 +1,10 @@
+import { useContext } from 'react';
 import { Route, Routes } from 'react-router';
 import './App.css';
+import { DogList } from './components/DogList/component';
 import { Login } from './components/Login/component';
 import { RequireAuth } from './components/RequireAuth/component';
-import { AuthProvider } from './context/authContext';
+import { AuthContext, AuthProvider } from './context/authContext';
 
 function App() {
   return (
@@ -11,9 +13,14 @@ function App() {
       <AuthProvider>
         <Routes>
           <Route path='/' element={<Login />} />
-          <RequireAuth>
-            <Route path='dogs' />
-          </RequireAuth>
+          <Route
+            path='/dogs'
+            element={
+              <RequireAuth>
+                <DogList />
+              </RequireAuth>
+            }
+          ></Route>
         </Routes>
       </AuthProvider>
     </div>
