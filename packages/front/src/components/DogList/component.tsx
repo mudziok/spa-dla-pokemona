@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { FC, useContext, useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { AuthContext } from '../../context/authContext';
 import { Dog } from '../../types/dog';
 
@@ -21,6 +22,7 @@ const DogItem = ({ name, problem, photo }: Dog) => {
 export const DogList: FC = () => {
   const [dogs, setDogs] = useState<Array<Dog>>([]);
   const { token } = useContext(AuthContext);
+
   useEffect(() => {
     axios
       .get(API_URL + '/api/dogs', {
@@ -28,13 +30,23 @@ export const DogList: FC = () => {
           Authorization: `Bearer ${token}`,
         },
       })
-      .then((response) => setDogs(response.data.dogs));
+      .then((response) => {
+        console.log(response);
+        setDogs(response.data.dogs);
+      });
   }, [token]);
+
   return (
-    <ul>
-      {dogs.map((dog) => (
-        <DogItem key={dog.id} {...dog} />
-      ))}
-    </ul>
+    <>
+      <ul>
+        {dogs.map((dog) => (
+          <DogItem key={dog.id} {...dog} />
+        ))}
+      </ul>
+
+      <Link to={'/addDog'}>
+        <button>Dodaj psa</button>
+      </Link>
+    </>
   );
 };
