@@ -2,21 +2,8 @@ import axios from 'axios';
 import React, { useState, MouseEvent } from 'react';
 
 export const Login = () => {
-  const [error, setError] = useState(null);
   const [user, setUser] = useState('');
   const [password, setPassword] = useState('');
-
-  //   useEffect(() => {
-  //     axios
-  //       .get('http://localhost:1337/api/')
-  //       .then(({ data }) => console.log(data))
-  //       .catch((error) => setError(error));
-  //   }, []);
-
-  // if (error) {
-  //   // Print errors if any
-  //   return <div>An error occured: {error.message}</div>;
-  // }
 
   const handleClick = (e: MouseEvent<HTMLFormElement>) => {
     e.preventDefault();
