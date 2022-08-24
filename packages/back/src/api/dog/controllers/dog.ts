@@ -11,8 +11,14 @@ export default factories.createCoreController('api::dog.dog', ({ strapi }) => ({
     const data = await strapi.entityService.findMany('api::dog.dog', {
       fields: ['name'],
       filters: { owner: { id: userId } },
+      populate: ['photo'],
     });
 
-    return { data };
+    const dogs = data.map((dog) => ({
+      ...dog,
+      photo: dog.photo.formats.thumbnail.url,
+    }));
+
+    return { dogs };
   },
 }));
