@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, { useState, MouseEvent, useContext } from 'react';
+import React, { useState, MouseEvent, useContext, ChangeEvent } from 'react';
 import { useNavigate } from 'react-router';
 import { AuthContext } from '../../context/authContext';
 
@@ -32,11 +32,11 @@ export const Login = () => {
       });
   };
 
-  const handleUser = (e: any) => {
+  const handleUser = (e: ChangeEvent<HTMLInputElement>) => {
     setUser(e.target.value);
   };
 
-  const handlePassword = (e: any) => {
+  const handlePassword = (e: ChangeEvent<HTMLInputElement>) => {
     setPassword(e.target.value);
   };
 
