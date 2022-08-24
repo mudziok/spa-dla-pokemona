@@ -129,3 +129,5 @@ exports
 *.cache
 build
 .strapi-updater.json
+packages/back/public/uploads/*
+!packages/back/public/uploads/.gitkeep
