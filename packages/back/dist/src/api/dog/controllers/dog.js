@@ -8,7 +8,7 @@ exports.default = strapi_1.factories.createCoreController('api::dog.dog', ({ str
     async find(ctx) {
         const userId = ctx.state.user.id;
         const data = await strapi.entityService.findMany('api::dog.dog', {
-            fields: ['name'],
+            fields: ['name', 'problem'],
             filters: { owner: { id: userId } },
             populate: ['photo'],
         });
