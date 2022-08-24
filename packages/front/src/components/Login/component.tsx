@@ -1,9 +1,14 @@
 import axios from 'axios';
-import React, { useState, MouseEvent } from 'react';
+import React, { useState, MouseEvent, useContext } from 'react';
+import { useNavigate } from 'react-router';
+import { AuthContext } from '../../context/authContext';
 
 export const Login = () => {
   const [user, setUser] = useState('');
   const [password, setPassword] = useState('');
+  let navigate = useNavigate();
+
+  const { setToken } = useContext(AuthContext);
 
   const handleClick = (e: MouseEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -18,6 +23,8 @@ export const Login = () => {
         console.log('Well done!');
         console.log('User profile', response.data.user);
         console.log('User token', response.data.jwt);
+        setToken(response.data.jwt);
+        navigate('/dogs');
       })
       .catch((error) => {
         // Handle error.
@@ -34,7 +41,7 @@ export const Login = () => {
   };
 
   return (
-    <form onClick={handleClick}>
+    <form onSubmit={handleClick}>
       <input placeholder='user' type='text' onChange={handleUser}></input>
       <input
         placeholder='password'

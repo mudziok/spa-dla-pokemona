@@ -1,11 +1,28 @@
+import { useContext } from 'react';
+import { Route, Routes } from 'react-router';
 import './App.css';
+import { DogList } from './components/DogList/component';
 import { Login } from './components/Login/component';
+import { RequireAuth } from './components/RequireAuth/component';
+import { AuthContext, AuthProvider } from './context/authContext';
 
 function App() {
   return (
     <div className='App'>
       <h1>Spa dla psa</h1>
-      <Login />
+      <AuthProvider>
+        <Routes>
+          <Route path='/' element={<Login />} />
+          <Route
+            path='/dogs'
+            element={
+              <RequireAuth>
+                <DogList />
+              </RequireAuth>
+            }
+          ></Route>
+        </Routes>
+      </AuthProvider>
     </div>
   );
 }

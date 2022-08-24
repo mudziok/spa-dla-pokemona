@@ -8,9 +8,17 @@ exports.default = strapi_1.factories.createCoreController('api::dog.dog', ({ str
     async find(ctx) {
         const userId = ctx.state.user.id;
         const data = await strapi.entityService.findMany('api::dog.dog', {
-            fields: ['name'],
+            fields: ['name', 'problem'],
             filters: { owner: { id: userId } },
+            populate: ['photo'],
         });
-        return { data };
+        const dogs = data.map((dog) => {
+            var _a, _b, _c;
+            return ({
+                ...dog,
+                photo: (_c = (_b = (_a = dog === null || dog === void 0 ? void 0 : dog.photo) === null || _a === void 0 ? void 0 : _a.formats) === null || _b === void 0 ? void 0 : _b.thumbnail) === null || _c === void 0 ? void 0 : _c.url,
+            });
+        });
+        return { dogs };
     },
 }));

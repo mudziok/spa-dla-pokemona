@@ -16,7 +16,7 @@ export default factories.createCoreController('api::dog.dog', ({ strapi }) => ({
 
     const dogs = data.map((dog) => ({
       ...dog,
-      photo: dog.photo.formats.thumbnail.url,
+      photo: dog?.photo?.formats?.thumbnail?.url,
     }));
 
     return { dogs };
