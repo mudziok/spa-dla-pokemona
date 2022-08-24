@@ -2,7 +2,6 @@
   "extends": ["prettier"],
   "plugins": ["import", "unused-imports"],
   "rules": {
-    "react/no-array-index-key": "error",
     "no-duplicate-imports": "error",
     "unused-imports/no-unused-imports": "error",
     "import/order": [
