@@ -1,6 +1,7 @@
 import { useContext } from 'react';
 import { Route, Routes } from 'react-router';
 import './App.css';
+import { AddDog } from './components/AddDog/component';
 import { DogList } from './components/DogList/component';
 import { Login } from './components/Login/component';
 import { RequireAuth } from './components/RequireAuth/component';
@@ -18,6 +19,14 @@ function App() {
             element={
               <RequireAuth>
                 <DogList />
+              </RequireAuth>
+            }
+          ></Route>
+          <Route
+            path='/addDog'
+            element={
+              <RequireAuth>
+                <AddDog />
               </RequireAuth>
             }
           ></Route>
