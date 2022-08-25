@@ -28,7 +28,6 @@ export const PokemonSelect: FC<PokemonSelectProps> = ({
         .get('https://pokeapi.co/api/v2/pokemon?limit=151')
         .then(({ data }) => data.results as Array<{ name: string }>);
 
-      console.log(data);
       const infos: Array<PokemonInfo> = data.map(({ name }, index) => ({
         pokedexNumber: index + 1,
         name,
