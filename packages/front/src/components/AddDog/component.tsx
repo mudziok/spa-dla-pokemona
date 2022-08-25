@@ -42,6 +42,7 @@ export const AddDog = () => {
             name: name,
             problem: description,
             registration: registration,
+            owner: 1,
           },
         },
         {

@@ -22,8 +22,15 @@ export default factories.createCoreController('api::dog.dog', ({ strapi }) => ({
   },
 
   async create(ctx) {
-    const { data, meta } = super.create(ctx);
+    const userId = ctx.state.user.id;
 
-    return { data, meta };
+    const data = await strapi.entityService.create('api::dog.dog', {
+      data: {
+        ...ctx.request.body.data,
+        owner: userId,
+      },
+    });
+
+    return { data };
   },
 }));
