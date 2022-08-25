@@ -1,13 +1,11 @@
-import axios from 'axios';
 import { FC, useContext, useEffect, useState } from 'react';
+
+import axios from 'axios';
 import { Link } from 'react-router-dom';
+
 import { AuthContext } from '../../context/authContext';
 import { Dog } from '../../types/dog';
 import { FlexCenteredColumn, FlexLi } from '../StyledComponent/mainStyled';
-
-interface DogListProps {
-  dogs: Array<Dog>;
-}
 
 const API_URL = 'http://localhost:1337';
 

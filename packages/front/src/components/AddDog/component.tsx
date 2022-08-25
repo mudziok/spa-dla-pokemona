@@ -1,6 +1,8 @@
+import { ChangeEvent, useContext, useEffect, useState } from 'react';
+
 import axios from 'axios';
-import React, { ChangeEvent, useContext, useEffect, useState } from 'react';
-import { Navigate, useNavigate } from 'react-router';
+import { useNavigate } from 'react-router';
+
 import { AuthContext } from '../../context/authContext';
 import { FlexCenteredColumn } from '../StyledComponent/mainStyled';
 

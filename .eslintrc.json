@@ -1,9 +1,8 @@
 {
   "extends": ["prettier"],
-  "plugins": ["import", "unused-imports"],
+  "plugins": ["import"],
   "rules": {
     "no-duplicate-imports": "error",
-    "unused-imports/no-unused-imports": "error",
     "import/order": [
       "error",
       {

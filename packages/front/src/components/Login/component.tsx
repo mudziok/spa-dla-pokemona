@@ -1,6 +1,8 @@
-import axios from 'axios';
 import React, { useState, MouseEvent, useContext, ChangeEvent } from 'react';
+
+import axios from 'axios';
 import { useNavigate } from 'react-router';
+
 import { AuthContext } from '../../context/authContext';
 
 export const Login = () => {

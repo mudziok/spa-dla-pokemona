@@ -7,7 +7,6 @@ import { factories } from '@strapi/strapi';
 export default factories.createCoreController('api::dog.dog', ({ strapi }) => ({
   async find(ctx) {
     const userId = ctx.state.user.id;
-
     const data = await strapi.entityService.findMany('api::dog.dog', {
       fields: ['name', 'problem', 'registration'],
       filters: { owner: { id: userId } },
