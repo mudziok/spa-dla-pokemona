@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const POKEMON_ITEM_SIZE = '50px';
+const POKEMON_ITEM_SIZE = '80px';
 const VISIBLE_ROWS = '5.5';
 
 export const PokemonList = styled.ul`
@@ -12,7 +12,7 @@ export const PokemonList = styled.ul`
 
   padding: 0;
   margin: 0;
-  height: calc(${VISIBLE_ROWS} * ${POKEMON_ITEM_SIZE});
+  height: 100%;
   overflow-y: auto;
 `;
 

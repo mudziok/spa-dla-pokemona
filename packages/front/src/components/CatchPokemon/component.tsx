@@ -5,7 +5,8 @@ import { useNavigate } from 'react-router';
 
 import { AuthContext } from '../../context/authContext';
 import { PokemonSelect } from '../PokemonSelect/components';
-import { CatchPokemonForm } from './styles';
+import { GridForm } from '../StyledComponent/mainStyled';
+import { CatchPokemonTable } from './styles';
 
 export const CatchPokemon = () => {
   const { token } = useContext(AuthContext);
@@ -49,20 +50,22 @@ export const CatchPokemon = () => {
   };
 
   return (
-    <CatchPokemonForm onSubmit={handleSubmit}>
+    <GridForm onSubmit={handleSubmit}>
+      <CatchPokemonTable>
+        <input
+          placeholder='name'
+          value={nickname}
+          onChange={handleNickname}
+        ></input>
+        <input type='date' onChange={handleDate}></input>
+        <input type='time' onChange={handleTime}></input>
+
+        <button>Złap pokemona</button>
+      </CatchPokemonTable>
       <PokemonSelect
         selectedNumber={pokedexNumber}
         setSelectedNumber={setPokedexNumber}
       />
-      <input
-        placeholder='name'
-        value={nickname}
-        onChange={handleNickname}
-      ></input>
-      <input type='date' onChange={handleDate}></input>
-      <input type='time' onChange={handleTime}></input>
-
-      <button>Złap pokemona</button>
-    </CatchPokemonForm>
+    </GridForm>
   );
 };
