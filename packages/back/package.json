@@ -9,15 +9,22 @@
     "build": "strapi build",
     "strapi": "strapi"
   },
-  "devDependencies": {},
   "dependencies": {
-    "@strapi/strapi": "4.3.4",
-    "@strapi/plugin-users-permissions": "4.3.4",
+    "@babel/eslint-parser": "^7.18.9",
     "@strapi/plugin-i18n": "4.3.4",
+    "@strapi/plugin-users-permissions": "4.3.4",
+    "@strapi/strapi": "4.3.4",
+    "babel-eslint": "^10.1.0",
     "better-sqlite3": "7.4.6"
   },
   "author": {
     "name": "A Strapi developer"
+  },
+  "eslintConfig": {
+    "parser": "@babel/eslint-parser",
+    "parserOptions": {
+      "requireConfigFile": false
+    }
   },
   "strapi": {
     "uuid": "01801900-a960-4891-9b34-7125fa17b480"
@@ -26,5 +33,9 @@
     "node": ">=12.x.x <=16.x.x",
     "npm": ">=6.0.0"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "@strapi-community/eslint-config": "^0.4.3",
+    "eslint": "^8.22.0"
+  }
 }

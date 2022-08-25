@@ -42,7 +42,10 @@
     "extends": [
       "react-app",
       "react-app/jest"
-    ]
+    ],
+    "rules": {
+      "react/no-array-index-key": "error"
+    }
   },
   "browserslist": {
     "production": [
