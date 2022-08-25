@@ -12,3 +12,13 @@ export const FlexCenteredColumn = styled.div`
 export const FlexLi = styled.li`
   display: flex;
 `;
+
+export const GridForm = styled.form`
+  display: grid;
+  grid-template-columns: 3fr 6fr;
+
+  @media (max-width: 450px) {
+    grid-template-columns: auto;
+    grid-template-rows: 1fr auto;
+  }
+`;
