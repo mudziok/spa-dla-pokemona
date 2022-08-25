@@ -1,4 +1,4 @@
-import { FC, useContext, useEffect, useState } from 'react';
+import { FC, useCallback, useContext, useEffect, useState } from 'react';
 
 import axios from 'axios';
 import { Link } from 'react-router-dom';
@@ -28,7 +28,7 @@ export const PokemonList: FC = () => {
   const [pokemons, setPokemons] = useState<Array<Pokemon>>([]);
   const { token } = useContext(AuthContext);
 
-  useEffect(() => {
+  const watchAPI = useCallback(() => {
     axios
       .get(API_URL + '/api/pokemons', {
         headers: {
@@ -40,11 +40,31 @@ export const PokemonList: FC = () => {
       });
   }, [token]);
 
+  useEffect(() => {
+    watchAPI();
+  }, [watchAPI]);
+
+  const handleDelete = (id: number) => {
+    console.log(API_URL + `/api/pokemons/${+id}`);
+    axios
+      .delete(API_URL + `/api/pokemons/${+id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then(() => watchAPI());
+  };
+
   return (
     <FlexCenteredColumn>
       <ul>
         {pokemons.map((pokemon) => (
-          <PokemonItem key={pokemon.id} {...pokemon} />
+          <>
+            <PokemonItem key={pokemon.id} {...pokemon} />
+            <button onClick={() => handleDelete(pokemon.id)}>
+              Release Pokemon!
+            </button>
+          </>
         ))}
       </ul>
 
