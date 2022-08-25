@@ -3,6 +3,7 @@ import { FC, useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { AuthContext } from '../../context/authContext';
 import { Dog } from '../../types/dog';
+import { FlexCenteredColumn, FlexLi } from '../StyledComponent/mainStyled';
 
 interface DogListProps {
   dogs: Array<Dog>;
@@ -10,12 +11,15 @@ interface DogListProps {
 
 const API_URL = 'http://localhost:1337';
 
-const DogItem = ({ name, problem, photo }: Dog) => {
+const DogItem = ({ name, problem, photo, registration }: Dog) => {
   return (
-    <li>
+    <FlexLi>
       <img src={`${API_URL}${photo}`} alt={name} />
-      {`${name} - ${problem}`}
-    </li>
+      <div>
+        <p>{`${name} - ${problem}`}</p>
+        <p>{registration.replace('T', ' ')}</p>
+      </div>
+    </FlexLi>
   );
 };
 
@@ -37,7 +41,7 @@ export const DogList: FC = () => {
   }, [token]);
 
   return (
-    <>
+    <FlexCenteredColumn>
       <ul>
         {dogs.map((dog) => (
           <DogItem key={dog.id} {...dog} />
@@ -47,6 +51,6 @@ export const DogList: FC = () => {
       <Link to={'/addDog'}>
         <button>Dodaj psa</button>
       </Link>
-    </>
+    </FlexCenteredColumn>
   );
 };

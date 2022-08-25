@@ -1,6 +1,8 @@
 import axios from 'axios';
 import React, { ChangeEvent, useContext, useEffect, useState } from 'react';
+import { Navigate, useNavigate } from 'react-router';
 import { AuthContext } from '../../context/authContext';
+import { FlexCenteredColumn } from '../StyledComponent/mainStyled';
 
 export const AddDog = () => {
   const { token } = useContext(AuthContext);
@@ -9,6 +11,7 @@ export const AddDog = () => {
   const [description, setDescription] = useState('');
   const [registration, setRegistration] = useState('');
   const [time, setTime] = useState('');
+  const navigate = useNavigate();
 
   const handleName = (e: ChangeEvent<HTMLInputElement>) => {
     setName(e.target.value);
@@ -45,19 +48,21 @@ export const AddDog = () => {
           },
         }
       )
-      .then((data) => console.log(data));
+      .then(() => navigate('/dogs'));
   };
 
   return (
     <form onSubmit={handleSubmit}>
-      <input placeholder='name' onChange={handleName}></input>
-      <textarea
-        placeholder='description'
-        onChange={handleDescription}
-      ></textarea>
-      <input type='date' onChange={handleDate}></input>
-      <input type='time' onChange={handleTime}></input>
-      <button>Dodaj psa</button>
+      <FlexCenteredColumn>
+        <input placeholder='name' onChange={handleName}></input>
+        <textarea
+          placeholder='description'
+          onChange={handleDescription}
+        ></textarea>
+        <input type='date' onChange={handleDate}></input>
+        <input type='time' onChange={handleTime}></input>
+        <button>Dodaj psa</button>
+      </FlexCenteredColumn>
     </form>
   );
 };
