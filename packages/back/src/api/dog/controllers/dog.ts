@@ -23,9 +23,7 @@ export default factories.createCoreController('api::dog.dog', ({ strapi }) => ({
   },
 
   async create(ctx) {
-    console.log(ctx);
-
-    const { data, meta } = super.create();
+    const { data, meta } = super.create(ctx);
 
     return { data, meta };
   },
