@@ -26,7 +26,7 @@ export const Login = () => {
         console.log('User profile', response.data.user);
         console.log('User token', response.data.jwt);
         setToken(response.data.jwt);
-        navigate('/dogs');
+        navigate('/pokemons');
       })
       .catch((error) => {
         // Handle error.

@@ -63,17 +63,11 @@
       "inversedBy": "users",
       "configurable": false
     },
-    "dogs": {
+    "pokemon": {
       "type": "relation",
       "relation": "oneToMany",
-      "target": "api::dog.dog",
-      "mappedBy": "owner"
-    },
-    "patients": {
-      "type": "relation",
-      "relation": "manyToMany",
-      "target": "api::dog.dog",
-      "inversedBy": "physios"
+      "target": "api::pokemon.pokemon",
+      "mappedBy": "trainer"
     }
   }
 }

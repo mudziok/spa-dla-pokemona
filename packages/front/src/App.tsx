@@ -1,32 +1,32 @@
 import { Route, Routes } from 'react-router';
 
 import './App.css';
-import { AddDog } from './components/AddDog/component';
-import { DogList } from './components/DogList/component';
+import { CatchPokemon } from './components/CatchPokemon/component';
 import { Login } from './components/Login/component';
+import { PokemonList } from './components/PokemonList/component';
 import { RequireAuth } from './components/RequireAuth/component';
 import { AuthProvider } from './context/authContext';
 
 function App() {
   return (
     <div className='App'>
-      <h1>Spa dla psa</h1>
+      <h1>Spa dla pokemona</h1>
       <AuthProvider>
         <Routes>
           <Route path='/' element={<Login />} />
           <Route
-            path='/dogs'
+            path='/pokemons'
             element={
               <RequireAuth>
-                <DogList />
+                <PokemonList />
               </RequireAuth>
             }
           ></Route>
           <Route
-            path='/addDog'
+            path='/catch'
             element={
               <RequireAuth>
-                <AddDog />
+                <CatchPokemon />
               </RequireAuth>
             }
           ></Route>

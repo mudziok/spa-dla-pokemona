@@ -1,0 +1,35 @@
+{
+  "kind": "collectionType",
+  "collectionName": "pokemons",
+  "info": {
+    "singularName": "pokemon",
+    "pluralName": "pokemons",
+    "displayName": "Pokemon",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "nickname": {
+      "type": "string"
+    },
+    "pokedexNumber": {
+      "type": "integer",
+      "required": true,
+      "min": 1,
+      "max": 151
+    },
+    "trainer": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "pokemon"
+    },
+    "coughtAt": {
+      "type": "datetime",
+      "required": true
+    }
+  }
+}
