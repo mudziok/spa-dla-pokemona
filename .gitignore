@@ -132,3 +132,4 @@ build
 packages/back/public/uploads/*
 !packages/back/public/uploads/.gitkeep
 lerna-debug.log*
+packages/back/dist
