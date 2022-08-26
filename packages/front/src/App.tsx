@@ -9,30 +9,27 @@ import { AuthProvider } from './context/authContext';
 
 function App() {
   return (
-    <>
-      <h1>Spa dla pokemona</h1>
-      <AuthProvider>
-        <Routes>
-          <Route path='/' element={<Login />} />
-          <Route
-            path='/pokemons'
-            element={
-              <RequireAuth>
-                <PokemonList />
-              </RequireAuth>
-            }
-          ></Route>
-          <Route
-            path='/catch'
-            element={
-              <RequireAuth>
-                <CatchPokemon />
-              </RequireAuth>
-            }
-          ></Route>
-        </Routes>
-      </AuthProvider>
-    </>
+    <AuthProvider>
+      <Routes>
+        <Route path='/' element={<Login />} />
+        <Route
+          path='/pokemons'
+          element={
+            <RequireAuth>
+              <PokemonList />
+            </RequireAuth>
+          }
+        ></Route>
+        <Route
+          path='/catch'
+          element={
+            <RequireAuth>
+              <CatchPokemon />
+            </RequireAuth>
+          }
+        ></Route>
+      </Routes>
+    </AuthProvider>
   );
 }
 

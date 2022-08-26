@@ -1,12 +1,12 @@
-import { ChangeEvent, useContext, useEffect, useState } from 'react';
+import { ChangeEvent, FormEvent, useContext, useEffect, useState } from 'react';
 
 import axios from 'axios';
 import { useNavigate } from 'react-router';
 
 import { AuthContext } from '../../context/authContext';
 import { PokemonBrief, PokemonSelect } from '../PokemonSelect/component';
-import { GridForm } from '../StyledComponent/mainStyled';
-import { CatchPokemonTable } from './styles';
+import { Split } from '../Split/component';
+import { Stack } from '../Stack/component';
 
 export const CatchPokemon = () => {
   const { token } = useContext(AuthContext);
@@ -49,7 +49,7 @@ export const CatchPokemon = () => {
     fetchAvaliablePokemons();
   }, []);
 
-  const handleSubmit = (e: any) => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     axios
       .post(
@@ -71,23 +71,29 @@ export const CatchPokemon = () => {
   };
 
   return (
-    <GridForm onSubmit={handleSubmit}>
-      <CatchPokemonTable>
-        <input
-          placeholder='name'
-          value={name}
-          onChange={handleNickname}
-        ></input>
-        <input type='date' onChange={handleDate}></input>
-        <input type='time' onChange={handleTime}></input>
+    <form onSubmit={handleSubmit}>
+      <Split
+        sidebar={
+          <Stack>
+            <input
+              placeholder='name'
+              value={name}
+              onChange={handleNickname}
+            ></input>
+            <input type='date' value={date} onChange={handleDate}></input>
+            <input type='time' value={time} onChange={handleTime}></input>
 
-        <button>Złap pokemona</button>
-      </CatchPokemonTable>
-      <PokemonSelect
-        avaliablePokemons={avaliablePokemons}
-        selectedId={pokedexNumber}
-        onSelected={(id) => setPokedexNumber(id)}
+            <button>Złap pokemona</button>
+          </Stack>
+        }
+        main={
+          <PokemonSelect
+            avaliablePokemons={avaliablePokemons}
+            selectedId={pokedexNumber}
+            onSelected={(id) => setPokedexNumber(id)}
+          />
+        }
       />
-    </GridForm>
+    </form>
   );
 };
