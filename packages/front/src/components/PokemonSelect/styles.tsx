@@ -8,6 +8,7 @@ export const PokemonList = styled.ul`
   display: flex;
   flex-wrap: wrap;
   justify-content: space-evenly;
+  align-content: flex-start;
 
   padding: 0;
   margin: 0;
