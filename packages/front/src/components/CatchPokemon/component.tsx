@@ -5,7 +5,7 @@ import { nanoid } from 'nanoid';
 import { useNavigate } from 'react-router';
 
 import { AuthContext } from '../../context/authContext';
-import { PokemonInfo, PokemonSelect } from '../PokemonSelect/component';
+import { PokemonBrief, PokemonSelect } from '../PokemonSelect/component';
 import { GridForm } from '../StyledComponent/mainStyled';
 import { CatchPokemonTable } from './styles';
 
@@ -13,7 +13,7 @@ export const CatchPokemon = () => {
   const { token } = useContext(AuthContext);
   const [name, setName] = useState<string>('');
   const [date, setDate] = useState<string>('');
-  const [pokedexNumber, setPokedexNumber] = useState<number | undefined>();
+  const [pokedexNumber, setPokedexNumber] = useState<string | undefined>();
   const [coughtAt, setCoughtAt] = useState('');
   const [time, setTime] = useState('');
   const navigate = useNavigate();
@@ -30,7 +30,7 @@ export const CatchPokemon = () => {
   }, [date, time]);
 
   const [avaliablePokemons, setAvaliablePokemons] = useState<
-    Array<PokemonInfo>
+    Array<PokemonBrief>
   >([]);
 
   useEffect(() => {
@@ -39,8 +39,8 @@ export const CatchPokemon = () => {
         .get('https://pokeapi.co/api/v2/pokemon?limit=151')
         .then(({ data }) => data.results as Array<{ name: string }>);
 
-      const pokemons: Array<PokemonInfo> = data.map(({ name }, index) => ({
-        id: nanoid(),
+      const pokemons: Array<PokemonBrief> = data.map(({ name }, index) => ({
+        id: (index + 1).toString(),
         name,
         pokedexNumber: index + 1,
       }));
@@ -86,8 +86,8 @@ export const CatchPokemon = () => {
       </CatchPokemonTable>
       <PokemonSelect
         avaliablePokemons={avaliablePokemons}
-        selectedNumber={pokedexNumber}
-        setSelectedNumber={setPokedexNumber}
+        selectedId={pokedexNumber}
+        onSelected={(id) => setPokedexNumber(id)}
       />
     </GridForm>
   );

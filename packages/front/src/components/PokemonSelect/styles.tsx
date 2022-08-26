@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const POKEMON_ITEM_SIZE = '80px';
+const POKEMON_ITEM_SIZE = '100px';
 const VISIBLE_ROWS = '5.5';
 
 export const PokemonList = styled.ul`
@@ -13,7 +13,6 @@ export const PokemonList = styled.ul`
   padding: 0;
   margin: 0;
   height: 100%;
-  overflow-y: auto;
 `;
 
 export const PokemonItem = styled.li<{ selected: boolean }>`
@@ -23,10 +22,18 @@ export const PokemonItem = styled.li<{ selected: boolean }>`
 
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
 
   border-radius: 1000px;
   ${(props) => props.selected && `background-color: lightblue;`}
+
   img {
-    width: 100%;
+    width: 70%;
+  }
+
+  transition: transform 0.2s ease-in-out;
+  &:hover {
+    transform: scale(1.3);
   }
 `;
