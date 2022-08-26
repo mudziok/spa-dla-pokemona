@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 
 const POKEMON_ITEM_SIZE = '100px';
-const VISIBLE_ROWS = '5.5';
 
 export const PokemonList = styled.ul`
   width: auto;

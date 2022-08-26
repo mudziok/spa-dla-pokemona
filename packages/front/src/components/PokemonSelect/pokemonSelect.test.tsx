@@ -9,12 +9,7 @@ const avaliablePokemons: Array<PokemonBrief> = [
 
 describe('pokemon select', () => {
   test('is rendered', () => {
-    render(
-      <PokemonSelect
-        avaliablePokemons={avaliablePokemons}
-        onSelected={() => {}}
-      />
-    );
+    render(<PokemonSelect avaliablePokemons={avaliablePokemons} />);
     expect(screen.getByRole('list')).toBeDefined();
   });
 });

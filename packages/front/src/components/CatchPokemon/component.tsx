@@ -1,7 +1,6 @@
 import { ChangeEvent, useContext, useEffect, useState } from 'react';
 
 import axios from 'axios';
-import { nanoid } from 'nanoid';
 import { useNavigate } from 'react-router';
 
 import { AuthContext } from '../../context/authContext';

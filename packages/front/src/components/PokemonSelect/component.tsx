@@ -6,7 +6,7 @@ import { PokemonItem, PokemonList } from './styles';
 interface PokemonSelectProps {
   avaliablePokemons: Array<PokemonBrief>;
   selectedId?: string;
-  onSelected: (id: string) => void;
+  onSelected?: (id: string) => void;
 }
 
 export type PokemonBrief = Pick<Pokemon, 'id' | 'name' | 'pokedexNumber'>;
@@ -14,7 +14,7 @@ export type PokemonBrief = Pick<Pokemon, 'id' | 'name' | 'pokedexNumber'>;
 export const PokemonSelect: FC<PokemonSelectProps> = ({
   avaliablePokemons,
   selectedId,
-  onSelected,
+  onSelected = () => {},
 }) => {
   return (
     <PokemonList>
