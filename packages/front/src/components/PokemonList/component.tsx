@@ -9,15 +9,15 @@ import { FlexCenteredColumn, FlexLi } from '../StyledComponent/mainStyled';
 
 const API_URL = 'http://localhost:1337';
 
-const PokemonItem = ({ nickname, pokedexNumber, coughtAt }: Pokemon) => {
+const PokemonItem = ({ name, pokedexNumber, coughtAt }: Pokemon) => {
   return (
     <FlexLi>
       <div>
         <img
           src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokedexNumber}.png`}
-          alt={nickname}
+          alt={name}
         />
-        <p>{nickname}</p>
+        <p>{name}</p>
         <p>{coughtAt.replace('T', ' ')}</p>
       </div>
     </FlexLi>
@@ -44,10 +44,10 @@ export const PokemonList: FC = () => {
     watchAPI();
   }, [watchAPI]);
 
-  const handleDelete = (id: number) => {
-    console.log(API_URL + `/api/pokemons/${+id}`);
+  const handleDelete = (id: string) => {
+    console.log(API_URL + `/api/pokemons/${id}`);
     axios
-      .delete(API_URL + `/api/pokemons/${+id}`, {
+      .delete(API_URL + `/api/pokemons/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

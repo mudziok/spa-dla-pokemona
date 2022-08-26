@@ -12,7 +12,7 @@ export default factories.createCoreController(
       const usersPokemon = await strapi.entityService.findMany(
         'api::pokemon.pokemon',
         {
-          fields: ['nickname', 'pokedexNumber, coughtAt'],
+          fields: ['name', 'pokedexNumber, coughtAt'],
           filters: { trainer: { id: userId } },
         }
       );

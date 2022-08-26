@@ -1,6 +1,6 @@
 export interface Pokemon {
-  id: number;
-  nickname: string;
+  id: string;
+  name: string;
   pokedexNumber: number;
   coughtAt: string;
 }
