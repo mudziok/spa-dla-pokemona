@@ -10,6 +10,7 @@ import { Stack } from '../Stack/component';
 export const Login = () => {
   const [user, setUser] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
   let navigate = useNavigate();
 
   const { setToken } = useContext(AuthContext);
@@ -32,7 +33,8 @@ export const Login = () => {
       })
       .catch((error) => {
         // Handle error.
-        console.log('An error occurred:', error.response);
+        console.log('An error occurred:', error);
+        setError(error.message);
       });
   };
 
@@ -55,6 +57,7 @@ export const Login = () => {
             onChange={handlePassword}
           ></input>
           <button>Log in</button>
+          {error && <p>{error}</p>}
         </Stack>
       }
     />
