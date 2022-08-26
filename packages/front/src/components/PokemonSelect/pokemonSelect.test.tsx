@@ -1,8 +1,8 @@
-import React from 'react';
-import { render, screen, waitFor } from '@testing-library/react';
-import { PokemonSelect } from './components';
+import { render, screen } from '@testing-library/react';
 import { rest } from 'msw';
 import { setupServer } from 'msw/node';
+
+import { PokemonSelect } from './components';
 
 const server = setupServer(
   rest.get('https://pokeapi.co/api/v2/pokemon?limit=151', (req, res, ctx) => {
@@ -33,14 +33,13 @@ afterAll(() => server.close());
 
 describe('pokemon select', () => {
   test('is rendered', () => {
-    const { debug } = render(<PokemonSelect setSelectedNumber={() => {}} />);
+    render(<PokemonSelect setSelectedNumber={() => {}} />);
     expect(screen.getByRole('list')).toBeDefined();
   });
 
   test('is hitting api', async () => {
-    const { debug } = render(<PokemonSelect setSelectedNumber={() => {}} />);
-    debug();
-    await waitFor(() => screen.getAllByRole('listitem'));
+    render(<PokemonSelect setSelectedNumber={() => {}} />);
+    await screen.findAllByRole('listitem');
 
     expect(screen.getAllByRole('listitem').length).toEqual(2);
   });

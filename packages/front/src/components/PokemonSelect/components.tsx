@@ -44,6 +44,7 @@ export const PokemonSelect: FC<PokemonSelectProps> = ({
         <PokemonItem
           selected={pokedexNumber === selectedNumber}
           onClick={() => setSelectedNumber(pokedexNumber)}
+          key={pokedexNumber}
         >
           <img
             src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokedexNumber}.png`}
