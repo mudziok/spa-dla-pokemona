@@ -5,24 +5,10 @@ import { Link } from 'react-router-dom';
 
 import { AuthContext } from '../../context/authContext';
 import { Pokemon } from '../../types/pokemon';
-import { FlexCenteredColumn, FlexLi } from '../StyledComponent/mainStyled';
+import { PokemonSelect } from '../PokemonSelect/component';
+import { FlexCenteredColumn } from '../StyledComponent/mainStyled';
 
 const API_URL = 'http://localhost:1337';
-
-const PokemonItem = ({ name, pokedexNumber, coughtAt }: Pokemon) => {
-  return (
-    <FlexLi>
-      <div>
-        <img
-          src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokedexNumber}.png`}
-          alt={name}
-        />
-        <p>{name}</p>
-        <p>{coughtAt.replace('T', ' ')}</p>
-      </div>
-    </FlexLi>
-  );
-};
 
 export const PokemonList: FC = () => {
   const [pokemons, setPokemons] = useState<Array<Pokemon>>([]);
@@ -57,16 +43,10 @@ export const PokemonList: FC = () => {
 
   return (
     <FlexCenteredColumn>
-      <ul>
-        {pokemons.map((pokemon) => (
-          <>
-            <PokemonItem key={pokemon.id} {...pokemon} />
-            <button onClick={() => handleDelete(pokemon.id)}>
-              Release Pokemon!
-            </button>
-          </>
-        ))}
-      </ul>
+      <PokemonSelect
+        avaliablePokemons={pokemons}
+        onSelected={(id) => handleDelete(id)}
+      />
 
       <Link to={'/catch'}>
         <button>Złap pokemona</button>
