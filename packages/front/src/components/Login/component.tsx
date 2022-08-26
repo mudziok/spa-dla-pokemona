@@ -34,7 +34,7 @@ export const Login = () => {
       .catch((error) => {
         // Handle error.
         console.log('An error occurred:', error);
-        setError(error.message);
+        setError(error.response.data.error.message);
       });
   };
 

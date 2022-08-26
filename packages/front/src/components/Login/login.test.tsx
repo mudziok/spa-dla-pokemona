@@ -74,24 +74,22 @@ describe('login test', () => {
         return res(
           ctx.status(400),
           ctx.json({
-            name: 'ValidationError',
-            message: 'Invalid identifier or password',
-            details: {},
+            error: {
+              message: 'Invalid identifier or password',
+            },
           })
         );
       })
     );
-
+    debug();
     const btn = screen.getByRole('button');
 
     fireEvent.click(btn);
 
-    await waitFor(() =>
-      screen.getByText('Request failed with status code 400')
-    );
+    await waitFor(() => screen.getByText('Invalid identifier or password'));
 
     expect(
-      screen.getByText('Request failed with status code 400')
+      screen.getByText('Invalid identifier or password')
     ).toBeInTheDocument();
   });
 });
