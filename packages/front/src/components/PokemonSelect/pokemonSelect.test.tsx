@@ -7,13 +7,18 @@ const avaliablePokemons: Array<PokemonBrief> = [
   { id: '2', name: 'Ivysaur', pokedexNumber: 2 },
 ];
 
-describe('pokemon select', () => {
+describe('PokemonSelect', () => {
   test('is a list', () => {
     render(<PokemonSelect avaliablePokemons={avaliablePokemons} />);
     expect(screen.getByRole('list')).toBeInTheDocument();
   });
 
-  test('can select pokemons', () => {
+  test('displays correct number of items', () => {
+    render(<PokemonSelect avaliablePokemons={avaliablePokemons} />);
+    expect(screen.getAllByRole('listitem')).toHaveLength(2);
+  });
+
+  test('allows selecting a pokemon', () => {
     const mockOnSelected = jest.fn();
     render(
       <PokemonSelect
