@@ -1,8 +1,9 @@
 import styled from 'styled-components';
 
-export const CatchPokemonInputs = styled.div`
+export const Stack = styled.div`
+  padding: 1em;
+
   display: flex;
   flex-direction: column;
   gap: 1em;
-  padding: 1em;
 `;

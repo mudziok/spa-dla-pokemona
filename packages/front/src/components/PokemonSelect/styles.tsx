@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const POKEMON_ITEM_SIZE = '100px';
+const POKEMON_ITEM_SIZE = '150px';
 
 export const PokemonList = styled.ul`
   width: auto;
