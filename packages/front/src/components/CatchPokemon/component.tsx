@@ -1,16 +1,17 @@
 import { ChangeEvent, useContext, useEffect, useState } from 'react';
 
 import axios from 'axios';
+import { nanoid } from 'nanoid';
 import { useNavigate } from 'react-router';
 
 import { AuthContext } from '../../context/authContext';
-import { PokemonSelect } from '../PokemonSelect/components';
+import { PokemonInfo, PokemonSelect } from '../PokemonSelect/component';
 import { GridForm } from '../StyledComponent/mainStyled';
 import { CatchPokemonTable } from './styles';
 
 export const CatchPokemon = () => {
   const { token } = useContext(AuthContext);
-  const [nickname, setNickname] = useState<string>('');
+  const [name, setName] = useState<string>('');
   const [date, setDate] = useState<string>('');
   const [pokedexNumber, setPokedexNumber] = useState<number | undefined>();
   const [coughtAt, setCoughtAt] = useState('');
@@ -18,7 +19,7 @@ export const CatchPokemon = () => {
   const navigate = useNavigate();
 
   const handleNickname = (e: ChangeEvent<HTMLInputElement>) =>
-    setNickname(e.target.value);
+    setName(e.target.value);
   const handleDate = (e: ChangeEvent<HTMLInputElement>) =>
     setDate(e.target.value);
   const handleTime = (e: ChangeEvent<HTMLInputElement>) =>
@@ -28,6 +29,27 @@ export const CatchPokemon = () => {
     setCoughtAt(date + 'T' + time);
   }, [date, time]);
 
+  const [avaliablePokemons, setAvaliablePokemons] = useState<
+    Array<PokemonInfo>
+  >([]);
+
+  useEffect(() => {
+    const fetchAvaliablePokemons = async () => {
+      const data = await axios
+        .get('https://pokeapi.co/api/v2/pokemon?limit=151')
+        .then(({ data }) => data.results as Array<{ name: string }>);
+
+      const pokemons: Array<PokemonInfo> = data.map(({ name }, index) => ({
+        id: nanoid(),
+        name,
+        pokedexNumber: index + 1,
+      }));
+
+      setAvaliablePokemons(pokemons);
+    };
+    fetchAvaliablePokemons();
+  }, []);
+
   const handleSubmit = (e: any) => {
     e.preventDefault();
     axios
@@ -35,7 +57,7 @@ export const CatchPokemon = () => {
         'http://localhost:1337/api/pokemons',
         {
           data: {
-            nickname,
+            name,
             pokedexNumber,
             coughtAt,
           },
@@ -54,7 +76,7 @@ export const CatchPokemon = () => {
       <CatchPokemonTable>
         <input
           placeholder='name'
-          value={nickname}
+          value={name}
           onChange={handleNickname}
         ></input>
         <input type='date' onChange={handleDate}></input>
@@ -63,6 +85,7 @@ export const CatchPokemon = () => {
         <button>Złap pokemona</button>
       </CatchPokemonTable>
       <PokemonSelect
+        avaliablePokemons={avaliablePokemons}
         selectedNumber={pokedexNumber}
         setSelectedNumber={setPokedexNumber}
       />

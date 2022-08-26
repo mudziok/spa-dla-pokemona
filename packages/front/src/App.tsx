@@ -1,5 +1,4 @@
 import { Route, Routes } from 'react-router';
-import styled from 'styled-components';
 
 import './index.css';
 import { CatchPokemon } from './components/CatchPokemon/component';
