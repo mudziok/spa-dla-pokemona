@@ -1,9 +1,11 @@
-import React, { useState, MouseEvent, useContext, ChangeEvent } from 'react';
+import { useState, MouseEvent, useContext, ChangeEvent } from 'react';
 
 import axios from 'axios';
 import { useNavigate } from 'react-router';
 
 import { AuthContext } from '../../context/authContext';
+import { Split } from '../Split/component';
+import { Stack } from '../Stack/component';
 
 export const Login = () => {
   const [user, setUser] = useState('');
@@ -45,15 +47,19 @@ export const Login = () => {
   };
 
   return (
-    <form onSubmit={handleClick}>
-      <input placeholder='user' type='text' onChange={handleUser}></input>
-      <input
-        placeholder='password'
-        type='password'
-        onChange={handlePassword}
-      ></input>
-      <button>Log in</button>
-      {error && <p>{error}</p>}
-    </form>
+    <Split
+      sidebar={
+        <Stack as='form' onSubmit={handleClick}>
+          <input placeholder='user' type='text' onChange={handleUser}></input>
+          <input
+            placeholder='password'
+            type='password'
+            onChange={handlePassword}
+          ></input>
+          <button>Log in</button>
+          {error && <p>{error}</p>}
+        </Stack>
+      }
+    />
   );
 };
