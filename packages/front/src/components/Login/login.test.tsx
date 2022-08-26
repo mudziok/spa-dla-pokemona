@@ -1,9 +1,8 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import { AuthContext, AuthProvider } from '../../context/authContext';
+import { AuthProvider } from '../../context/authContext';
 import { Login } from './component';
 import { rest } from 'msw';
 import { setupServer } from 'msw/node';
-import { useNavigate } from 'react-router';
 
 const server = setupServer(
   rest.post('http://localhost:1337/api/auth/local', (req, res, ctx) => {
@@ -25,14 +24,6 @@ const server = setupServer(
   })
 );
 
-const navigate = jest.fn();
-// jest.mock('react-router', () => {
-//   //   const React = require('react');
-//   return jest.fn(() => ({
-//     useNavigate: navigate,
-//   }));
-// });
-
 beforeAll(() => server.listen());
 
 afterEach(() => server.resetHandlers());
@@ -46,7 +37,7 @@ jest.mock('react-router', () => ({
 
 describe('login test', () => {
   test('is rendered', () => {
-    const { debug } = render(
+    render(
       <AuthProvider>
         <Login />
       </AuthProvider>
@@ -57,15 +48,50 @@ describe('login test', () => {
   });
 
   test('is hitting api', async () => {
+    render(
+      <AuthProvider>
+        <Login />
+      </AuthProvider>
+    );
+
+    const btn = screen.getByRole('button');
+
+    fireEvent.click(btn);
+
+    await new Promise(process.nextTick);
+    expect(mockNav).toBeCalled();
+  });
+
+  test('handles server error', async () => {
     const { debug } = render(
       <AuthProvider>
         <Login />
       </AuthProvider>
     );
-    debug();
+
+    server.use(
+      rest.post('http://localhost:1337/api/auth/local', (req, res, ctx) => {
+        return res(
+          ctx.status(400),
+          ctx.json({
+            name: 'ValidationError',
+            message: 'Invalid identifier or password',
+            details: {},
+          })
+        );
+      })
+    );
+
     const btn = screen.getByRole('button');
+
     fireEvent.click(btn);
-    await new Promise(process.nextTick);
-    expect(mockNav).toBeCalled();
+
+    await waitFor(() =>
+      screen.getByText('Request failed with status code 400')
+    );
+
+    expect(
+      screen.getByText('Request failed with status code 400')
+    ).toBeInTheDocument();
   });
 });
