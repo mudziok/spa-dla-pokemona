@@ -54,14 +54,14 @@ describe('login test', () => {
 
   test('input user is rendered', () => {
     render(<MockLogin />);
-    const inputElement = screen.getByPlaceholderText(/user/i);
+    const inputElement = screen.getByPlaceholderText('user');
 
     expect(inputElement).toBeInTheDocument();
   });
 
   test('input password is rendered', () => {
     render(<MockLogin />);
-    const inputElement = screen.getByPlaceholderText(/password/i);
+    const inputElement = screen.getByPlaceholderText('password');
 
     expect(inputElement).toBeInTheDocument();
   });
@@ -69,7 +69,7 @@ describe('login test', () => {
   test('input user is changed value', () => {
     render(<MockLogin />);
     const inputElement = screen.getByPlaceholderText(
-      /user/i
+      'user'
     ) as HTMLInputElement;
     fireEvent.change(inputElement, { target: { value: 'przemek@wp.pl' } });
 
@@ -79,7 +79,7 @@ describe('login test', () => {
   test('input password is changed value', () => {
     render(<MockLogin />);
     const inputElement = screen.getByPlaceholderText(
-      /password/i
+      'password'
     ) as HTMLInputElement;
     fireEvent.change(inputElement, { target: { value: '123456' } });
 
