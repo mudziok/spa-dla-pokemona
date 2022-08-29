@@ -1,8 +1,9 @@
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import { AuthProvider } from '../../context/authContext';
-import { Login } from './component';
+import { fireEvent, render, screen } from '@testing-library/react';
 import { rest } from 'msw';
 import { setupServer } from 'msw/node';
+
+import { AuthProvider } from '../../context/authContext';
+import { Login } from './component';
 
 const server = setupServer(
   rest.post('http://localhost:1337/api/auth/local', (req, res, ctx) => {
@@ -24,50 +25,80 @@ const server = setupServer(
   })
 );
 
+const MockLogin = () => {
+  return (
+    <AuthProvider>
+      <Login />
+    </AuthProvider>
+  );
+};
+
+const mockFunction = jest.fn();
+
+jest.mock('react-router', () => ({
+  useNavigate: () => mockFunction,
+}));
+
 beforeAll(() => server.listen());
 
 afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
 
-const mockNav = jest.fn();
-
-jest.mock('react-router', () => ({
-  useNavigate: () => mockNav,
-}));
-
 describe('login test', () => {
-  test('is rendered', () => {
-    render(
-      <AuthProvider>
-        <Login />
-      </AuthProvider>
-    );
+  test('component is rendered', () => {
+    render(<MockLogin />);
 
     expect(screen.getByRole('textbox')).toBeInTheDocument();
     expect(screen.getByRole('button')).toBeInTheDocument();
   });
 
+  test('input user is rendered', () => {
+    render(<MockLogin />);
+    const inputElement = screen.getByPlaceholderText('user');
+
+    expect(inputElement).toBeInTheDocument();
+  });
+
+  test('input password is rendered', () => {
+    render(<MockLogin />);
+    const inputElement = screen.getByPlaceholderText('password');
+
+    expect(inputElement).toBeInTheDocument();
+  });
+
+  test('input user is changed value', () => {
+    render(<MockLogin />);
+    const inputElement = screen.getByPlaceholderText(
+      'user'
+    ) as HTMLInputElement;
+    fireEvent.change(inputElement, { target: { value: 'przemek@wp.pl' } });
+
+    expect(inputElement.value).toBe('przemek@wp.pl');
+  });
+
+  test('input password is changed value', () => {
+    render(<MockLogin />);
+    const inputElement = screen.getByPlaceholderText(
+      'password'
+    ) as HTMLInputElement;
+    fireEvent.change(inputElement, { target: { value: '123456' } });
+
+    expect(inputElement.value).toBe('123456');
+  });
+
   test('is hitting api', async () => {
-    render(
-      <AuthProvider>
-        <Login />
-      </AuthProvider>
-    );
+    render(<MockLogin />);
 
     const btn = screen.getByRole('button');
 
     fireEvent.click(btn);
 
     await new Promise(process.nextTick);
-    expect(mockNav).toBeCalled();
+    expect(mockFunction).toBeCalled();
   });
 
   test('handles server error', async () => {
-    const { debug } = render(
-      <AuthProvider>
-        <Login />
-      </AuthProvider>
-    );
+    render(<MockLogin />);
 
     server.use(
       rest.post('http://localhost:1337/api/auth/local', (req, res, ctx) => {
@@ -81,12 +112,11 @@ describe('login test', () => {
         );
       })
     );
-    debug();
     const btn = screen.getByRole('button');
 
     fireEvent.click(btn);
 
-    await waitFor(() => screen.getByText('Invalid identifier or password'));
+    await screen.findByText('Invalid identifier or password');
 
     expect(
       screen.getByText('Invalid identifier or password')
