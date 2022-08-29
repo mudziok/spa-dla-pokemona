@@ -9,18 +9,10 @@ export default factories.createCoreController(
   ({ strapi }) => ({
     async find(ctx) {
       const userId = ctx.state.user.id;
-      const usersPokemon = await strapi.entityService.findMany(
-        'api::pokemon.pokemon',
-        {
-          fields: ['name', 'pokedexNumber, coughtAt'],
-          filters: { trainer: { id: userId } },
-        }
-      );
-
-      const data = usersPokemon.map((dog) => ({
-        ...dog,
-        photo: dog?.photo?.formats?.thumbnail?.url,
-      }));
+      const data = await strapi.entityService.findMany('api::pokemon.pokemon', {
+        fields: ['name', 'pokedexNumber, coughtAt'],
+        filters: { trainer: { id: userId } },
+      });
 
       return { data };
     },
@@ -36,6 +28,25 @@ export default factories.createCoreController(
       });
 
       return { data };
+    },
+
+    async delete(ctx) {
+      const userId = ctx.state.user.id;
+
+      const { trainer } = await strapi.entityService.findOne(
+        'api::pokemon.pokemon',
+        ctx.params.id,
+        {
+          populate: ['trainer'],
+        }
+      );
+
+      if (trainer.id !== userId) {
+        ctx.unauthorized('Cannot delete another trainers Pokemon');
+      }
+
+      const { data, error } = super.delete(ctx);
+      return { data, error };
     },
   })
 );
