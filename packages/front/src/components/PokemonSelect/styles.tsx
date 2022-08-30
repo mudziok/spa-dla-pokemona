@@ -9,6 +9,7 @@ export const PokemonList = styled.ul`
   flex-wrap: wrap;
   justify-content: space-evenly;
   align-content: flex-start;
+  font-size: 12px;
 
   padding: 0;
   margin: 0;
