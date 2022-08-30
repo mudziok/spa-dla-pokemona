@@ -21,7 +21,6 @@ let pokemons = [
 
 const server = setupServer(
   rest.get('http://localhost:1337/api/pokemons', (req, res, ctx) => {
-    console.log(pokemons);
     return res(
       ctx.json({
         jwt: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjYxNTA2ODQwLCJleHAiOjE2NjQwOTg4NDB9.Ki6dcrhXYJa7_HVk8MzCtzaqse710IpGWcNnwNvQ390',

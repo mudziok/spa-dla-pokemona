@@ -19,23 +19,16 @@ export const Login = () => {
 
   const handleClick = (e: MouseEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log('login succes', user, password);
     axiosPublic
       .post(AxiosPublicRoutes.LOGIN, {
         identifier: user,
         password: password,
       })
       .then((response) => {
-        // Handle success.
-        console.log('Well done!');
-        console.log('User profile', response.data.user);
-        console.log('User token', response.data.jwt);
         setToken(response.data.jwt);
         navigate('/pokemons');
       })
       .catch((error) => {
-        // Handle error.
-        console.log('An error occurred:', error);
         setError(error.response.data.error.message);
       });
   };
