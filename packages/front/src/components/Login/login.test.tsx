@@ -3,6 +3,7 @@ import { rest } from 'msw';
 import { setupServer } from 'msw/node';
 
 import { AuthProvider } from '../../context/authContext';
+import { AxiosProvider } from '../../context/axiosContext';
 import { Login } from './component';
 
 const server = setupServer(
@@ -28,7 +29,9 @@ const server = setupServer(
 const MockLogin = () => {
   return (
     <AuthProvider>
-      <Login />
+      <AxiosProvider>
+        <Login />
+      </AxiosProvider>
     </AuthProvider>
   );
 };
