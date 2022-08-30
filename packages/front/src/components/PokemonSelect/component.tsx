@@ -1,6 +1,7 @@
 import { FC } from 'react';
 
 import { Pokemon } from '../../types/pokemon';
+import { getPokemonImageURL } from '../../utils/axiosPokeApi';
 import { PokemonItem, PokemonList } from './styles';
 
 interface PokemonSelectProps {
@@ -24,10 +25,7 @@ export const PokemonSelect: FC<PokemonSelectProps> = ({
           onClick={() => onSelected(id)}
           key={id}
         >
-          <img
-            src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokedexNumber}.png`}
-            alt={name}
-          />
+          <img src={getPokemonImageURL(pokedexNumber)} alt={name} />
           {name.toUpperCase()}
         </PokemonItem>
       ))}

@@ -1,21 +1,27 @@
 import { ChangeEvent, FormEvent, useContext, useEffect, useState } from 'react';
 
-import axios from 'axios';
 import { useNavigate } from 'react-router';
 
-import { AuthContext } from '../../context/authContext';
+import { AxiosContext } from '../../context/axiosContext';
+import { axiosPokeApi, AxiosPokeApiRoutes } from '../../utils/axiosPokeApi';
+import { AxiosPrivateRoutes } from '../../utils/axiosPrivate';
 import { PokemonBrief, PokemonSelect } from '../PokemonSelect/component';
 import { Split } from '../Split/component';
 import { Stack } from '../Stack/component';
 
 export const CatchPokemon = () => {
-  const { token } = useContext(AuthContext);
+  const navigate = useNavigate();
+
+  const { axiosPrivate } = useContext(AxiosContext);
+
+  const [avaliablePokemons, setAvaliablePokemons] = useState<
+    Array<PokemonBrief>
+  >([]);
+
   const [name, setName] = useState<string>('');
   const [date, setDate] = useState<string>('');
-  const [pokedexNumber, setPokedexNumber] = useState<string | undefined>();
-  const [coughtAt, setCoughtAt] = useState('');
   const [time, setTime] = useState('');
-  const navigate = useNavigate();
+  const [pokedexNumber, setPokedexNumber] = useState<string | undefined>();
 
   const handleNickname = (e: ChangeEvent<HTMLInputElement>) =>
     setName(e.target.value);
@@ -24,18 +30,12 @@ export const CatchPokemon = () => {
   const handleTime = (e: ChangeEvent<HTMLInputElement>) =>
     setTime(e.target.value);
 
-  useEffect(() => {
-    setCoughtAt(date + 'T' + time);
-  }, [date, time]);
-
-  const [avaliablePokemons, setAvaliablePokemons] = useState<
-    Array<PokemonBrief>
-  >([]);
+  const coughtAt = date + 'T' + time;
 
   useEffect(() => {
     const fetchAvaliablePokemons = async () => {
-      const data = await axios
-        .get('https://pokeapi.co/api/v2/pokemon?limit=151')
+      const data = await axiosPokeApi
+        .get(AxiosPokeApiRoutes.POKEDEX_GEN_1)
         .then(({ data }) => data.results as Array<{ name: string }>);
 
       const pokemons: Array<PokemonBrief> = data.map(({ name }, index) => ({
@@ -51,22 +51,14 @@ export const CatchPokemon = () => {
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    axios
-      .post(
-        'http://localhost:1337/api/pokemons',
-        {
-          data: {
-            name,
-            pokedexNumber,
-            coughtAt,
-          },
+    axiosPrivate
+      .post(AxiosPrivateRoutes.POKEMONS, {
+        data: {
+          name,
+          pokedexNumber,
+          coughtAt,
         },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      )
+      })
       .then(() => navigate('/pokemons'));
   };
 
@@ -75,14 +67,9 @@ export const CatchPokemon = () => {
       <Split
         sidebar={
           <Stack>
-            <input
-              placeholder='name'
-              value={name}
-              onChange={handleNickname}
-            ></input>
-            <input type='date' value={date} onChange={handleDate}></input>
-            <input type='time' value={time} onChange={handleTime}></input>
-
+            <input placeholder='name' value={name} onChange={handleNickname} />
+            <input type='date' value={date} onChange={handleDate} />
+            <input type='time' value={time} onChange={handleTime} />
             <button>Złap pokemona</button>
           </Stack>
         }
