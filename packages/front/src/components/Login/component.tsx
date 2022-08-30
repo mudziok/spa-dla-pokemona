@@ -1,9 +1,10 @@
 import { useState, MouseEvent, useContext, ChangeEvent } from 'react';
 
-import axios from 'axios';
 import { useNavigate } from 'react-router';
 
 import { AuthContext } from '../../context/authContext';
+import { AxiosContext } from '../../context/axiosContext';
+import { AxiosPublicRoutes } from '../../utils/axiosPublic';
 import { Split } from '../Split/component';
 import { Stack } from '../Stack/component';
 
@@ -14,12 +15,13 @@ export const Login = () => {
   let navigate = useNavigate();
 
   const { setToken } = useContext(AuthContext);
+  const { axiosPublic } = useContext(AxiosContext);
 
   const handleClick = (e: MouseEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log('login succes', user, password);
-    axios
-      .post('http://localhost:1337/api/auth/local', {
+    axiosPublic
+      .post(AxiosPublicRoutes.LOGIN, {
         identifier: user,
         password: password,
       })

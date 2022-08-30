@@ -1,47 +1,36 @@
 import { FC, useCallback, useContext, useEffect, useState } from 'react';
 
-import axios from 'axios';
 import { useNavigate } from 'react-router';
 
-import { AuthContext } from '../../context/authContext';
+import { AxiosContext } from '../../context/axiosContext';
 import { Pokemon } from '../../types/pokemon';
+import { AxiosPrivateRoutes } from '../../utils/axiosPrivate';
 import { PokemonSelect } from '../PokemonSelect/component';
 import { Split } from '../Split/component';
 import { Stack } from '../Stack/component';
 
-const API_URL = 'http://localhost:1337';
-
 export const PokemonList: FC = () => {
   const [pokemons, setPokemons] = useState<Array<Pokemon>>([]);
-  const { token } = useContext(AuthContext);
+
+  const { axiosPrivate } = useContext(AxiosContext);
+
   let navigate = useNavigate();
 
   const watchAPI = useCallback(() => {
-    axios
-      .get(API_URL + '/api/pokemons', {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then((response) => {
-        setPokemons(response.data.data);
-      });
-  }, [token]);
+    axiosPrivate.get(AxiosPrivateRoutes.POKEMONS).then((response) => {
+      setPokemons(response.data.data);
+    });
+  }, [axiosPrivate]);
+
+  const handleDelete = (id: string) => {
+    axiosPrivate
+      .delete(AxiosPrivateRoutes.POKEMONS + `/${id}`)
+      .then(() => watchAPI());
+  };
 
   useEffect(() => {
     watchAPI();
   }, [watchAPI]);
-
-  const handleDelete = (id: string) => {
-    console.log(API_URL + `/api/pokemons/${id}`);
-    axios
-      .delete(API_URL + `/api/pokemons/${id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then(() => watchAPI());
-  };
 
   return (
     <Split
