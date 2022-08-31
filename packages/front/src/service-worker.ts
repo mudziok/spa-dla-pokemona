@@ -14,6 +14,8 @@ import { precacheAndRoute, createHandlerBoundToURL } from 'workbox-precaching';
 import { registerRoute } from 'workbox-routing';
 import { StaleWhileRevalidate } from 'workbox-strategies';
 
+import { Pokemon } from './types/pokemon';
+
 declare const self: ServiceWorkerGlobalScope;
 
 clientsClaim();
@@ -57,7 +59,8 @@ registerRoute(
 // precache, in this case same-origin .png requests like those from in public/
 registerRoute(
   // Add in any other file extensions or routing criteria as needed.
-  ({ url }) => url.origin === self.location.origin && url.pathname.endsWith('.png'),
+  ({ url }) =>
+    url.origin === self.location.origin && url.pathname.endsWith('.png'),
   // Customize this strategy as needed, e.g., by changing to CacheFirst.
   new StaleWhileRevalidate({
     cacheName: 'images',
@@ -77,4 +80,29 @@ self.addEventListener('message', (event) => {
   }
 });
 
-// Any other custom service worker logic can go here.
+let pokemons: { data: Array<Pokemon> } = { data: [] };
+
+self.addEventListener('fetch', async (event) => {
+  const { url, method } = event.request;
+
+  if (url === 'http://localhost:1337/api/pokemons' && method === 'GET') {
+    event.respondWith(cachePokemons(event.request));
+  } else {
+    event.respondWith(fetch(event.request));
+  }
+});
+
+const cachePokemons = async (request: Request) => {
+  try {
+    const response = await fetch(request);
+
+    pokemons = await response.clone().json();
+
+    return response;
+  } catch {}
+
+  return new Response(JSON.stringify(pokemons), {
+    status: 200,
+    headers: { 'Content-Type': 'application/json' },
+  });
+};
