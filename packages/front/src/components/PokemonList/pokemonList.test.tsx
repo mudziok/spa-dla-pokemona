@@ -2,72 +2,24 @@ import {
   fireEvent,
   render,
   screen,
+  waitFor,
   waitForElementToBeRemoved,
 } from '@testing-library/react';
 import { rest } from 'msw';
-import { setupServer } from 'msw/node';
 
-import { AuthProvider } from '../../context/authContext';
-import { PokemonList } from './component';
+import {
+  MockPokemonList,
+  serverPokemons,
+  mockedFunction,
+} from '../MockTest/mock';
 
-let pokemons = [
-  {
-    id: 2,
-    name: 'bulbasaur',
-    pokedexNumber: 1,
-    coughtAt: '2022-10-10T08:10:00.000Z',
-  },
-];
-
-const server = setupServer(
-  rest.get('http://localhost:1337/api/pokemons', (req, res, ctx) => {
-    return res(
-      ctx.json({
-        jwt: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjYxNTA2ODQwLCJleHAiOjE2NjQwOTg4NDB9.Ki6dcrhXYJa7_HVk8MzCtzaqse710IpGWcNnwNvQ390',
-        data: pokemons,
-      })
-    );
-  }),
-  rest.delete('http://localhost:1337/api/pokemons/2', (req, res, ctx) => {
-    pokemons = pokemons.filter((pokemon) => pokemon.id !== 2);
-    return res(
-      ctx.status(200),
-      ctx.json({
-        data: pokemons,
-      })
-    );
-  })
-);
-
-const MockPokemonList = () => {
-  return (
-    <AuthProvider>
-      <PokemonList />
-    </AuthProvider>
-  );
-};
-
-const mockFunction = jest.fn();
-
-jest.mock('react-router', () => ({
-  useNavigate: () => mockFunction,
-}));
-
-beforeAll(() => server.listen());
+beforeAll(() => serverPokemons.listen());
 
 afterEach(() => {
-  server.resetHandlers();
-  pokemons = [
-    {
-      id: 2,
-      name: 'bulbasaur',
-      pokedexNumber: 1,
-      coughtAt: '2022-10-10T08:10:00.000Z',
-    },
-  ];
+  serverPokemons.resetHandlers();
 });
 
-afterAll(() => server.close());
+afterAll(() => serverPokemons.close());
 
 describe('pokemon list', () => {
   test('is rendered sidebar part', () => {
@@ -84,11 +36,41 @@ describe('pokemon list', () => {
     expect(listElement).toBeInTheDocument();
   });
 
+  test('if is 3 pokemons from API, the list have 3 pokemons', async () => {
+    render(<MockPokemonList />);
+
+    const listElement = await screen.findAllByRole('listitem');
+    expect(listElement).toHaveLength(3);
+  });
+
+  test('if is 0 pokemons from API, the list should not appears', async () => {
+    serverPokemons.use(
+      rest.get('http://localhost:1337/api/pokemons', (req, res, ctx) => {
+        return res(
+          ctx.json({
+            jwt: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjYxNTA2ODQwLCJleHAiOjE2NjQwOTg4NDB9.Ki6dcrhXYJa7_HVk8MzCtzaqse710IpGWcNnwNvQ390',
+            data: [],
+          })
+        );
+      })
+    );
+
+    render(<MockPokemonList />);
+
+    await waitFor(() =>
+      expect(screen.queryAllByRole('listitem')).toHaveLength(0)
+    );
+  });
+
   test('click on pokemon, pokemon should be deleted', async () => {
     render(<MockPokemonList />);
     const pokemonElement = await screen.findByText('BULBASAUR');
     fireEvent.click(pokemonElement);
     await waitForElementToBeRemoved(() => screen.queryByText('BULBASAUR'));
+
+    await waitFor(() =>
+      expect(screen.queryAllByRole('listitem')).toHaveLength(2)
+    );
   });
 
   test('after click button should navigated user to catch pokemon', async () => {
@@ -97,6 +79,6 @@ describe('pokemon list', () => {
     const btnElement = screen.getByRole('button');
     fireEvent.click(btnElement);
 
-    expect(mockFunction).toBeCalled();
+    expect(mockedFunction).toBeCalled();
   });
 });
