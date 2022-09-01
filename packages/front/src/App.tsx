@@ -7,6 +7,7 @@ import { PokemonList } from './components/PokemonList/component';
 import { RequireAuth } from './components/RequireAuth/component';
 import { AuthProvider } from './context/authContext';
 import { AxiosProvider } from './context/axiosContext';
+import { ContextProvider } from './context/composeProviders';
 
 const theme: DefaultTheme = {
   colors: {
@@ -15,33 +16,39 @@ const theme: DefaultTheme = {
   },
 };
 
+const composeProviders = (providers: Array<ContextProvider>) => {
+  const ComposedProvider: ContextProvider = ({ children }) =>
+    providers.reduceRight((Prev, Curr) => <Curr children={Prev} />, children);
+  return ComposedProvider;
+};
+
+const ComposedProviders = composeProviders([AuthProvider, AxiosProvider]);
+
 function App() {
   return (
-    <AuthProvider>
-      <AxiosProvider>
-        <ThemeProvider theme={theme}>
-          <Routes>
-            <Route path='/' element={<Login />} />
-            <Route
-              path='/pokemons'
-              element={
-                <RequireAuth>
-                  <PokemonList />
-                </RequireAuth>
-              }
-            ></Route>
-            <Route
-              path='/catch'
-              element={
-                <RequireAuth>
-                  <CatchPokemon />
-                </RequireAuth>
-              }
-            ></Route>
-          </Routes>
-        </ThemeProvider>
-      </AxiosProvider>
-    </AuthProvider>
+    <ThemeProvider theme={theme}>
+      <ComposedProviders>
+        <Routes>
+          <Route path='/' element={<Login />} />
+          <Route
+            path='/pokemons'
+            element={
+              <RequireAuth>
+                <PokemonList />
+              </RequireAuth>
+            }
+          ></Route>
+          <Route
+            path='/catch'
+            element={
+              <RequireAuth>
+                <CatchPokemon />
+              </RequireAuth>
+            }
+          ></Route>
+        </Routes>
+      </ComposedProviders>
+    </ThemeProvider>
   );
 }
 
