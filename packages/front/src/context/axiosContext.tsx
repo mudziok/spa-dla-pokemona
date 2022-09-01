@@ -1,4 +1,4 @@
-import { createContext, FC, ReactNode, useContext } from 'react';
+import { createContext, useContext } from 'react';
 
 import { AxiosInstance } from 'axios';
 
@@ -6,6 +6,7 @@ import { axiosPokeApi } from '../utils/axiosPokeApi';
 import { axiosPrivate } from '../utils/axiosPrivate';
 import { axiosPublic } from '../utils/axiosPublic';
 import { AuthContext } from './authContext';
+import { ContextProvider } from './composeProviders';
 
 interface AxiosContextValue {
   axiosPublic: AxiosInstance;
@@ -15,11 +16,7 @@ interface AxiosContextValue {
 
 export const AxiosContext = createContext<AxiosContextValue>(null!);
 
-interface AxiosProviderProps {
-  children: ReactNode;
-}
-
-export const AxiosProvider: FC<AxiosProviderProps> = ({ children }) => {
+export const AxiosProvider: ContextProvider = ({ children }) => {
   const { token } = useContext(AuthContext);
 
   axiosPrivate.interceptors.request.use(
