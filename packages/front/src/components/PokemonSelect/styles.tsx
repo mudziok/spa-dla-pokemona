@@ -27,7 +27,8 @@ export const PokemonItem = styled.li<{ selected: boolean }>`
   align-items: center;
 
   border-radius: 1000px;
-  ${(props) => props.selected && `background-color: lightblue;`}
+  ${(props) =>
+    props.selected && `background-color: ${props.theme.colors.main};`}
 
   img {
     width: 70%;

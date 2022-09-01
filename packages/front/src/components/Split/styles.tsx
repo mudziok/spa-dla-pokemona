@@ -16,12 +16,12 @@ export const SplitGrid = styled.div`
 export const SidebarContainer = styled.div`
   height: 100%;
   overflow-y: auto;
-  border-right: 3px lightblue solid;
+  border-right: 3px ${(props) => props.theme.colors.main} solid;
 
   @media (max-width: 450px) {
     height: auto;
     border-right: none;
-    border-bottom: 3px lightblue solid;
+    border-bottom: 3px ${(props) => props.theme.colors.main} solid;
   }
 `;
 
