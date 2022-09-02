@@ -1,6 +1,7 @@
 import { Route, Routes } from 'react-router';
 import { DefaultTheme, ThemeProvider } from 'styled-components';
 
+import { CalendarInput } from './components/Calendar/component';
 import { CatchPokemon } from './components/CatchPokemon/component';
 import { Login } from './components/Login/component';
 import { PokemonList } from './components/PokemonList/component';
@@ -22,6 +23,7 @@ function App() {
         <ThemeProvider theme={theme}>
           <Routes>
             <Route path='/' element={<Login />} />
+            <Route path='/calendar' element={<CalendarInput />} />
             <Route
               path='/pokemons'
               element={
