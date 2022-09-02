@@ -1,4 +1,6 @@
-import React, { createContext, ReactNode, useState } from 'react';
+import React, { createContext, useState } from 'react';
+
+import { ContextProvider } from './composeProviders';
 
 interface AuthContextType {
   token: string;
@@ -7,7 +9,7 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType>(null!);
 
-const AuthProvider = ({ children }: { children: ReactNode }) => {
+const AuthProvider: ContextProvider = ({ children }) => {
   const [token, setToken] = useState('');
 
   const value = { token, setToken };

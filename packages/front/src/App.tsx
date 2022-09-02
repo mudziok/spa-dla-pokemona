@@ -8,6 +8,8 @@ import { PokemonList } from './components/PokemonList/component';
 import { RequireAuth } from './components/RequireAuth/component';
 import { AuthProvider } from './context/authContext';
 import { AxiosProvider } from './context/axiosContext';
+import { ContextProvider } from './context/composeProviders';
+import { OnlineProvider } from './context/onlineContext';
 
 const theme: DefaultTheme = {
   colors: {
@@ -15,6 +17,18 @@ const theme: DefaultTheme = {
     secondary: 'white',
   },
 };
+
+const composeProviders = (providers: Array<ContextProvider>) => {
+  const ComposedProvider: ContextProvider = ({ children }) =>
+    providers.reduceRight((Prev, Curr) => <Curr children={Prev} />, children);
+  return ComposedProvider;
+};
+
+const ComposedProviders = composeProviders([
+  AuthProvider,
+  AxiosProvider,
+  OnlineProvider,
+]);
 
 function App() {
   return (
