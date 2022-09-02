@@ -8,6 +8,7 @@ import { RequireAuth } from './components/RequireAuth/component';
 import { AuthProvider } from './context/authContext';
 import { AxiosProvider } from './context/axiosContext';
 import { ContextProvider } from './context/composeProviders';
+import { OnlineProvider } from './context/onlineContext';
 
 const theme: DefaultTheme = {
   colors: {
@@ -22,7 +23,11 @@ const composeProviders = (providers: Array<ContextProvider>) => {
   return ComposedProvider;
 };
 
-const ComposedProviders = composeProviders([AuthProvider, AxiosProvider]);
+const ComposedProviders = composeProviders([
+  AuthProvider,
+  AxiosProvider,
+  OnlineProvider,
+]);
 
 function App() {
   return (
