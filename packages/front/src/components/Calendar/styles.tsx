@@ -1,6 +1,11 @@
 import styled from 'styled-components';
 
 export const CalendarContainer = styled.div`
+  display: flex;
+  position: relative;
+  align-content: center;
+  justify-content: center;
+
   .react-calendar {
     background: #ffffff;
     border: 1px solid #a3a3a3;
@@ -62,7 +67,7 @@ export const CalendarContainer = styled.div`
       }
 
       &__next2-button {
-        /* pointer-events: none; */
+        pointer-events: none;
       }
     }
 
@@ -153,8 +158,17 @@ export const CalendarContainer = styled.div`
 `;
 
 export const IconWrapper = styled.div`
-  /* pointer-events: none; */
+  pointer-events: none;
   display: flex;
   align-items: center;
   justify-content: flex-end;
+`;
+
+export const BellClick = styled.div`
+  position: absolute;
+  width: 2rem;
+  height: 2rem;
+  background-color: transparent;
+  right: calc(50% - 175px + 1rem);
+  top: 1.5rem;
 `;

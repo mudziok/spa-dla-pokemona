@@ -4,7 +4,15 @@ import 'react-calendar/dist/Calendar.css';
 import Calendar from 'react-calendar';
 
 import LoopIcon from '../../Icons/Vector.js';
-import { CalendarContainer, IconWrapper } from './styles';
+import { CalendarContainer, BellClick, IconWrapper } from './styles';
+
+const BellIcon = () => {
+  return (
+    <IconWrapper>
+      <LoopIcon />
+    </IconWrapper>
+  );
+};
 
 interface CalendarInputProps {
   isBellPresent: boolean;
@@ -12,8 +20,8 @@ interface CalendarInputProps {
 }
 
 export const CalendarInput: FC<CalendarInputProps> = ({
-  isBellPresent = true,
-  isSelectRange = false,
+  isBellPresent,
+  isSelectRange,
 }) => {
   const localLanguage = 'pl';
   const monthsNames = [
@@ -53,26 +61,20 @@ export const CalendarInput: FC<CalendarInputProps> = ({
       setIsRange(isRange);
     }
   };
-  // const handleDrillDown = () => {
-  //   if (isSelectRange) {
-  //     setIsRange(true);
-  //   }
-  // };
 
-  // const handleDrillUp = () => {
-  //   if (isSelectRange) {
-  //     setIsRange(false);
-  //   }
-  // };
+  const handleClickBell = () => {
+    console.log('dzyn dzyn dzyn');
+  };
 
   return (
     <CalendarContainer>
+      {isBellPresent && <BellClick onClick={handleClickBell} />}
       <Calendar
         onChange={onChange}
         value={value}
         showWeekNumbers={true}
         minDate={startDate}
-        next2Label={isBellPresent ? icon : null}
+        next2Label={isBellPresent ? <BellIcon /> : null}
         prev2Label={null}
         selectRange={isSelectRange}
         onDrillDown={() => handleDrill(true)}
