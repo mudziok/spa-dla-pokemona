@@ -48,17 +48,22 @@ export const CalendarInput: FC<CalendarInputProps> = ({
     return word[0].toUpperCase() + word.substring(1);
   };
 
-  const handleDrillDown = () => {
+  const handleDrill = (isRange: boolean) => {
     if (isSelectRange) {
-      setIsRange(true);
+      setIsRange(isRange);
     }
   };
+  // const handleDrillDown = () => {
+  //   if (isSelectRange) {
+  //     setIsRange(true);
+  //   }
+  // };
 
-  const handleDrillUp = () => {
-    if (isSelectRange) {
-      setIsRange(false);
-    }
-  };
+  // const handleDrillUp = () => {
+  //   if (isSelectRange) {
+  //     setIsRange(false);
+  //   }
+  // };
 
   return (
     <CalendarContainer>
@@ -70,8 +75,8 @@ export const CalendarInput: FC<CalendarInputProps> = ({
         next2Label={isBellPresent ? icon : null}
         prev2Label={null}
         selectRange={isSelectRange}
-        onDrillDown={() => handleDrillDown}
-        onDrillUp={() => handleDrillUp}
+        onDrillDown={() => handleDrill(true)}
+        onDrillUp={() => handleDrill(false)}
         navigationLabel={({ label }) => (
           <>
             {icon}
