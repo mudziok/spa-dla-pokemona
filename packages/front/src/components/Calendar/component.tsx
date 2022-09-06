@@ -35,6 +35,8 @@ export const CalendarInput: FC<CalendarInputProps> = ({
 
   const [value, onChange] = useState(new Date());
   const [range, setIsRange] = useState(isSelectRange);
+  const currentYear = new Date().getFullYear();
+  const startDate = new Date(`${currentYear}-09-01`);
 
   const icon = (
     <IconWrapper>
@@ -64,6 +66,7 @@ export const CalendarInput: FC<CalendarInputProps> = ({
         onChange={onChange}
         value={value}
         showWeekNumbers={true}
+        minDate={startDate}
         next2Label={isBellPresent ? icon : null}
         prev2Label={null}
         selectRange={isSelectRange}
