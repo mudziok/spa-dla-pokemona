@@ -37,7 +37,10 @@ function App() {
         <ThemeProvider theme={theme}>
           <Routes>
             <Route path='/' element={<Login />} />
-            <Route path='/calendar' element={<CalendarInput />} />
+            <Route
+              path='/calendar'
+              element={<CalendarInput isBellPresent={true} />}
+            />
             <Route
               path='/pokemons'
               element={

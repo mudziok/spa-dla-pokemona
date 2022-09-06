@@ -10,19 +10,20 @@ export const CalendarContainer = styled.div`
     padding: 1rem;
 
     &__navigation {
-      display: grid;
+      /* display: grid;
       margin-bottom: 1em;
       grid-template-columns: 4fr 1fr 1fr 2fr;
       justify-items: stretch;
       justify-self: center;
-      align-content: center;
-      /* display: flex;
+      align-content: center; */
+
+      display: flex;
       justify-items: stretch;
       align-items: stretch;
       align-content: stretch;
       justify-content: space-between;
       flex-direction: row;
-      flex-wrap: wrap; */
+      flex-wrap: wrap;
 
       button {
         background-color: white;

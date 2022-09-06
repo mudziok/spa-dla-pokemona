@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 
 import 'react-calendar/dist/Calendar.css';
 import Calendar from 'react-calendar';
@@ -6,7 +6,11 @@ import Calendar from 'react-calendar';
 import LoopIcon from '../../Icons/Vector.js';
 import { CalendarContainer, IconWrapper } from './styles';
 
-export const CalendarInput = () => {
+interface CalendarInputProps {
+  isBellPresent: boolean;
+}
+
+export const CalendarInput: FC<CalendarInputProps> = ({ isBellPresent }) => {
   const localLanguage = 'pl';
   const monthsNames = [
     'Styczeń',
@@ -43,7 +47,7 @@ export const CalendarInput = () => {
         onChange={onChange}
         value={value}
         showWeekNumbers={true}
-        next2Label={icon}
+        next2Label={isBellPresent ? icon : null}
         prev2Label={null}
         selectRange={false}
         onViewChange={() => {}}
