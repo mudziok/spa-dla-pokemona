@@ -27,6 +27,7 @@ export const CalendarContainer = styled.div`
 
       button {
         background-color: white;
+
         &:hover,
         :focus {
           background-color: white;
@@ -61,7 +62,7 @@ export const CalendarContainer = styled.div`
       }
 
       &__next2-button {
-        pointer-events: none;
+        /* pointer-events: none; */
       }
     }
 
@@ -118,7 +119,13 @@ export const CalendarContainer = styled.div`
       }
 
       &--now {
-        background-color: transparent;
+        background-color: white;
+        background: white;
+
+        &:hover,
+        &:focus {
+          background-color: #e6e6e6;
+        }
       }
 
       &--active {
@@ -134,6 +141,10 @@ export const CalendarContainer = styled.div`
           background-color: #c6c6c6;
         }
       }
+
+      &--hasActive {
+        background-color: #a3a3a3;
+      }
     }
     abbr[title] {
       text-decoration: none;
@@ -142,7 +153,7 @@ export const CalendarContainer = styled.div`
 `;
 
 export const IconWrapper = styled.div`
-  pointer-events: none;
+  /* pointer-events: none; */
   display: flex;
   align-items: center;
   justify-content: flex-end;

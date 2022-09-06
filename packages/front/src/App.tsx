@@ -40,7 +40,7 @@ function App() {
             <Route
               path='/calendar'
               element={
-                <CalendarInput isBellPresent={false} isSelectRange={true} />
+                <CalendarInput isBellPresent={true} isSelectRange={false} />
               }
             />
             <Route

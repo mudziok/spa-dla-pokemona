@@ -34,6 +34,7 @@ export const CalendarInput: FC<CalendarInputProps> = ({
   const daysNames = ['Nd', 'Pon', 'Wt', 'Śr', 'Czw', 'Pt', 'So'];
 
   const [value, onChange] = useState(new Date());
+  const [range, setIsRange] = useState(isSelectRange);
 
   const icon = (
     <IconWrapper>
@@ -45,6 +46,18 @@ export const CalendarInput: FC<CalendarInputProps> = ({
     return word[0].toUpperCase() + word.substring(1);
   };
 
+  const handleDrillDown = () => {
+    if (isSelectRange) {
+      setIsRange(true);
+    }
+  };
+
+  const handleDrillUp = () => {
+    if (isSelectRange) {
+      setIsRange(false);
+    }
+  };
+
   return (
     <CalendarContainer>
       <Calendar
@@ -54,7 +67,8 @@ export const CalendarInput: FC<CalendarInputProps> = ({
         next2Label={isBellPresent ? icon : null}
         prev2Label={null}
         selectRange={isSelectRange}
-        onViewChange={() => {}}
+        onDrillDown={() => handleDrillDown}
+        onDrillUp={() => handleDrillUp}
         navigationLabel={({ label }) => (
           <>
             {icon}
