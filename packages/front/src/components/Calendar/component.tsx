@@ -8,9 +8,13 @@ import { CalendarContainer, IconWrapper } from './styles';
 
 interface CalendarInputProps {
   isBellPresent: boolean;
+  isSelectRange: boolean;
 }
 
-export const CalendarInput: FC<CalendarInputProps> = ({ isBellPresent }) => {
+export const CalendarInput: FC<CalendarInputProps> = ({
+  isBellPresent = true,
+  isSelectRange = false,
+}) => {
   const localLanguage = 'pl';
   const monthsNames = [
     'Styczeń',
@@ -49,7 +53,7 @@ export const CalendarInput: FC<CalendarInputProps> = ({ isBellPresent }) => {
         showWeekNumbers={true}
         next2Label={isBellPresent ? icon : null}
         prev2Label={null}
-        selectRange={false}
+        selectRange={isSelectRange}
         onViewChange={() => {}}
         navigationLabel={({ label }) => (
           <>

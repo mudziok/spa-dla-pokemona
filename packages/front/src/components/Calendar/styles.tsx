@@ -106,17 +106,32 @@ export const CalendarContainer = styled.div`
     &__tile {
       font-weight: 400;
 
+      &--hover {
+        background-color: #c6c6c6 !important;
+      }
+
+      &--hoverStart,
+      &--rangeStart,
+      &--hoverEnd,
+      &--rangeEnd {
+        background-color: #a3a3a3 !important;
+      }
+
       &--now {
-        background: white;
+        background-color: transparent;
       }
 
       &--active {
-        background: #c6c6c6;
+        background-color: #c6c6c6;
         /* outline: 1px solid #dfdfdf; */
         color: black;
 
+        &:hover {
+          background-color: #a3a3a3;
+        }
+
         &:focus {
-          background: #c6c6c6;
+          background-color: #c6c6c6;
         }
       }
     }

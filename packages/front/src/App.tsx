@@ -39,7 +39,9 @@ function App() {
             <Route path='/' element={<Login />} />
             <Route
               path='/calendar'
-              element={<CalendarInput isBellPresent={true} />}
+              element={
+                <CalendarInput isBellPresent={false} isSelectRange={true} />
+              }
             />
             <Route
               path='/pokemons'
