@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useState } from 'react';
 
 import 'react-calendar/dist/Calendar.css';
 import Calendar from 'react-calendar';

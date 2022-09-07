@@ -5,6 +5,8 @@ export const CalendarContainer = styled.div`
   position: relative;
   align-content: center;
   justify-content: center;
+  flex-wrap: wrap;
+  flex-direction: column;
 
   .react-calendar {
     background: #ffffff;
