@@ -10,7 +10,7 @@ import { AxiosProvider } from './context/axiosContext';
 import { ContextProvider } from './context/composeProviders';
 import { OnlineProvider } from './context/onlineContext';
 
-const theme: DefaultTheme = {
+export const theme: DefaultTheme = {
   colors: {
     main: 'lightblue',
     secondary: 'white',

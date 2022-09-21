@@ -4,7 +4,9 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { rest } from 'msw';
 import { setupServer } from 'msw/node';
+import { ThemeProvider } from 'styled-components';
 
+import { theme } from '../../App';
 import { AuthContext } from '../../context/authContext';
 import { AxiosContext } from '../../context/axiosContext';
 import { axiosPokeApi } from '../../utils/axiosPokeApi';
@@ -22,7 +24,9 @@ export const MockLogin = () => {
       <AxiosContext.Provider
         value={{ axiosPublic, axiosPokeApi, axiosPrivate }}
       >
-        <Login />
+        <ThemeProvider theme={theme}>
+          <Login />
+        </ThemeProvider>
       </AxiosContext.Provider>
     </AuthContext.Provider>
   );
