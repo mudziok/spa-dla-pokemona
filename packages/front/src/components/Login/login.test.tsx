@@ -153,6 +153,7 @@ describe('login test', () => {
     // const btn = await screen.findByRole('button');
 
     userEvent.click(await screen.findByRole('button'));
+    await new Promise(process.nextTick);
 
     await screen.findByText('Invalid identifier or password');
   });
@@ -171,6 +172,7 @@ describe('login test', () => {
 
     // userEvent.click(btn);
     userEvent.click(await screen.findByRole('button'));
+    await new Promise(process.nextTick);
 
     await screen.findByText('Invalid identifier or password');
   });
