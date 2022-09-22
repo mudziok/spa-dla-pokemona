@@ -14,6 +14,12 @@ import { axiosPrivate } from '../../utils/axiosPrivate';
 import { axiosPublic } from '../../utils/axiosPublic';
 import { Login } from './component';
 
+const mockFunction = jest.fn();
+
+jest.mock('react-router', () => ({
+  useNavigate: () => mockFunction,
+}));
+
 const mockUser = { identifier: 'przemek@gmail.com', password: '123456' };
 
 export const MockLogin = () => {
@@ -67,12 +73,6 @@ export const server = setupServer(
     }
   })
 );
-
-const mockFunction = jest.fn();
-
-jest.mock('react-router', () => ({
-  useNavigate: () => mockFunction,
-}));
 
 beforeAll(() => server.listen());
 

@@ -29,6 +29,7 @@ export const Login = () => {
         navigate('/pokemons');
       })
       .catch((error) => {
+        console.log(error.response.data);
         setError(error.response.data.error.message);
       });
   };
