@@ -13,7 +13,7 @@ import {
   mockedFunction,
 } from '../MockTest/mock';
 
-beforeAll(() => serverPokemons.listen());
+beforeAll(() => serverPokemons.listen({ onUnhandledRequest: 'bypass' }));
 
 afterEach(() => {
   serverPokemons.resetHandlers();
