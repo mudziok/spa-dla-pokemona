@@ -15,5 +15,8 @@
     "eslint-plugin-import": "^2.26.0",
     "lerna": "^5.4.3",
     "prettier": "^2.7.1"
+  },
+  "dependencies": {
+    "tough-cookie": "^4.1.2"
   }
 }
