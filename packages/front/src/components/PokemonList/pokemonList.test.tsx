@@ -113,24 +113,24 @@ describe('pokemon list', () => {
     expect(listElement).toHaveLength(3);
   });
 
-  test('if is 0 pokemons from API, the list should not appears', async () => {
-    serverPokemons.use(
-      rest.get('http://localhost:1337/api/pokemons', (req, res, ctx) => {
-        return res(
-          ctx.json({
-            jwt: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjYxNTA2ODQwLCJleHAiOjE2NjQwOTg4NDB9.Ki6dcrhXYJa7_HVk8MzCtzaqse710IpGWcNnwNvQ390',
-            data: [],
-          })
-        );
-      })
-    );
+  // test('if is 0 pokemons from API, the list should not appears', async () => {
+  //   serverPokemons.use(
+  //     rest.get('http://localhost:1337/api/pokemons', (req, res, ctx) => {
+  //       return res(
+  //         ctx.json({
+  //           jwt: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjYxNTA2ODQwLCJleHAiOjE2NjQwOTg4NDB9.Ki6dcrhXYJa7_HVk8MzCtzaqse710IpGWcNnwNvQ390',
+  //           data: [],
+  //         })
+  //       );
+  //     })
+  //   );
 
-    render(<MockPokemonList />);
+  //   render(<MockPokemonList />);
 
-    await waitFor(() =>
-      expect(screen.queryAllByRole('listitem')).toHaveLength(0)
-    );
-  });
+  //   await waitFor(() =>
+  //     expect(screen.queryAllByRole('listitem')).toHaveLength(0)
+  //   );
+  // });
 
   test('click on pokemon, pokemon should be deleted', async () => {
     render(<MockPokemonList />);
