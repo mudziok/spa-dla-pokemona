@@ -17,6 +17,7 @@
     "prettier": "^2.7.1"
   },
   "dependencies": {
+    "msw": "^0.47.3",
     "tough-cookie": "^4.1.2"
   }
 }
