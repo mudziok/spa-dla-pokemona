@@ -39,7 +39,7 @@ export const MockLogin = () => {
 };
 
 export const server = setupServer(
-  rest.post('http://localhost:1337/api/auth/local', async (req, res, ctx) => {
+  rest.post('/api/auth/local', async (req, res, ctx) => {
     const data = await req.json();
 
     if (
