@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { rest } from 'msw';
 import { setupServer } from 'msw/node';
@@ -154,7 +154,7 @@ describe('login test', () => {
 
     userEvent.click(btn);
 
-    await screen.findByText('Invalid identifier or password');
+    await waitFor(() => screen.findByText('Invalid identifier or password'));
 
     expect(
       screen.getByText('Invalid identifier or password')
@@ -175,7 +175,7 @@ describe('login test', () => {
 
     userEvent.click(btn);
 
-    await screen.findByText('Invalid identifier or password');
+    await waitFor(() => screen.findByText('Invalid identifier or password'));
 
     expect(
       screen.getByText('Invalid identifier or password')
