@@ -131,9 +131,9 @@ describe('login test', () => {
     ) as HTMLInputElement;
     userEvent.type(inputPassword, '123456');
 
-    const btn = await screen.findByRole('button');
+    // const btn = await screen.findByRole('button');
 
-    userEvent.click(btn);
+    userEvent.click(await screen.findByRole('button'));
 
     await new Promise(process.nextTick);
 
@@ -154,7 +154,7 @@ describe('login test', () => {
 
     userEvent.click(await screen.findByRole('button'));
 
-    await waitFor(() => screen.findByText('Invalid identifier or password'));
+    await screen.findByText('Invalid identifier or password');
 
     await screen.findByText('Invalid identifier or password');
   });
@@ -174,7 +174,7 @@ describe('login test', () => {
     // userEvent.click(btn);
     userEvent.click(await screen.findByRole('button'));
 
-    await waitFor(() => screen.findByText('Invalid identifier or password'));
+    await screen.findByText('Invalid identifier or password');
     await screen.findByText('Invalid identifier or password');
   });
 });
