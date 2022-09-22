@@ -137,7 +137,7 @@ describe('login test', () => {
 
     await new Promise(process.nextTick);
 
-    await waitFor(() => expect(mockFunction).toBeCalled());
+    expect(mockFunction).toBeCalled();
   });
 
   test('show error after entered wrong user mail', async () => {
@@ -153,8 +153,6 @@ describe('login test', () => {
     // const btn = await screen.findByRole('button');
 
     userEvent.click(await screen.findByRole('button'));
-
-    await screen.findByText('Invalid identifier or password');
 
     await screen.findByText('Invalid identifier or password');
   });
@@ -174,7 +172,6 @@ describe('login test', () => {
     // userEvent.click(btn);
     userEvent.click(await screen.findByRole('button'));
 
-    await screen.findByText('Invalid identifier or password');
     await screen.findByText('Invalid identifier or password');
   });
 });
