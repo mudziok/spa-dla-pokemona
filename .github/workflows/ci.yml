@@ -3,6 +3,11 @@
 
 name: pokemons CI
 
+defaults:
+  run:
+    shell: bash,
+    working-directory: packages/front
+
 on:
   push:
     branches: ['main']
@@ -10,7 +15,7 @@ on:
     branches: ['main']
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
 
     strategy:
@@ -25,19 +30,6 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
-          cache: 'npm'
 
-      - name: install dependecies
-        uses: borales/actions-yarn@v3.0.0
-        with:
-          cmd: install # will run `yarn install` command
-
-      - name: build an apllication
-        uses: borales/actions-yarn@v3.0.0
-        with:
-          cmd: build # will run `yarn build` command
-
-      - name: run tests
-        uses: borales/actions-yarn@v3.0.0
-        with:
-          cmd: test-front # will run `yarn test` command
+      - run: yarn install --frozen-lockfile
+      - run: yarn test --watch=false
