@@ -137,7 +137,7 @@ describe('login test', () => {
 
     await new Promise(process.nextTick);
 
-    expect(mockFunction).toBeCalled();
+    await waitFor(() => expect(mockFunction).toBeCalled());
   });
 
   test('show error after entered wrong user mail', async () => {
