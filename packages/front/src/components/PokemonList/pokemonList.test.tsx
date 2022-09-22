@@ -18,6 +18,7 @@ import { axiosPokeApi } from '../../utils/axiosPokeApi';
 import { axiosPrivate } from '../../utils/axiosPrivate';
 import { axiosPublic } from '../../utils/axiosPublic';
 import { PokemonList } from '../PokemonList/component';
+import '@testing-library/jest-dom/extend-expect';
 
 export const pokemons = [
   {
@@ -82,7 +83,7 @@ export const serverPokemons = setupServer(
   })
 );
 
-beforeAll(() => serverPokemons.listen({ onUnhandledRequest: 'bypass' }));
+beforeAll(() => serverPokemons.listen({ onUnhandledRequest: 'warn' }));
 
 afterEach(() => {
   serverPokemons.resetHandlers();
