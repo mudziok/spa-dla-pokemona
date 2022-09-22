@@ -156,9 +156,7 @@ describe('login test', () => {
 
     await waitFor(() => screen.findByText('Invalid identifier or password'));
 
-    expect(
-      screen.getByText('Invalid identifier or password')
-    ).toBeInTheDocument();
+    await screen.findByText('Invalid identifier or password');
   });
 
   test('show error after entered wrong password', async () => {
@@ -176,9 +174,6 @@ describe('login test', () => {
     userEvent.click(btn);
 
     await waitFor(() => screen.findByText('Invalid identifier or password'));
-
-    expect(
-      screen.getByText('Invalid identifier or password')
-    ).toBeInTheDocument();
+    await screen.findByText('Invalid identifier or password');
   });
 });
