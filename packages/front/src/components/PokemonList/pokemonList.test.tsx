@@ -69,7 +69,7 @@ jest.mock('react-router', () => ({
 }));
 
 export const serverPokemons = setupServer(
-  rest.get('http://localhost:1337/api/pokemons', (req, res, ctx) => {
+  rest.get('/api/pokemons', (req, res, ctx) => {
     return res(
       ctx.json({
         jwt: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjYxNTA2ODQwLCJleHAiOjE2NjQwOTg4NDB9.Ki6dcrhXYJa7_HVk8MzCtzaqse710IpGWcNnwNvQ390',
@@ -77,7 +77,7 @@ export const serverPokemons = setupServer(
       })
     );
   }),
-  rest.delete('http://localhost:1337/api/pokemons/2', (req, res, ctx) => {
+  rest.delete('/api/pokemons/2', (req, res, ctx) => {
     pokemonsRender = pokemons;
     return res(ctx.status(200), ctx.json({}));
   })
