@@ -5,7 +5,7 @@ name: pokemons CI
 
 defaults:
   run:
-    shell: bash,
+    shell: bash
     working-directory: packages/front
 
 on:
