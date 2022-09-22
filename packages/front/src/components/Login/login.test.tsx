@@ -62,7 +62,7 @@ export const server = setupServer(
             id: 1,
             username: 'Przemek',
             email: 'przemek@gmail.com',
-            provider: 'local',
+            // provider: 'local',
             confirmed: true,
             blocked: false,
             createdAt: '2022-08-24T08:51:05.616Z',
