@@ -68,8 +68,10 @@ jest.mock('react-router', () => ({
   useNavigate: () => mockedFunction,
 }));
 
+const URL = 'http://localhost:1337/api/pokemons';
+
 export const serverPokemons = setupServer(
-  rest.get(AxiosPrivateRoutes.POKEMONS, (req, res, ctx) => {
+  rest.get(URL, (req, res, ctx) => {
     return res(
       ctx.json({
         jwt: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjYxNTA2ODQwLCJleHAiOjE2NjQwOTg4NDB9.Ki6dcrhXYJa7_HVk8MzCtzaqse710IpGWcNnwNvQ390',
@@ -77,7 +79,7 @@ export const serverPokemons = setupServer(
       })
     );
   }),
-  rest.delete(AxiosPrivateRoutes.POKEMONS + `/2`, (req, res, ctx) => {
+  rest.delete(URL + `/2`, (req, res, ctx) => {
     pokemonsRender = pokemons;
     return res(ctx.status(200), ctx.json({}));
   })
@@ -110,12 +112,12 @@ describe('pokemon list', () => {
     render(<MockPokemonList />);
 
     const listElement = await screen.findAllByRole('listitem');
-    expect(listElement).toHaveLength(3);
+    await waitFor(() => expect(listElement).toHaveLength(3));
   });
 
   test('if is 0 pokemons from API, the list should not appears', async () => {
     serverPokemons.use(
-      rest.get(AxiosPrivateRoutes.POKEMONS, (req, res, ctx) => {
+      rest.get(URL, (req, res, ctx) => {
         return res(
           ctx.json({
             jwt: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjYxNTA2ODQwLCJleHAiOjE2NjQwOTg4NDB9.Ki6dcrhXYJa7_HVk8MzCtzaqse710IpGWcNnwNvQ390',
