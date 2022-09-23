@@ -6,14 +6,83 @@ import {
   waitForElementToBeRemoved,
 } from '@testing-library/react';
 import { rest } from 'msw';
+import { setupServer } from 'msw/lib/node';
+import { ThemeProvider } from 'styled-components';
 
-import {
-  MockPokemonList,
-  serverPokemons,
-  mockedFunction,
-} from '../MockTest/mock';
+import { theme } from '../../App';
+import { AuthProvider } from '../../context/authContext';
+import { AxiosProvider } from '../../context/axiosContext';
+import { composeProviders } from '../../context/composeProviders';
+import { OnlineProvider } from '../../context/onlineContext';
+import { PokemonList } from '../PokemonList/component';
+import '@testing-library/jest-dom/extend-expect';
 
-beforeAll(() => serverPokemons.listen());
+export const pokemons = [
+  {
+    id: 1,
+    name: 'Eevee',
+    pokedexNumber: 1,
+    coughtAt: '2022-10-10T08:10:00.000Z',
+  },
+  {
+    id: 3,
+    name: 'Diglet',
+    pokedexNumber: 3,
+    coughtAt: '2022-10-10T08:10:00.000Z',
+  },
+];
+
+export let pokemonsRender = [
+  ...pokemons,
+  {
+    id: 2,
+    name: 'bulbasaur',
+    pokedexNumber: 2,
+    coughtAt: '2022-10-10T08:10:00.000Z',
+  },
+];
+
+const ComposedProviders = composeProviders([
+  AuthProvider,
+  AxiosProvider,
+  OnlineProvider,
+]);
+
+export const MockPokemonList = () => {
+  return (
+    <ThemeProvider theme={theme}>
+      <ComposedProviders>
+        <PokemonList />
+      </ComposedProviders>
+    </ThemeProvider>
+  );
+};
+
+export const mockedFunction = jest.fn();
+
+jest.mock('react-router', () => ({
+  ...(jest.requireActual('react-router') as any),
+  useNavigate: () => mockedFunction,
+}));
+
+const URL = 'http://localhost:1337/api/pokemons';
+
+export const serverPokemons = setupServer(
+  rest.get(URL, (req, res, ctx) => {
+    return res(
+      ctx.json({
+        jwt: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjYxNTA2ODQwLCJleHAiOjE2NjQwOTg4NDB9.Ki6dcrhXYJa7_HVk8MzCtzaqse710IpGWcNnwNvQ390',
+        data: pokemonsRender,
+      })
+    );
+  }),
+  rest.delete(URL + `/2`, (req, res, ctx) => {
+    pokemonsRender = pokemons;
+    return res(ctx.status(200), ctx.json({}));
+  })
+);
+
+beforeAll(() => serverPokemons.listen({ onUnhandledRequest: 'warn' }));
 
 afterEach(() => {
   serverPokemons.resetHandlers();
@@ -40,12 +109,13 @@ describe('pokemon list', () => {
     render(<MockPokemonList />);
 
     const listElement = await screen.findAllByRole('listitem');
-    expect(listElement).toHaveLength(3);
+
+    await waitFor(() => expect(listElement).toHaveLength(3));
   });
 
   test('if is 0 pokemons from API, the list should not appears', async () => {
     serverPokemons.use(
-      rest.get('http://localhost:1337/api/pokemons', (req, res, ctx) => {
+      rest.get(URL, (req, res, ctx) => {
         return res(
           ctx.json({
             jwt: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjYxNTA2ODQwLCJleHAiOjE2NjQwOTg4NDB9.Ki6dcrhXYJa7_HVk8MzCtzaqse710IpGWcNnwNvQ390',

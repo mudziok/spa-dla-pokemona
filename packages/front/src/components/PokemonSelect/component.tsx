@@ -18,7 +18,7 @@ export const PokemonSelect: FC<PokemonSelectProps> = ({
   onSelected = () => {},
 }) => {
   return (
-    <PokemonList>
+    <PokemonList test-id='test-list-id'>
       {avaliablePokemons.map(({ id, name, pokedexNumber }) => (
         <PokemonItem
           selected={id === selectedId}

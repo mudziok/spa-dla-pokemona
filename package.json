@@ -6,7 +6,8 @@
   "scripts": {
     "build": "lerna run build",
     "dev": "lerna run --parallel dev",
-    "start": "lerna run --parallel start"
+    "start": "lerna run --parallel start",
+    "test-front": "(cd packages/front && yarn test)"
   },
   "devDependencies": {
     "eslint": "^8.22.0",
@@ -14,5 +15,9 @@
     "eslint-plugin-import": "^2.26.0",
     "lerna": "^5.4.3",
     "prettier": "^2.7.1"
+  },
+  "dependencies": {
+    "msw": "^0.47.3",
+    "tough-cookie": "^4.1.2"
   }
 }

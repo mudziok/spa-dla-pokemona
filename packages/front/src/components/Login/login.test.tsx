@@ -1,35 +1,44 @@
-import { useState } from 'react';
-
 import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { rest } from 'msw';
 import { setupServer } from 'msw/node';
+import { ThemeProvider } from 'styled-components';
 
-import { AuthContext } from '../../context/authContext';
-import { AxiosContext } from '../../context/axiosContext';
-import { axiosPokeApi } from '../../utils/axiosPokeApi';
-import { axiosPrivate } from '../../utils/axiosPrivate';
-import { axiosPublic } from '../../utils/axiosPublic';
+import { theme } from '../../App';
+import { AuthProvider } from '../../context/authContext';
+import { AxiosProvider } from '../../context/axiosContext';
+import { composeProviders } from '../../context/composeProviders';
+import { OnlineProvider } from '../../context/onlineContext';
 import { Login } from './component';
+
+const mockFunction = jest.fn();
+
+jest.mock('react-router', () => ({
+  useNavigate: () => mockFunction,
+}));
 
 const mockUser = { identifier: 'przemek@gmail.com', password: '123456' };
 
+const ComposedProviders = composeProviders([
+  AuthProvider,
+  AxiosProvider,
+  OnlineProvider,
+]);
+
 export const MockLogin = () => {
-  const [token, setToken] = useState('');
-  const value = { token, setToken };
   return (
-    <AuthContext.Provider value={value}>
-      <AxiosContext.Provider
-        value={{ axiosPublic, axiosPokeApi, axiosPrivate }}
-      >
+    <ThemeProvider theme={theme}>
+      <ComposedProviders>
         <Login />
-      </AxiosContext.Provider>
-    </AuthContext.Provider>
+      </ComposedProviders>
+    </ThemeProvider>
   );
 };
 
+const URL = 'http://localhost:1337/api/auth/local';
+
 export const server = setupServer(
-  rest.post('http://localhost:1337/api/auth/local', async (req, res, ctx) => {
+  rest.post(URL, async (req, res, ctx) => {
     const data = await req.json();
 
     if (
@@ -58,19 +67,14 @@ export const server = setupServer(
             createdAt: '2022-08-24T08:51:05.616Z',
             updatedAt: '2022-08-24T12:11:11.364Z',
           },
-        })
+        }),
+        ctx.cookie('auth-token', 'abc-123')
       );
     }
   })
 );
 
-const mockFunction = jest.fn();
-
-jest.mock('react-router', () => ({
-  useNavigate: () => mockFunction,
-}));
-
-beforeAll(() => server.listen());
+beforeAll(() => server.listen({ onUnhandledRequest: 'bypass' }));
 
 afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
@@ -127,9 +131,7 @@ describe('login test', () => {
     ) as HTMLInputElement;
     userEvent.type(inputPassword, '123456');
 
-    const btn = await screen.findByRole('button');
-
-    userEvent.click(btn);
+    userEvent.click(await screen.findByRole('button'));
 
     await new Promise(process.nextTick);
 
@@ -146,15 +148,10 @@ describe('login test', () => {
     ) as HTMLInputElement;
     userEvent.type(inputPassword, '123456');
 
-    const btn = await screen.findByRole('button');
-
-    userEvent.click(btn);
+    userEvent.click(await screen.findByRole('button'));
+    await new Promise(process.nextTick);
 
     await screen.findByText('Invalid identifier or password');
-
-    expect(
-      screen.getByText('Invalid identifier or password')
-    ).toBeInTheDocument();
   });
 
   test('show error after entered wrong password', async () => {
@@ -167,14 +164,9 @@ describe('login test', () => {
     ) as HTMLInputElement;
     userEvent.type(inputPassword, '12345678');
 
-    const btn = await screen.findByRole('button');
-
-    userEvent.click(btn);
+    userEvent.click(await screen.findByRole('button'));
+    await new Promise(process.nextTick);
 
     await screen.findByText('Invalid identifier or password');
-
-    expect(
-      screen.getByText('Invalid identifier or password')
-    ).toBeInTheDocument();
   });
 });

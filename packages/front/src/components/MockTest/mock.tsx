@@ -2,7 +2,9 @@ import { useState } from 'react';
 
 import { rest } from 'msw';
 import { setupServer } from 'msw/lib/node';
+import { ThemeProvider } from 'styled-components';
 
+import { theme } from '../../App';
 import { AuthContext } from '../../context/authContext';
 import { AxiosContext } from '../../context/axiosContext';
 import { axiosPokeApi } from '../../utils/axiosPokeApi';
@@ -43,7 +45,9 @@ export const MockPokemonList = () => {
       <AxiosContext.Provider
         value={{ axiosPublic, axiosPokeApi, axiosPrivate }}
       >
-        <PokemonList />
+        <ThemeProvider theme={theme}>
+          <PokemonList />
+        </ThemeProvider>
       </AxiosContext.Provider>
     </AuthContext.Provider>
   );
