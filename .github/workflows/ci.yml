@@ -14,6 +14,10 @@ on:
   pull_request:
     branches: ['main']
 
+env:
+  REACT_APP_API_BASE: 'http://localhost:1337/api'
+  REACT_APP_POKEMON_API_BASE: 'https://pokeapi.co/api/v2'
+
 jobs:
   test:
     runs-on: ubuntu-latest

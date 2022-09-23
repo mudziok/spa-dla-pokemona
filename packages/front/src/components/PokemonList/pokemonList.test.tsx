@@ -84,7 +84,6 @@ jest.mock('react-router', () => ({
 }));
 
 const URL = 'http://localhost:1337/api/pokemons';
-const client = axios.create();
 
 export const serverPokemons = setupServer(
   rest.get(URL, (req, res, ctx) => {
@@ -128,6 +127,7 @@ describe('pokemon list', () => {
     render(<MockPokemonList />);
 
     const listElement = await screen.findAllByRole('listitem');
+
     await waitFor(() => expect(listElement).toHaveLength(3));
   });
 
