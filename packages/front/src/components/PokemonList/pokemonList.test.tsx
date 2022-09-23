@@ -15,7 +15,7 @@ import { theme } from '../../App';
 import { AuthContext } from '../../context/authContext';
 import { AxiosContext } from '../../context/axiosContext';
 import { axiosPokeApi } from '../../utils/axiosPokeApi';
-import { axiosPrivate } from '../../utils/axiosPrivate';
+import { axiosPrivate, AxiosPrivateRoutes } from '../../utils/axiosPrivate';
 import { axiosPublic } from '../../utils/axiosPublic';
 import { PokemonList } from '../PokemonList/component';
 import '@testing-library/jest-dom/extend-expect';
@@ -69,7 +69,7 @@ jest.mock('react-router', () => ({
 }));
 
 export const serverPokemons = setupServer(
-  rest.get('/api/pokemons', (req, res, ctx) => {
+  rest.get(AxiosPrivateRoutes.POKEMONS, (req, res, ctx) => {
     return res(
       ctx.json({
         jwt: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjYxNTA2ODQwLCJleHAiOjE2NjQwOTg4NDB9.Ki6dcrhXYJa7_HVk8MzCtzaqse710IpGWcNnwNvQ390',
@@ -77,7 +77,7 @@ export const serverPokemons = setupServer(
       })
     );
   }),
-  rest.delete('/api/pokemons/2', (req, res, ctx) => {
+  rest.delete(AxiosPrivateRoutes.POKEMONS + `/2`, (req, res, ctx) => {
     pokemonsRender = pokemons;
     return res(ctx.status(200), ctx.json({}));
   })
