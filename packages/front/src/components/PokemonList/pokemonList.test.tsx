@@ -7,13 +7,16 @@ import {
   waitFor,
   waitForElementToBeRemoved,
 } from '@testing-library/react';
+import axios from 'axios';
 import { rest } from 'msw';
 import { setupServer } from 'msw/lib/node';
 import { ThemeProvider } from 'styled-components';
 
 import { theme } from '../../App';
-import { AuthContext } from '../../context/authContext';
-import { AxiosContext } from '../../context/axiosContext';
+import { AuthContext, AuthProvider } from '../../context/authContext';
+import { AxiosContext, AxiosProvider } from '../../context/axiosContext';
+import { composeProviders } from '../../context/composeProviders';
+import { OnlineProvider } from '../../context/onlineContext';
 import { axiosPokeApi } from '../../utils/axiosPokeApi';
 import { axiosPrivate, AxiosPrivateRoutes } from '../../utils/axiosPrivate';
 import { axiosPublic } from '../../utils/axiosPublic';
@@ -45,19 +48,31 @@ export let pokemonsRender = [
   },
 ];
 
+const ComposedProviders = composeProviders([
+  AuthProvider,
+  AxiosProvider,
+  OnlineProvider,
+]);
+
 export const MockPokemonList = () => {
   const [token, setToken] = useState('');
   const value = { token, setToken };
   return (
-    <AuthContext.Provider value={value}>
-      <AxiosContext.Provider
-        value={{ axiosPublic, axiosPokeApi, axiosPrivate }}
-      >
-        <ThemeProvider theme={theme}>
-          <PokemonList />
-        </ThemeProvider>
-      </AxiosContext.Provider>
-    </AuthContext.Provider>
+    <ThemeProvider theme={theme}>
+      <ComposedProviders>
+        <PokemonList />
+      </ComposedProviders>
+    </ThemeProvider>
+
+    // <AuthContext.Provider value={value}>
+    //   <AxiosContext.Provider
+    //     value={{ axiosPublic, axiosPokeApi, axiosPrivate }}
+    //   >
+    //     <ThemeProvider theme={theme}>
+    //       <PokemonList />
+    //     </ThemeProvider>
+    //   </AxiosContext.Provider>
+    // </AuthContext.Provider>
   );
 };
 
@@ -69,6 +84,7 @@ jest.mock('react-router', () => ({
 }));
 
 const URL = 'http://localhost:1337/api/pokemons';
+const client = axios.create();
 
 export const serverPokemons = setupServer(
   rest.get(URL, (req, res, ctx) => {
