@@ -1,5 +1,3 @@
-import { useState } from 'react';
-
 import {
   fireEvent,
   render,
@@ -7,19 +5,15 @@ import {
   waitFor,
   waitForElementToBeRemoved,
 } from '@testing-library/react';
-import axios from 'axios';
 import { rest } from 'msw';
 import { setupServer } from 'msw/lib/node';
 import { ThemeProvider } from 'styled-components';
 
 import { theme } from '../../App';
-import { AuthContext, AuthProvider } from '../../context/authContext';
-import { AxiosContext, AxiosProvider } from '../../context/axiosContext';
+import { AuthProvider } from '../../context/authContext';
+import { AxiosProvider } from '../../context/axiosContext';
 import { composeProviders } from '../../context/composeProviders';
 import { OnlineProvider } from '../../context/onlineContext';
-import { axiosPokeApi } from '../../utils/axiosPokeApi';
-import { axiosPrivate, AxiosPrivateRoutes } from '../../utils/axiosPrivate';
-import { axiosPublic } from '../../utils/axiosPublic';
 import { PokemonList } from '../PokemonList/component';
 import '@testing-library/jest-dom/extend-expect';
 
@@ -55,24 +49,12 @@ const ComposedProviders = composeProviders([
 ]);
 
 export const MockPokemonList = () => {
-  const [token, setToken] = useState('');
-  const value = { token, setToken };
   return (
     <ThemeProvider theme={theme}>
       <ComposedProviders>
         <PokemonList />
       </ComposedProviders>
     </ThemeProvider>
-
-    // <AuthContext.Provider value={value}>
-    //   <AxiosContext.Provider
-    //     value={{ axiosPublic, axiosPokeApi, axiosPrivate }}
-    //   >
-    //     <ThemeProvider theme={theme}>
-    //       <PokemonList />
-    //     </ThemeProvider>
-    //   </AxiosContext.Provider>
-    // </AuthContext.Provider>
   );
 };
 

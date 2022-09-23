@@ -1,5 +1,3 @@
-import { useState } from 'react';
-
 import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { rest } from 'msw';
@@ -7,11 +5,10 @@ import { setupServer } from 'msw/node';
 import { ThemeProvider } from 'styled-components';
 
 import { theme } from '../../App';
-import { AuthContext } from '../../context/authContext';
-import { AxiosContext } from '../../context/axiosContext';
-import { axiosPokeApi } from '../../utils/axiosPokeApi';
-import { axiosPrivate } from '../../utils/axiosPrivate';
-import { axiosPublic } from '../../utils/axiosPublic';
+import { AuthProvider } from '../../context/authContext';
+import { AxiosProvider } from '../../context/axiosContext';
+import { composeProviders } from '../../context/composeProviders';
+import { OnlineProvider } from '../../context/onlineContext';
 import { Login } from './component';
 
 const mockFunction = jest.fn();
@@ -22,24 +19,26 @@ jest.mock('react-router', () => ({
 
 const mockUser = { identifier: 'przemek@gmail.com', password: '123456' };
 
+const ComposedProviders = composeProviders([
+  AuthProvider,
+  AxiosProvider,
+  OnlineProvider,
+]);
+
 export const MockLogin = () => {
-  const [token, setToken] = useState('');
-  const value = { token, setToken };
   return (
-    <AuthContext.Provider value={value}>
-      <AxiosContext.Provider
-        value={{ axiosPublic, axiosPokeApi, axiosPrivate }}
-      >
-        <ThemeProvider theme={theme}>
-          <Login />
-        </ThemeProvider>
-      </AxiosContext.Provider>
-    </AuthContext.Provider>
+    <ThemeProvider theme={theme}>
+      <ComposedProviders>
+        <Login />
+      </ComposedProviders>
+    </ThemeProvider>
   );
 };
 
+const URL = 'http://localhost:1337/api/auth/local';
+
 export const server = setupServer(
-  rest.post('http://localhost:1337/api/auth/local', async (req, res, ctx) => {
+  rest.post(URL, async (req, res, ctx) => {
     const data = await req.json();
 
     if (
