@@ -67,10 +67,25 @@ export const CatchPokemon = () => {
       <Split
         sidebar={
           <Stack>
-            <input placeholder='name' value={name} onChange={handleNickname} />
-            <input type='date' value={date} onChange={handleDate} />
-            <input type='time' value={time} onChange={handleTime} />
-            <button>Złap pokemona</button>
+            <input
+              placeholder='name'
+              value={name}
+              onChange={handleNickname}
+              data-test-id='pokemon-name'
+            />
+            <input
+              type='date'
+              value={date}
+              onChange={handleDate}
+              data-test-id='pokemon-date'
+            />
+            <input
+              type='time'
+              value={time}
+              onChange={handleTime}
+              data-test-id='pokemon-time'
+            />
+            <button data-test-id='catch-pokemon-button'>Złap pokemona</button>
           </Stack>
         }
         main={

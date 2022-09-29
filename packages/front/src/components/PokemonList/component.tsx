@@ -42,7 +42,12 @@ export const PokemonList: FC = () => {
       }
       sidebar={
         <Stack>
-          <button onClick={() => navigate('/catch')}>Złap pokemona</button>
+          <button
+            onClick={() => navigate('/catch')}
+            data-test-id='catch-button'
+          >
+            Złap pokemona
+          </button>
         </Stack>
       }
     />
