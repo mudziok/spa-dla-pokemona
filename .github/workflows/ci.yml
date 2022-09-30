@@ -47,3 +47,4 @@ jobs:
         with:
           build: yarn dev
           start: yarn test--cypress
+          record: true
