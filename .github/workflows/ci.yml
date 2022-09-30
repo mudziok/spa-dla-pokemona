@@ -49,3 +49,5 @@ jobs:
         with:
           build: yarn dev
           start: yarn test-cypress --watch=false
+          working-directory: e2e
+          browser: chrome
