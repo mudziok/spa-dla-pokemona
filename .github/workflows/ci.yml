@@ -43,8 +43,9 @@ jobs:
       - run: yarn test --watch=false
 
       - name: 'e2e tests'
-        uses: cypress-io/github-action@v4.x.x
+        uses: cypress-io/github-action@v4
         with:
+          build: yarn build
           start: yarn test--cypress
           wait-on: 'http://localhost:3000'
           wait-on-timeout: 120
