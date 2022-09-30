@@ -47,4 +47,5 @@ jobs:
         with:
           build: yarn dev
           start: yarn test--cypress
+          browser: chrome
           record: true
