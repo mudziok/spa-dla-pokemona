@@ -49,4 +49,4 @@ jobs:
         with:
           build: yarn dev
           start: yarn test-cypress --watch=false
-          browser: chrome
+          headed: false
