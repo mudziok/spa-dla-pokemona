@@ -42,5 +42,14 @@ jobs:
       - run: yarn install --frozen-lockfile
       - run: yarn test --watch=false
 
-      - run: yarn dev
-      - run: yarn test-cypress --watch=false
+      - name: 'e2e tests'
+        uses: cypress-io/github-action@v4.x.x
+        with:
+          start: yarn test--cypress
+          wait-on: 'http://localhost:3000'
+          wait-on-timeout: 120
+          browser: chrome
+          record: true
+          parallel: true
+          group: 'UI - Chrome'
+          spec: packages/front/cypress/e2e/*
