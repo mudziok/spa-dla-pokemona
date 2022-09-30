@@ -21,6 +21,8 @@ env:
   PORT: 1337
   APP_KEYS: HNC+61o5qtC1z1pPlAp9mA==,FukCKk/d2gclW0m/xx7xuQ==,ZgVfi2Zv87/hjRGYZ5ueKA==,oa1opOkVHqpZ474vhXdkJQ==
   API_TOKEN_SALT: ghj6D+tYgorBZnFbV/85nA==
+  ADMIN_JWT_SECRET: 4/4S66HfE4jrKsNncFqLsA==
+  WT_SECRET: ydiAPMBDoVmOn/lRy9fLqw==
 
 jobs:
   test:
@@ -50,5 +52,3 @@ jobs:
           install: yarn install --frozen-lockfile
           build: yarn dev
           start: yarn test-cypress --watch=false
-          ADMIN_JWT_SECRET: 4/4S66HfE4jrKsNncFqLsA==
-          JWT_SECRET: ydiAPMBDoVmOn/lRy9fLqw==
