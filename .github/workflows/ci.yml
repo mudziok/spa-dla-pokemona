@@ -43,4 +43,5 @@ jobs:
       - name: Cypress run
         uses: cypress-io/github-action@v4
         with:
+          build: yarn start
           start: yarn test-cypress
