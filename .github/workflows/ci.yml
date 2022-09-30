@@ -50,3 +50,5 @@ jobs:
           install: yarn install --frozen-lockfile
           build: yarn dev
           start: yarn test-cypress --watch=false
+          ADMIN_JWT_SECRET: 4/4S66HfE4jrKsNncFqLsA==
+          JWT_SECRET: ydiAPMBDoVmOn/lRy9fLqw==
