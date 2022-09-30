@@ -17,6 +17,9 @@ on:
 env:
   REACT_APP_API_BASE: 'http://localhost:1337/api'
   REACT_APP_POKEMON_API_BASE: 'https://pokeapi.co/api/v2'
+  HOST: 0.0.0.0
+  PORT: 1337
+  APP_KEYS: HNC+61o5qtC1z1pPlAp9mA==,FukCKk/d2gclW0m/xx7xuQ==,ZgVfi2Zv87/hjRGYZ5ueKA==,oa1opOkVHqpZ474vhXdkJQ==
 
 jobs:
   test:
