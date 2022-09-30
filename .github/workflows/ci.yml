@@ -49,6 +49,5 @@ jobs:
       - name: Cypress run
         uses: cypress-io/github-action@v4
         with:
-          install: yarn install --frozen-lockfile
           build: yarn dev
           start: yarn test-cypress --watch=false
