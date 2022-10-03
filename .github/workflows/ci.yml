@@ -46,7 +46,7 @@ jobs:
         uses: cypress-io/github-action@v4
         with:
           start: yarn dev
-          project: packages/front
-          wait-on: https://localhost:3000
+          wait-on: http://localhost:3000
+          working-directory: packages/front
           browser: chrome
           record: true
