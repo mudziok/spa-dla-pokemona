@@ -1,8 +1,4 @@
 describe('login', () => {
-  beforeEach(() => {
-    cy.visit('http://localhost:3000');
-  });
-
   it('showing error after wrong user login', () => {
     cy.get('[data-test-id="login"]').type('remek@wp.pl1');
     cy.get('[data-test-id="password"]').type('1234');

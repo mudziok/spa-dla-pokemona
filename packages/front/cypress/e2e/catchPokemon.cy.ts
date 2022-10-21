@@ -1,6 +1,5 @@
 describe('catch pokemon', () => {
   beforeEach(() => {
-    cy.visit('http://localhost:3000/pokemons');
     cy.get('[data-test-id="login"]').type('remek@wp.pl');
     cy.get('[data-test-id="password"]').type('123456');
     cy.get('[data-test-id="login-button"]').click();
@@ -64,8 +63,5 @@ describe('catch pokemon', () => {
     //check if second pokemon is caught
     cy.url().should('contain', '/pokemons');
     cy.contains('Pika pika', { matchCase: false });
-
-    //check list of caught pokemons
-    cy.get('[data-test-id="test-list-id"] > li').should('have.length', 2);
   });
 });
