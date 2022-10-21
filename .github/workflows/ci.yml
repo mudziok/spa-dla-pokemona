@@ -47,5 +47,4 @@ jobs:
         with:
           start: yarn dev
           wait-on: http://localhost:1337, http://localhost:3000
-          working-directory: packages/front
           browser: chrome
