@@ -1,5 +1,6 @@
 describe('pokemon list', () => {
   beforeEach(() => {
+    cy.visit('http://localhost:3000');
     cy.get('[data-test-id="login"]').type('remek@wp.pl');
     cy.get('[data-test-id="password"]').type('123456');
     cy.get('[data-test-id="login-button"]').click();
