@@ -6,6 +6,7 @@ name: pokemons CI
 defaults:
   run:
     shell: bash
+    working-directory: packages
 
 on:
   push:
