@@ -1,8 +1,8 @@
 describe('pokemon list', () => {
   beforeEach(() => {
     cy.visit('http://localhost:3000');
-    cy.get('[data-test-id="login"]').type('remek@wp.pl');
-    cy.get('[data-test-id="password"]').type('123456');
+    cy.get('[data-test-id="login"]').type('werka@wp.pl');
+    cy.get('[data-test-id="password"]').type('Test1234');
     cy.get('[data-test-id="login-button"]').click();
     cy.url().should('contain', '/pokemons');
     cy.get('[data-test-id="catch-button"]').contains('Złap pokemona');
