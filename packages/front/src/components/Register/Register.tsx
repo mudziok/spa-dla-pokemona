@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 
 import { AuthContext } from '../../context/authContext';
 import { axiosPublic, AxiosPublicRoutes } from '../../utils/axiosPublic';
-import { FormWrapper, RegisterWrapper } from './Register.styles';
+import { ErrorWrapper, FormWrapper, RegisterWrapper } from './Register.styles';
 
 export const Register = () => {
   const [user, setUser] = useState('');
@@ -36,7 +36,8 @@ export const Register = () => {
         navigate('/');
       })
       .catch((error) => {
-        setError('ups, something go wrong');
+        console.log(error.response.data.error.message);
+        setError(error.response.data.error.message);
       });
   };
 
@@ -59,7 +60,9 @@ export const Register = () => {
             data-test-id='registration-password'
           ></input>
         </div>
-        {error && <p data-test-id='register-error'>{error}</p>}
+        {error && (
+          <ErrorWrapper data-test-id='register-error'>{error}</ErrorWrapper>
+        )}
         <button data-test-id='registration-button'>Register</button>
       </FormWrapper>
       <Link to='/'>

@@ -14,3 +14,12 @@ export const FormWrapper = styled.form`
   align-items: center;
   gap: 20px;
 `;
+
+export const ErrorWrapper = styled.form`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: wrap;
+  text-align: center;
+  color: red;
+`;

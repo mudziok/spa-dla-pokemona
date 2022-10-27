@@ -60,7 +60,9 @@ export const Login = () => {
           ></input>
           <button data-test-id='login-button'>Log in</button>
           {error && <p data-test-id='login-error'>{error}</p>}
-          <Link to='/register'>Create an account</Link>
+          <Link to='/register'>
+            <button>Create an account</button>
+          </Link>
         </Stack>
       }
     />
