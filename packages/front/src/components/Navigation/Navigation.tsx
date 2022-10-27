@@ -1,7 +1,5 @@
 import { useContext } from 'react';
 
-import { useNavigate } from 'react-router';
-
 import { AuthContext } from '../../context/authContext';
 import { UserContext } from '../../context/userContext';
 import { NavigationWrapper } from './Navigation.styles';
