@@ -1,5 +1,7 @@
-import React, { createContext, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 
+import { AxiosPrivateRoutes } from '../utils/axiosPrivate';
+import { AxiosContext } from './axiosContext';
 import { ContextProvider } from './composeProviders';
 
 interface AuthContextType {

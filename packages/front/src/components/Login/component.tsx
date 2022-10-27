@@ -1,6 +1,7 @@
 import { useState, MouseEvent, useContext, ChangeEvent } from 'react';
 
 import { useNavigate } from 'react-router';
+import { Link } from 'react-router-dom';
 
 import { AuthContext } from '../../context/authContext';
 import { AxiosContext } from '../../context/axiosContext';
@@ -59,6 +60,7 @@ export const Login = () => {
           ></input>
           <button data-test-id='login-button'>Log in</button>
           {error && <p data-test-id='login-error'>{error}</p>}
+          <Link to='/register'>Create an account</Link>
         </Stack>
       }
     />

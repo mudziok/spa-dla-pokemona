@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router';
 import { AxiosContext } from '../../context/axiosContext';
 import { Pokemon } from '../../types/pokemon';
 import { AxiosPrivateRoutes } from '../../utils/axiosPrivate';
+import { Navigation } from '../Navigation/Navigation';
 import { PokemonSelect } from '../PokemonSelect/component';
 import { Split } from '../Split/component';
 import { Stack } from '../Stack/component';
@@ -48,6 +49,7 @@ export const PokemonList: FC = () => {
           >
             Złap pokemona
           </button>
+          <Navigation />
         </Stack>
       }
     />
