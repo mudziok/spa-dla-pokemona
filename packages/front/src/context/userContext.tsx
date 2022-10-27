@@ -1,25 +1,34 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 
 import { AxiosPrivateRoutes } from '../utils/axiosPrivate';
+import { AuthContext } from './authContext';
 import { AxiosContext } from './axiosContext';
 import { ContextProvider } from './composeProviders';
 
+interface User {
+  id: number;
+  username: string;
+  email: string;
+  confirmed: boolean;
+}
+
 interface UserContextType {
-  user: any;
+  user: User | null;
 }
 
 export const UserContext = createContext<UserContextType>({ user: null });
 
 export const UserContextProvider: ContextProvider = ({ children }) => {
-  const [user, setUser] = useState();
+  const [user, setUser] = useState<User | null>(null);
   const { axiosPrivate } = useContext(AxiosContext);
+  const { token } = useContext(AuthContext);
 
   useEffect(() => {
     axiosPrivate.get(AxiosPrivateRoutes.USER).then((response) => {
       console.log('xd', response);
       setUser(response.data);
     });
-  }, [axiosPrivate, user]);
+  }, [axiosPrivate, token]);
 
   return (
     <UserContext.Provider value={{ user }}>{children}</UserContext.Provider>

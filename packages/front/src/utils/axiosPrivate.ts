@@ -5,7 +5,7 @@ const apiBase = process.env.REACT_APP_API_BASE;
 export enum AxiosPrivateRoutes {
   LOGIN = '/auth/local',
   POKEMONS = '/pokemons',
-  USER = '/users/count',
+  USER = '/users/me',
 }
 
 export const axiosPrivate = axios.create({

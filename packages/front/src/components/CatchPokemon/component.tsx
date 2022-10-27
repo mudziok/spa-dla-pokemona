@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router';
 import { AxiosContext } from '../../context/axiosContext';
 import { axiosPokeApi, AxiosPokeApiRoutes } from '../../utils/axiosPokeApi';
 import { AxiosPrivateRoutes } from '../../utils/axiosPrivate';
+import { Navigation } from '../Navigation/Navigation';
 import { PokemonBrief, PokemonSelect } from '../PokemonSelect/component';
 import { Split } from '../Split/component';
 import { Stack } from '../Stack/component';
@@ -63,39 +64,42 @@ export const CatchPokemon = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <Split
-        sidebar={
-          <Stack>
-            <input
-              placeholder='name'
-              value={name}
-              onChange={handleNickname}
-              data-test-id='pokemon-name'
+    <>
+      <Navigation />
+      <form onSubmit={handleSubmit}>
+        <Split
+          sidebar={
+            <Stack>
+              <input
+                placeholder='name'
+                value={name}
+                onChange={handleNickname}
+                data-test-id='pokemon-name'
+              />
+              <input
+                type='date'
+                value={date}
+                onChange={handleDate}
+                data-test-id='pokemon-date'
+              />
+              <input
+                type='time'
+                value={time}
+                onChange={handleTime}
+                data-test-id='pokemon-time'
+              />
+              <button data-test-id='catch-pokemon-button'>Złap pokemona</button>
+            </Stack>
+          }
+          main={
+            <PokemonSelect
+              avaliablePokemons={avaliablePokemons}
+              selectedId={pokedexNumber}
+              onSelected={(id) => setPokedexNumber(id)}
             />
-            <input
-              type='date'
-              value={date}
-              onChange={handleDate}
-              data-test-id='pokemon-date'
-            />
-            <input
-              type='time'
-              value={time}
-              onChange={handleTime}
-              data-test-id='pokemon-time'
-            />
-            <button data-test-id='catch-pokemon-button'>Złap pokemona</button>
-          </Stack>
-        }
-        main={
-          <PokemonSelect
-            avaliablePokemons={avaliablePokemons}
-            selectedId={pokedexNumber}
-            onSelected={(id) => setPokedexNumber(id)}
-          />
-        }
-      />
-    </form>
+          }
+        />
+      </form>
+    </>
   );
 };

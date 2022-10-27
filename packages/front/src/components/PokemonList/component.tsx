@@ -34,24 +34,26 @@ export const PokemonList: FC = () => {
   }, [watchAPI]);
 
   return (
-    <Split
-      main={
-        <PokemonSelect
-          avaliablePokemons={pokemons}
-          onSelected={(id) => handleDelete(id)}
-        />
-      }
-      sidebar={
-        <Stack>
-          <button
-            onClick={() => navigate('/catch')}
-            data-test-id='catch-button'
-          >
-            Złap pokemona
-          </button>
-          <Navigation />
-        </Stack>
-      }
-    />
+    <>
+      <Navigation />
+      <Split
+        main={
+          <PokemonSelect
+            avaliablePokemons={pokemons}
+            onSelected={(id) => handleDelete(id)}
+          />
+        }
+        sidebar={
+          <Stack>
+            <button
+              onClick={() => navigate('/catch')}
+              data-test-id='catch-button'
+            >
+              Złap pokemona
+            </button>
+          </Stack>
+        }
+      />
+    </>
   );
 };
