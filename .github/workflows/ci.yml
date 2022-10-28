@@ -42,7 +42,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
 
       - run: yarn install --frozen-lockfile
-      - run: yarn test --watch=false
+      - run: yarn test -o --watch=false
 
       - name: 'e2e tests'
         uses: cypress-io/github-action@v4
