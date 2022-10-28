@@ -1,7 +1,6 @@
 import { useState, MouseEvent, useContext, ChangeEvent } from 'react';
 
 import { useNavigate } from 'react-router';
-import { Link } from 'react-router-dom';
 
 import { AuthContext } from '../../context/authContext';
 import { AxiosContext } from '../../context/axiosContext';
@@ -58,8 +57,14 @@ export const Login = () => {
             onChange={handlePassword}
             data-test-id='password'
           ></input>
-          <button data-testid='login-button'>Log in</button>
-          {error && <p data-testid='login-error'>{error}</p>}
+          <button data-testid='login-button' data-test-id='login-button'>
+            Log in
+          </button>
+          {error && (
+            <p data-testid='login-error' data-test-id='login-error'>
+              {error}
+            </p>
+          )}
           <button onClick={() => navigate('/register')}>
             Create an account
           </button>

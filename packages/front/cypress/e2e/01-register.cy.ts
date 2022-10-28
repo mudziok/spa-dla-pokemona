@@ -1,6 +1,6 @@
 describe('register', () => {
   beforeEach(() => {
-    cy.visit('http://localhost:3000');
+    cy.visit('http://localhost:3000/register');
   });
 
   it('showing error when email is wrong', () => {
