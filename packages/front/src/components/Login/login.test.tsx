@@ -1,20 +1,33 @@
+import { useState } from 'react';
+
 import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { rest } from 'msw';
 import { setupServer } from 'msw/node';
+import { Route, Routes } from 'react-router';
+import { BrowserRouter } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
 
 import { theme } from '../../App';
-import { AuthProvider } from '../../context/authContext';
-import { AxiosProvider } from '../../context/axiosContext';
+import { AuthContext, AuthProvider } from '../../context/authContext';
+import { AxiosContext, AxiosProvider } from '../../context/axiosContext';
 import { composeProviders } from '../../context/composeProviders';
 import { OnlineProvider } from '../../context/onlineContext';
+import {
+  User,
+  UserContext,
+  UserContextProvider,
+} from '../../context/userContext';
+import { axiosPokeApi } from '../../utils/axiosPokeApi';
+import { axiosPrivate } from '../../utils/axiosPrivate';
+import { axiosPublic } from '../../utils/axiosPublic';
 import { Login } from './component';
 
-const mockFunction = jest.fn();
+export const mockedFunction = jest.fn();
 
 jest.mock('react-router', () => ({
-  useNavigate: () => mockFunction,
+  ...(jest.requireActual('react-router') as any),
+  useNavigate: () => mockedFunction,
 }));
 
 const mockUser = { identifier: 'przemek@gmail.com', password: '123456' };
@@ -23,15 +36,31 @@ const ComposedProviders = composeProviders([
   AuthProvider,
   AxiosProvider,
   OnlineProvider,
+  UserContextProvider,
 ]);
 
 export const MockLogin = () => {
+  const [token, setToken] = useState('');
+  const value = { token, setToken };
+  const [user, setUser] = useState<User | null>(null);
   return (
-    <ThemeProvider theme={theme}>
-      <ComposedProviders>
-        <Login />
-      </ComposedProviders>
-    </ThemeProvider>
+    <BrowserRouter>
+      <AuthContext.Provider value={value}>
+        <AxiosContext.Provider
+          value={{ axiosPublic, axiosPokeApi, axiosPrivate }}
+        >
+          <UserContext.Provider value={{ user }}>
+            <ThemeProvider theme={theme}>
+              <ComposedProviders>
+                <Routes>
+                  <Route path='/' element={<Login />} />
+                </Routes>
+              </ComposedProviders>
+            </ThemeProvider>
+          </UserContext.Provider>
+        </AxiosContext.Provider>
+      </AuthContext.Provider>
+    </BrowserRouter>
   );
 };
 
@@ -84,7 +113,7 @@ describe('login test', () => {
     render(<MockLogin />);
 
     expect(screen.getByRole('textbox')).toBeInTheDocument();
-    expect(screen.getByRole('button')).toBeInTheDocument();
+    expect(screen.getByTestId('login-button')).toBeInTheDocument();
   });
 
   test('input user is rendered', () => {
@@ -131,11 +160,11 @@ describe('login test', () => {
     ) as HTMLInputElement;
     userEvent.type(inputPassword, '123456');
 
-    userEvent.click(await screen.findByRole('button'));
+    userEvent.click(await screen.findByTestId('login-button'));
 
     await new Promise(process.nextTick);
 
-    expect(mockFunction).toBeCalled();
+    expect(mockedFunction).toBeCalled();
   });
 
   test('show error after entered wrong user mail', async () => {
@@ -148,7 +177,7 @@ describe('login test', () => {
     ) as HTMLInputElement;
     userEvent.type(inputPassword, '123456');
 
-    userEvent.click(await screen.findByRole('button'));
+    userEvent.click(await screen.findByTestId('login-button'));
     await new Promise(process.nextTick);
 
     await screen.findByText('Invalid identifier or password');
@@ -164,7 +193,7 @@ describe('login test', () => {
     ) as HTMLInputElement;
     userEvent.type(inputPassword, '12345678');
 
-    userEvent.click(await screen.findByRole('button'));
+    userEvent.click(await screen.findByTestId('login-button'));
     await new Promise(process.nextTick);
 
     await screen.findByText('Invalid identifier or password');

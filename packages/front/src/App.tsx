@@ -4,11 +4,13 @@ import { DefaultTheme, ThemeProvider } from 'styled-components';
 import { CatchPokemon } from './components/CatchPokemon/component';
 import { Login } from './components/Login/component';
 import { PokemonList } from './components/PokemonList/component';
+import { Register } from './components/Register/Register';
 import { RequireAuth } from './components/RequireAuth/component';
 import { AuthProvider } from './context/authContext';
 import { AxiosProvider } from './context/axiosContext';
 import { ContextProvider } from './context/composeProviders';
 import { OnlineProvider } from './context/onlineContext';
+import { UserContextProvider } from './context/userContext';
 
 export const theme: DefaultTheme = {
   colors: {
@@ -27,6 +29,7 @@ const ComposedProviders = composeProviders([
   AuthProvider,
   AxiosProvider,
   OnlineProvider,
+  UserContextProvider,
 ]);
 
 function App() {
@@ -35,6 +38,7 @@ function App() {
       <ComposedProviders>
         <Routes>
           <Route path='/' element={<Login />} />
+          <Route path='/register' element={<Register />} />
           <Route
             path='/pokemons'
             element={

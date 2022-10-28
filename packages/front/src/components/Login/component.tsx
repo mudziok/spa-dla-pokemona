@@ -29,7 +29,6 @@ export const Login = () => {
         navigate('/pokemons');
       })
       .catch((error) => {
-        console.log(error.response.data);
         setError(error.response.data.error.message);
       });
   };
@@ -46,14 +45,29 @@ export const Login = () => {
     <Split
       sidebar={
         <Stack as='form' onSubmit={handleClick}>
-          <input placeholder='user' type='text' onChange={handleUser}></input>
+          <input
+            placeholder='user'
+            type='text'
+            onChange={handleUser}
+            data-test-id='login'
+          ></input>
           <input
             placeholder='password'
             type='password'
             onChange={handlePassword}
+            data-test-id='password'
           ></input>
-          <button>Log in</button>
-          {error && <p>{error}</p>}
+          <button data-testid='login-button' data-test-id='login-button'>
+            Log in
+          </button>
+          {error && (
+            <p data-testid='login-error' data-test-id='login-error'>
+              {error}
+            </p>
+          )}
+          <button onClick={() => navigate('/register')}>
+            Create an account
+          </button>
         </Stack>
       }
     />

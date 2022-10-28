@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 import {
   fireEvent,
   render,
@@ -5,17 +7,24 @@ import {
   waitFor,
   waitForElementToBeRemoved,
 } from '@testing-library/react';
+import '@testing-library/jest-dom/extend-expect';
 import { rest } from 'msw';
 import { setupServer } from 'msw/lib/node';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
 
 import { theme } from '../../App';
-import { AuthProvider } from '../../context/authContext';
-import { AxiosProvider } from '../../context/axiosContext';
+import { AuthContext, AuthProvider } from '../../context/authContext';
+import { AxiosContext, AxiosProvider } from '../../context/axiosContext';
 import { composeProviders } from '../../context/composeProviders';
 import { OnlineProvider } from '../../context/onlineContext';
+import { User, UserContext } from '../../context/userContext';
+import { axiosPokeApi } from '../../utils/axiosPokeApi';
+import { axiosPrivate } from '../../utils/axiosPrivate';
+import { axiosPublic } from '../../utils/axiosPublic';
+import { Login } from '../Login/component';
 import { PokemonList } from '../PokemonList/component';
-import '@testing-library/jest-dom/extend-expect';
+import { RequireAuth } from '../RequireAuth/component';
 
 export const pokemons = [
   {
@@ -42,11 +51,55 @@ export let pokemonsRender = [
   },
 ];
 
+export const mockedFunction = jest.fn();
+jest.mock('react-router', () => ({
+  ...(jest.requireActual('react-router') as any),
+  useNavigate: () => mockedFunction,
+}));
+
 const ComposedProviders = composeProviders([
   AuthProvider,
   AxiosProvider,
   OnlineProvider,
 ]);
+
+// export const MockPokemonList = () => {
+//   const [token, setToken] = useState('');
+//   const value = { token, setToken };
+//   const mockUser = {
+//     id: 1,
+//     username: 'remek@wp.pl',
+//     email: 'remek@wp.pl',
+//     confirmed: true,
+//   };
+//   const [user, setUser] = useState<User>(mockUser);
+
+//   return (
+//     <BrowserRouter>
+//       <AuthContext.Provider value={value}>
+//         <AxiosContext.Provider
+//           value={{ axiosPublic, axiosPokeApi, axiosPrivate }}
+//         >
+//           <UserContext.Provider value={{ user }}>
+//             <ThemeProvider theme={theme}>
+//               <Routes>
+//                 <Route path='/' element={<Login />} />
+//                 <Route
+//                   path='/pokemons'
+//                   element={
+//                     <RequireAuth>
+//                       <PokemonList />
+//                     </RequireAuth>
+//                   }
+//                 />
+//               </Routes>
+//             </ThemeProvider>
+//           </UserContext.Provider>
+//         </AxiosContext.Provider>
+//       </AuthContext.Provider>{' '}
+//     </BrowserRouter>
+//   );
+// };
 
 export const MockPokemonList = () => {
   return (
@@ -57,13 +110,6 @@ export const MockPokemonList = () => {
     </ThemeProvider>
   );
 };
-
-export const mockedFunction = jest.fn();
-
-jest.mock('react-router', () => ({
-  ...(jest.requireActual('react-router') as any),
-  useNavigate: () => mockedFunction,
-}));
 
 const URL = 'http://localhost:1337/api/pokemons';
 
@@ -91,11 +137,10 @@ afterEach(() => {
 afterAll(() => serverPokemons.close());
 
 describe('pokemon list', () => {
-  test('is rendered sidebar part', () => {
+  test('is rendered sidebar part', async () => {
     render(<MockPokemonList />);
 
-    const btnElement = screen.getByRole('button');
-    expect(btnElement).toBeInTheDocument();
+    expect(await screen.findByTestId('catch-button')).toBeInTheDocument();
   });
 
   test('is rendered main part', () => {
@@ -146,8 +191,7 @@ describe('pokemon list', () => {
   test('after click button should navigated user to catch pokemon', async () => {
     render(<MockPokemonList />);
 
-    const btnElement = screen.getByRole('button');
-    fireEvent.click(btnElement);
+    fireEvent.click(screen.getByTestId('catch-button'));
 
     expect(mockedFunction).toBeCalled();
   });

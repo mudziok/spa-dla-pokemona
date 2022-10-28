@@ -4,7 +4,7 @@ export const SplitGrid = styled.div`
   display: grid;
   grid-template-rows: auto;
   grid-template-columns: 1fr 3fr;
-  height: 100vh;
+  height: calc(100vh - 50px);
 
   @media (max-width: 450px) {
     display: flex;
@@ -17,6 +17,7 @@ export const SidebarContainer = styled.div`
   height: 100%;
   overflow-y: auto;
   border-right: 3px ${(props) => props.theme.colors.main} solid;
+  padding-top: 50px;
 
   @media (max-width: 450px) {
     height: auto;
@@ -28,6 +29,7 @@ export const SidebarContainer = styled.div`
 export const MainContainter = styled.div`
   height: 100%;
   overflow-y: auto;
+  padding-top: 50px;
 
   @media (max-width: 450px) {
     height: auto;

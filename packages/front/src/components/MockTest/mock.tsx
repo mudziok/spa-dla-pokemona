@@ -2,11 +2,14 @@ import { useState } from 'react';
 
 import { rest } from 'msw';
 import { setupServer } from 'msw/lib/node';
+import { Route, Routes } from 'react-router';
+import { BrowserRouter } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
 
 import { theme } from '../../App';
 import { AuthContext } from '../../context/authContext';
 import { AxiosContext } from '../../context/axiosContext';
+import { User, UserContext } from '../../context/userContext';
 import { axiosPokeApi } from '../../utils/axiosPokeApi';
 import { axiosPrivate } from '../../utils/axiosPrivate';
 import { axiosPublic } from '../../utils/axiosPublic';
@@ -40,16 +43,24 @@ export let pokemonsRender = [
 export const MockPokemonList = () => {
   const [token, setToken] = useState('');
   const value = { token, setToken };
+  const [user, setUser] = useState<User | null>(null);
+
   return (
-    <AuthContext.Provider value={value}>
-      <AxiosContext.Provider
-        value={{ axiosPublic, axiosPokeApi, axiosPrivate }}
-      >
-        <ThemeProvider theme={theme}>
-          <PokemonList />
-        </ThemeProvider>
-      </AxiosContext.Provider>
-    </AuthContext.Provider>
+    <BrowserRouter>
+      <AuthContext.Provider value={value}>
+        <AxiosContext.Provider
+          value={{ axiosPublic, axiosPokeApi, axiosPrivate }}
+        >
+          <UserContext.Provider value={{ user }}>
+            <ThemeProvider theme={theme}>
+              <Routes>
+                <Route path='/pokemons' element={<PokemonList />} />
+              </Routes>
+            </ThemeProvider>
+          </UserContext.Provider>
+        </AxiosContext.Provider>
+      </AuthContext.Provider>
+    </BrowserRouter>
   );
 };
 
