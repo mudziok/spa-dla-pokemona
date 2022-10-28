@@ -9,12 +9,14 @@ import { AuthProvider } from '../../context/authContext';
 import { AxiosProvider } from '../../context/axiosContext';
 import { composeProviders } from '../../context/composeProviders';
 import { OnlineProvider } from '../../context/onlineContext';
+import { UserContextProvider } from '../../context/userContext';
 import { Login } from './component';
 
-const mockFunction = jest.fn();
+export const mockedFunction = jest.fn();
 
 jest.mock('react-router', () => ({
-  useNavigate: () => mockFunction,
+  ...(jest.requireActual('react-router') as any),
+  useNavigate: () => mockedFunction,
 }));
 
 const mockUser = { identifier: 'przemek@gmail.com', password: '123456' };
@@ -23,6 +25,7 @@ const ComposedProviders = composeProviders([
   AuthProvider,
   AxiosProvider,
   OnlineProvider,
+  UserContextProvider,
 ]);
 
 export const MockLogin = () => {
@@ -84,7 +87,7 @@ describe('login test', () => {
     render(<MockLogin />);
 
     expect(screen.getByRole('textbox')).toBeInTheDocument();
-    expect(screen.getByRole('button')).toBeInTheDocument();
+    expect(screen.getByTestId('login-button')).toBeInTheDocument();
   });
 
   test('input user is rendered', () => {
@@ -131,11 +134,11 @@ describe('login test', () => {
     ) as HTMLInputElement;
     userEvent.type(inputPassword, '123456');
 
-    userEvent.click(await screen.findByRole('button'));
+    userEvent.click(await screen.findByTestId('login-button'));
 
     await new Promise(process.nextTick);
 
-    expect(mockFunction).toBeCalled();
+    expect(mockedFunction).toBeCalled();
   });
 
   test('show error after entered wrong user mail', async () => {
@@ -148,7 +151,7 @@ describe('login test', () => {
     ) as HTMLInputElement;
     userEvent.type(inputPassword, '123456');
 
-    userEvent.click(await screen.findByRole('button'));
+    userEvent.click(await screen.findByTestId('login-button'));
     await new Promise(process.nextTick);
 
     await screen.findByText('Invalid identifier or password');
@@ -164,7 +167,7 @@ describe('login test', () => {
     ) as HTMLInputElement;
     userEvent.type(inputPassword, '12345678');
 
-    userEvent.click(await screen.findByRole('button'));
+    userEvent.click(await screen.findByTestId('login-button'));
     await new Promise(process.nextTick);
 
     await screen.findByText('Invalid identifier or password');

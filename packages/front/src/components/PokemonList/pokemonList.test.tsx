@@ -60,11 +60,6 @@ export const MockPokemonList = () => {
 
 export const mockedFunction = jest.fn();
 
-jest.mock('react-router', () => ({
-  ...(jest.requireActual('react-router') as any),
-  useNavigate: () => mockedFunction,
-}));
-
 const URL = 'http://localhost:1337/api/pokemons';
 
 export const serverPokemons = setupServer(
@@ -94,8 +89,7 @@ describe('pokemon list', () => {
   test('is rendered sidebar part', () => {
     render(<MockPokemonList />);
 
-    const btnElement = screen.getByRole('button');
-    expect(btnElement).toBeInTheDocument();
+    expect(screen.getByTestId('catch-button')).toBeInTheDocument();
   });
 
   test('is rendered main part', () => {
@@ -146,8 +140,7 @@ describe('pokemon list', () => {
   test('after click button should navigated user to catch pokemon', async () => {
     render(<MockPokemonList />);
 
-    const btnElement = screen.getByRole('button');
-    fireEvent.click(btnElement);
+    fireEvent.click(screen.getByTestId('catch-button'));
 
     expect(mockedFunction).toBeCalled();
   });

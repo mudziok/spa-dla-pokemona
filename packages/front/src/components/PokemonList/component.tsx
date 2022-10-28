@@ -47,7 +47,7 @@ export const PokemonList: FC = () => {
           <Stack>
             <button
               onClick={() => navigate('/catch')}
-              data-test-id='catch-button'
+              data-testid='catch-button'
             >
               Złap pokemona
             </button>

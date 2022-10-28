@@ -24,10 +24,12 @@ export const UserContextProvider: ContextProvider = ({ children }) => {
   const { token } = useContext(AuthContext);
 
   useEffect(() => {
-    axiosPrivate.get(AxiosPrivateRoutes.USER).then((response) => {
-      console.log('xd', response);
-      setUser(response.data);
-    });
+    if (token) {
+      axiosPrivate.get(AxiosPrivateRoutes.USER).then((response) => {
+        console.log('xd', response);
+        setUser(response.data);
+      });
+    }
   }, [axiosPrivate, token]);
 
   return (

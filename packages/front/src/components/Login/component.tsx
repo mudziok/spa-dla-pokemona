@@ -58,11 +58,11 @@ export const Login = () => {
             onChange={handlePassword}
             data-test-id='password'
           ></input>
-          <button data-test-id='login-button'>Log in</button>
-          {error && <p data-test-id='login-error'>{error}</p>}
-          <Link to='/register'>
-            <button>Create an account</button>
-          </Link>
+          <button data-testid='login-button'>Log in</button>
+          {error && <p data-testid='login-error'>{error}</p>}
+          <button onClick={() => navigate('/register')}>
+            Create an account
+          </button>
         </Stack>
       }
     />
