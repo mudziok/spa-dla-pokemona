@@ -42,12 +42,12 @@ jobs:
           node-version: ${{ matrix.node-version }}
 
       - run: yarn install --frozen-lockfile
-      - run: yarn test -o --watch=false
+      - run: yarn test --watch=false
 
       - name: 'e2e tests'
         uses: cypress-io/github-action@v4
         with:
-          start: lerna run --parallel dev
+          start: yarn run dev
           wait-on: http://localhost:1337, http://localhost:3000
           working-directory: packages/front
           browser: chrome
