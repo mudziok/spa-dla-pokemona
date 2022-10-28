@@ -10,8 +10,7 @@ describe('catch pokemon', () => {
 
   it('catch pokemon', () => {
     cy.get('[data-test-id="catch-button"]').click();
-    cy.location('pathname').should('match', /\/contain$/);
-    cy.url().should('contain', '/catch');
+    cy.url().should('match', '/catch');
     cy.get('[data-test-id="catch-pokemon-button"]').contains('Złap pokemona');
     cy.contains('[data-test-id="test-list-id"]', 'Bulbasaur', {
       matchCase: false,
@@ -21,8 +20,7 @@ describe('catch pokemon', () => {
     cy.get('[data-test-id="pokemon-date"]').type('2022-09-29');
     cy.get('[data-test-id="pokemon-time"]').type('14:20');
     cy.get('[data-test-id="catch-pokemon-button"]').click();
-    cy.location('pathname').should('match', /\/pokemons$/);
-    cy.url().should('contain', '/pokemons');
+    cy.url().should('match', '/pokemons');
     cy.contains('Bug', { matchCase: false });
   });
 
@@ -34,8 +32,7 @@ describe('catch pokemon', () => {
 
   it('catch 2 pokemons', () => {
     cy.get('[data-test-id="catch-button"]').click();
-    cy.location('pathname').should('match', /\/contain$/);
-    cy.url().should('contain', '/catch');
+    cy.url().should('match', '/catch');
     cy.get('[data-test-id="catch-pokemon-button"]').contains('Złap pokemona');
     cy.contains('[data-test-id="test-list-id"]', 'Bulbasaur', {
       matchCase: false,
@@ -49,14 +46,12 @@ describe('catch pokemon', () => {
     cy.get('[data-test-id="catch-pokemon-button"]').click();
 
     //check if first pokemon is caught
-    cy.location('pathname').should('match', /\/pokemons$/);
-    cy.url().should('contain', '/pokemons');
+    cy.url().should('match', '/pokemons');
     cy.contains('Bulba', { matchCase: false });
 
     //catch second pokemon
     cy.get('[data-test-id="catch-button"]').click();
-    cy.location('pathname').should('match', /\/catch$/);
-    cy.url().should('contain', '/catch');
+    cy.url().should('match', '/catch');
     cy.get('[data-test-id="catch-pokemon-button"]').contains('Złap pokemona');
     cy.contains('[data-test-id="test-list-id"]', 'Pikachu', {
       matchCase: false,
@@ -66,10 +61,9 @@ describe('catch pokemon', () => {
     cy.get('[data-test-id="pokemon-date"]').type('2022-09-29');
     cy.get('[data-test-id="pokemon-time"]').type('14:30');
     cy.get('[data-test-id="catch-pokemon-button"]').click();
-    cy.location('pathname').should('match', /\/pokemons$/);
 
     //check if second pokemon is caught
-    cy.url().should('contain', '/pokemons');
+    cy.url().should('match', '/pokemons');
     cy.contains('Pika pika', { matchCase: false });
   });
 });
