@@ -13,14 +13,5 @@ describe('pokemon list', () => {
     cy.url().should('contain', '/catch');
     cy.get('[data-test-id="catch-pokemon-button"]').contains('Złap pokemona');
     cy.contains('[data-test-id="test-list-id"]', 'BULBASAUR');
-
-    cy.contains('CATERPIE').click();
-    cy.get('[data-test-id="pokemon-name"]').type('Bug');
-    cy.get('[data-test-id="pokemon-date"]').type('2022-09-29');
-    cy.get('[data-test-id="pokemon-time"]').type('14:20');
-    cy.get('[data-test-id="catch-pokemon-button"]').click();
-    cy.wait(3000);
-    cy.url().should('contain', '/pokemons');
-    cy.contains('Bug');
   });
 });
