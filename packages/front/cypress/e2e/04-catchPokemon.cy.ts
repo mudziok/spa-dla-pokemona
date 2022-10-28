@@ -10,7 +10,14 @@ describe('catch pokemon', () => {
     cy.get('[data-test-id="catch-button"]').contains('Złap pokemona');
   });
 
-  it('catch pokemon', () => {
+  it('click on button should redirect to list with pokemons', () => {
+    cy.get('[data-test-id="catch-button"]').click();
+    cy.url().should('contain', '/catch');
+    cy.get('[data-test-id="catch-pokemon-button"]').contains('Złap pokemona');
+    cy.contains('[data-test-id="test-list-id"]', 'BULBASAUR');
+  });
+
+  it.skip('catch pokemon', () => {
     cy.get('[data-test-id="catch-button"]').click();
     cy.url().should('match', /catch/);
     cy.get('[data-test-id="catch-pokemon-button"]').contains('Złap pokemona');
@@ -22,19 +29,17 @@ describe('catch pokemon', () => {
     cy.get('[data-test-id="pokemon-date"]').type('2022-09-29');
     cy.get('[data-test-id="pokemon-time"]').type('14:20');
     cy.get('[data-test-id="catch-pokemon-button"]').click();
-    this.skip();
     cy.url().should('match', /pokemons/);
     cy.contains('Bug', { matchCase: false });
   });
 
-  it('delete pokemon', () => {
-    this.skip();
+  it.skip('delete pokemon', () => {
     cy.contains('Bug', { matchCase: false }).click();
     cy.wait(3000);
     cy.contains('Bug', { matchCase: false }).should('not.exist');
   });
 
-  it('catch 2 pokemons', () => {
+  it.skip('catch 2 pokemons', () => {
     cy.get('[data-test-id="catch-button"]').click();
     cy.url().should('match', /catch/);
     cy.get('[data-test-id="catch-pokemon-button"]').contains('Złap pokemona');
@@ -48,7 +53,6 @@ describe('catch pokemon', () => {
     cy.get('[data-test-id="pokemon-date"]').type('2022-09-29');
     cy.get('[data-test-id="pokemon-time"]').type('14:20');
     cy.get('[data-test-id="catch-pokemon-button"]').click();
-    this.skip();
 
     //check if first pokemon is caught
     cy.url().should('match', /pokemons/);
