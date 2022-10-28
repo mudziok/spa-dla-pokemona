@@ -24,6 +24,7 @@ import { axiosPrivate } from '../../utils/axiosPrivate';
 import { axiosPublic } from '../../utils/axiosPublic';
 import { Login } from '../Login/component';
 import { PokemonList } from '../PokemonList/component';
+import { RequireAuth } from '../RequireAuth/component';
 
 export const pokemons = [
   {
@@ -50,44 +51,65 @@ export let pokemonsRender = [
   },
 ];
 
+export const mockedFunction = jest.fn();
+jest.mock('react-router', () => ({
+  ...(jest.requireActual('react-router') as any),
+  useNavigate: () => mockedFunction,
+}));
+
 const ComposedProviders = composeProviders([
   AuthProvider,
   AxiosProvider,
   OnlineProvider,
 ]);
 
-export const MockPokemonList = () => {
-  const [token, setToken] = useState('');
-  const value = { token, setToken };
-  const mockUser = {
-    id: 1,
-    username: 'remek@wp.pl',
-    email: 'remek@wp.pl',
-    confirmed: true,
-  };
-  const [user, setUser] = useState<User>(mockUser);
+// export const MockPokemonList = () => {
+//   const [token, setToken] = useState('');
+//   const value = { token, setToken };
+//   const mockUser = {
+//     id: 1,
+//     username: 'remek@wp.pl',
+//     email: 'remek@wp.pl',
+//     confirmed: true,
+//   };
+//   const [user, setUser] = useState<User>(mockUser);
 
+//   return (
+//     <BrowserRouter>
+//       <AuthContext.Provider value={value}>
+//         <AxiosContext.Provider
+//           value={{ axiosPublic, axiosPokeApi, axiosPrivate }}
+//         >
+//           <UserContext.Provider value={{ user }}>
+//             <ThemeProvider theme={theme}>
+//               <Routes>
+//                 <Route path='/' element={<Login />} />
+//                 <Route
+//                   path='/pokemons'
+//                   element={
+//                     <RequireAuth>
+//                       <PokemonList />
+//                     </RequireAuth>
+//                   }
+//                 />
+//               </Routes>
+//             </ThemeProvider>
+//           </UserContext.Provider>
+//         </AxiosContext.Provider>
+//       </AuthContext.Provider>{' '}
+//     </BrowserRouter>
+//   );
+// };
+
+export const MockPokemonList = () => {
   return (
-    <BrowserRouter>
-      <AuthContext.Provider value={value}>
-        <AxiosContext.Provider
-          value={{ axiosPublic, axiosPokeApi, axiosPrivate }}
-        >
-          <UserContext.Provider value={{ user }}>
-            <ThemeProvider theme={theme}>
-              <Routes>
-                <Route path='/' element={<Login />} />
-                <Route path='/pokemons' element={<PokemonList />} />
-              </Routes>
-            </ThemeProvider>
-          </UserContext.Provider>
-        </AxiosContext.Provider>
-      </AuthContext.Provider>
-    </BrowserRouter>
+    <ThemeProvider theme={theme}>
+      <ComposedProviders>
+        <PokemonList />
+      </ComposedProviders>
+    </ThemeProvider>
   );
 };
-
-export const mockedFunction = jest.fn();
 
 const URL = 'http://localhost:1337/api/pokemons';
 
