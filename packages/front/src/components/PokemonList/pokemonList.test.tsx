@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 import {
   fireEvent,
   render,
@@ -5,17 +7,23 @@ import {
   waitFor,
   waitForElementToBeRemoved,
 } from '@testing-library/react';
+import '@testing-library/jest-dom/extend-expect';
 import { rest } from 'msw';
 import { setupServer } from 'msw/lib/node';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
 
 import { theme } from '../../App';
-import { AuthProvider } from '../../context/authContext';
-import { AxiosProvider } from '../../context/axiosContext';
+import { AuthContext, AuthProvider } from '../../context/authContext';
+import { AxiosContext, AxiosProvider } from '../../context/axiosContext';
 import { composeProviders } from '../../context/composeProviders';
 import { OnlineProvider } from '../../context/onlineContext';
+import { User, UserContext } from '../../context/userContext';
+import { axiosPokeApi } from '../../utils/axiosPokeApi';
+import { axiosPrivate } from '../../utils/axiosPrivate';
+import { axiosPublic } from '../../utils/axiosPublic';
+import { Login } from '../Login/component';
 import { PokemonList } from '../PokemonList/component';
-import '@testing-library/jest-dom/extend-expect';
 
 export const pokemons = [
   {
@@ -49,12 +57,33 @@ const ComposedProviders = composeProviders([
 ]);
 
 export const MockPokemonList = () => {
+  const [token, setToken] = useState('');
+  const value = { token, setToken };
+  const mockUser = {
+    id: 1,
+    username: 'remek@wp.pl',
+    email: 'remek@wp.pl',
+    confirmed: true,
+  };
+  const [user, setUser] = useState<User>(mockUser);
+
   return (
-    <ThemeProvider theme={theme}>
-      <ComposedProviders>
-        <PokemonList />
-      </ComposedProviders>
-    </ThemeProvider>
+    <BrowserRouter>
+      <AuthContext.Provider value={value}>
+        <AxiosContext.Provider
+          value={{ axiosPublic, axiosPokeApi, axiosPrivate }}
+        >
+          <UserContext.Provider value={{ user }}>
+            <ThemeProvider theme={theme}>
+              <Routes>
+                <Route path='/' element={<Login />} />
+                <Route path='/pokemons' element={<PokemonList />} />
+              </Routes>
+            </ThemeProvider>
+          </UserContext.Provider>
+        </AxiosContext.Provider>
+      </AuthContext.Provider>
+    </BrowserRouter>
   );
 };
 
@@ -86,10 +115,10 @@ afterEach(() => {
 afterAll(() => serverPokemons.close());
 
 describe('pokemon list', () => {
-  test('is rendered sidebar part', () => {
+  test('is rendered sidebar part', async () => {
     render(<MockPokemonList />);
 
-    expect(screen.getByTestId('catch-button')).toBeInTheDocument();
+    expect(await screen.findByTestId('catch-button')).toBeInTheDocument();
   });
 
   test('is rendered main part', () => {

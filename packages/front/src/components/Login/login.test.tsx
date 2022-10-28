@@ -1,15 +1,26 @@
+import { useState } from 'react';
+
 import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { rest } from 'msw';
 import { setupServer } from 'msw/node';
+import { Route, Routes } from 'react-router';
+import { BrowserRouter } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
 
 import { theme } from '../../App';
-import { AuthProvider } from '../../context/authContext';
-import { AxiosProvider } from '../../context/axiosContext';
+import { AuthContext, AuthProvider } from '../../context/authContext';
+import { AxiosContext, AxiosProvider } from '../../context/axiosContext';
 import { composeProviders } from '../../context/composeProviders';
 import { OnlineProvider } from '../../context/onlineContext';
-import { UserContextProvider } from '../../context/userContext';
+import {
+  User,
+  UserContext,
+  UserContextProvider,
+} from '../../context/userContext';
+import { axiosPokeApi } from '../../utils/axiosPokeApi';
+import { axiosPrivate } from '../../utils/axiosPrivate';
+import { axiosPublic } from '../../utils/axiosPublic';
 import { Login } from './component';
 
 export const mockedFunction = jest.fn();
@@ -29,12 +40,27 @@ const ComposedProviders = composeProviders([
 ]);
 
 export const MockLogin = () => {
+  const [token, setToken] = useState('');
+  const value = { token, setToken };
+  const [user, setUser] = useState<User | null>(null);
   return (
-    <ThemeProvider theme={theme}>
-      <ComposedProviders>
-        <Login />
-      </ComposedProviders>
-    </ThemeProvider>
+    <BrowserRouter>
+      <AuthContext.Provider value={value}>
+        <AxiosContext.Provider
+          value={{ axiosPublic, axiosPokeApi, axiosPrivate }}
+        >
+          <UserContext.Provider value={{ user }}>
+            <ThemeProvider theme={theme}>
+              <ComposedProviders>
+                <Routes>
+                  <Route path='/' element={<Login />} />
+                </Routes>
+              </ComposedProviders>
+            </ThemeProvider>
+          </UserContext.Provider>
+        </AxiosContext.Provider>
+      </AuthContext.Provider>
+    </BrowserRouter>
   );
 };
 

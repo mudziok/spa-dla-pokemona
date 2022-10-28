@@ -5,7 +5,7 @@ import { AuthContext } from './authContext';
 import { AxiosContext } from './axiosContext';
 import { ContextProvider } from './composeProviders';
 
-interface User {
+export interface User {
   id: number;
   username: string;
   email: string;
