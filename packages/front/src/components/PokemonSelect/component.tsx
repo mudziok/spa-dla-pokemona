@@ -2,7 +2,6 @@ import { FC } from 'react';
 
 import { Pokemon } from '../../types/pokemon';
 import { getPokemonImageURL } from '../../utils/axiosPokeApi';
-import { Navigation } from '../Navigation/Navigation';
 import { PokemonItem, PokemonList } from './styles';
 
 interface PokemonSelectProps {

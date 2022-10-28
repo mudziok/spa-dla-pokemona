@@ -15,7 +15,6 @@ on:
     branches: ['main']
 
 env:
-  PORT: '1337'
   HOST: '0.0.0.0'
   REACT_APP_API_BASE: 'http://localhost:1337/api'
   REACT_APP_POKEMON_API_BASE: 'https://pokeapi.co/api/v2'
@@ -47,7 +46,7 @@ jobs:
       - name: 'e2e tests'
         uses: cypress-io/github-action@v4
         with:
-          start: yarn run dev
+          start: lerna run --parallel dev
           wait-on: http://localhost:1337, http://localhost:3000
           working-directory: packages/front
           browser: chrome
