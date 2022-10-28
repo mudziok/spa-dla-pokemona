@@ -29,7 +29,7 @@ describe('catch pokemon', () => {
     cy.contains('Bug', { matchCase: false }).should('not.exist');
   });
 
-  it.only('catch 2 pokemons', () => {
+  it('catch 2 pokemons', () => {
     cy.get('[data-test-id="catch-button"]').click();
     cy.url().should('contain', '/catch');
     cy.get('[data-test-id="catch-pokemon-button"]').contains('Złap pokemona');

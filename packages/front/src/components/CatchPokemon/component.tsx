@@ -88,7 +88,9 @@ export const CatchPokemon = () => {
                 onChange={handleTime}
                 data-test-id='pokemon-time'
               />
-              <button data-test-id='catch-pokemon-button'>Złap pokemona</button>
+              <button type='submit' data-test-id='catch-pokemon-button'>
+                Złap pokemona
+              </button>
             </Stack>
           }
           main={
