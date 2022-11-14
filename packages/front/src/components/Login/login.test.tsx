@@ -113,6 +113,7 @@ describe('login test', () => {
     render(<MockLogin />);
 
     expect(screen.getByTestId('login-button')).toBeInTheDocument();
+    expect(screen.getByTestId('create-user-btn')).toBeInTheDocument();
   });
 
   test('input user is rendered', () => {
@@ -185,5 +186,15 @@ describe('login test', () => {
     await new Promise(process.nextTick);
 
     await screen.findByText('Invalid identifier or password');
+  });
+
+  test('redirect to create new account', async () => {
+    render(<MockLogin />);
+
+    userEvent.click(await screen.findByTestId('create-user-btn'));
+
+    await new Promise(process.nextTick);
+
+    expect(mockedFunction).toBeCalled();
   });
 });

@@ -67,7 +67,10 @@ export const Login = () => {
               {error}
             </p>
           )}
-          <button onClick={() => navigate('/register')}>
+          <button
+            data-testid='create-user-btn'
+            onClick={() => navigate('/register')}
+          >
             Create an account
           </button>
         </Stack>
