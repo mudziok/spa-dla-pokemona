@@ -50,12 +50,14 @@ export const Login = () => {
             type='text'
             onChange={handleUser}
             data-test-id='login'
+            data-testid='login'
           ></input>
           <input
             placeholder='password'
             type='password'
             onChange={handlePassword}
             data-test-id='password'
+            data-testid='password'
           ></input>
           <button data-testid='login-button' data-test-id='login-button'>
             Log in
@@ -65,7 +67,10 @@ export const Login = () => {
               {error}
             </p>
           )}
-          <button onClick={() => navigate('/register')}>
+          <button
+            data-testid='create-user-btn'
+            onClick={() => navigate('/register')}
+          >
             Create an account
           </button>
         </Stack>

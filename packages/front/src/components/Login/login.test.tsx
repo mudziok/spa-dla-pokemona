@@ -42,7 +42,7 @@ const ComposedProviders = composeProviders([
 export const MockLogin = () => {
   const [token, setToken] = useState('');
   const value = { token, setToken };
-  const [user, setUser] = useState<User | null>(null);
+  const [user] = useState<User | null>(null);
   return (
     <BrowserRouter>
       <AuthContext.Provider value={value}>
@@ -112,29 +112,23 @@ describe('login test', () => {
   test('component is rendered', () => {
     render(<MockLogin />);
 
-    expect(screen.getByRole('textbox')).toBeInTheDocument();
     expect(screen.getByTestId('login-button')).toBeInTheDocument();
+    expect(screen.getByTestId('create-user-btn')).toBeInTheDocument();
   });
 
   test('input user is rendered', () => {
     render(<MockLogin />);
-    const inputElement = screen.getByPlaceholderText('user');
-
-    expect(inputElement).toBeInTheDocument();
+    expect(screen.getByTestId('login')).toBeInTheDocument();
   });
 
   test('input password is rendered', () => {
     render(<MockLogin />);
-    const inputElement = screen.getByPlaceholderText('password');
-
-    expect(inputElement).toBeInTheDocument();
+    expect(screen.getByTestId('password')).toBeInTheDocument();
   });
 
   test('input user is changed value', () => {
     render(<MockLogin />);
-    const inputElement = screen.getByPlaceholderText(
-      'user'
-    ) as HTMLInputElement;
+    const inputElement = screen.getByTestId('login') as HTMLInputElement;
     fireEvent.change(inputElement, { target: { value: 'przemek@wp.pl' } });
 
     expect(inputElement.value).toBe('przemek@wp.pl');
@@ -142,9 +136,7 @@ describe('login test', () => {
 
   test('input password is changed value', () => {
     render(<MockLogin />);
-    const inputElement = screen.getByPlaceholderText(
-      'password'
-    ) as HTMLInputElement;
+    const inputElement = screen.getByTestId('password') as HTMLInputElement;
     fireEvent.change(inputElement, { target: { value: '123456' } });
 
     expect(inputElement.value).toBe('123456');
@@ -152,12 +144,11 @@ describe('login test', () => {
 
   test('redirect after correct login', async () => {
     render(<MockLogin />);
-    const inputUser = screen.getByPlaceholderText('user') as HTMLInputElement;
+    const inputUser = screen.getByTestId('login') as HTMLInputElement;
     userEvent.type(inputUser, 'przemek@gmail.com');
 
-    const inputPassword = screen.getByPlaceholderText(
-      'password'
-    ) as HTMLInputElement;
+    const inputPassword = screen.getByTestId('password') as HTMLInputElement;
+
     userEvent.type(inputPassword, '123456');
 
     userEvent.click(await screen.findByTestId('login-button'));
@@ -169,12 +160,11 @@ describe('login test', () => {
 
   test('show error after entered wrong user mail', async () => {
     render(<MockLogin />);
-    const inputUser = screen.getByPlaceholderText('user') as HTMLInputElement;
+    const inputUser = screen.getByTestId('login') as HTMLInputElement;
     userEvent.type(inputUser, 'przemek123@gmail.com');
 
-    const inputPassword = screen.getByPlaceholderText(
-      'password'
-    ) as HTMLInputElement;
+    const inputPassword = screen.getByTestId('password') as HTMLInputElement;
+
     userEvent.type(inputPassword, '123456');
 
     userEvent.click(await screen.findByTestId('login-button'));
@@ -185,17 +175,26 @@ describe('login test', () => {
 
   test('show error after entered wrong password', async () => {
     render(<MockLogin />);
-    const inputUser = screen.getByPlaceholderText('user') as HTMLInputElement;
+    const inputUser = screen.getByTestId('login') as HTMLInputElement;
     userEvent.type(inputUser, 'przemek@gmail.com');
 
-    const inputPassword = screen.getByPlaceholderText(
-      'password'
-    ) as HTMLInputElement;
+    const inputPassword = screen.getByTestId('password') as HTMLInputElement;
+
     userEvent.type(inputPassword, '12345678');
 
     userEvent.click(await screen.findByTestId('login-button'));
     await new Promise(process.nextTick);
 
     await screen.findByText('Invalid identifier or password');
+  });
+
+  test('redirect to create new account', async () => {
+    render(<MockLogin />);
+
+    userEvent.click(await screen.findByTestId('create-user-btn'));
+
+    await new Promise(process.nextTick);
+
+    expect(mockedFunction).toBeCalled();
   });
 });
