@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router';
 
 import { AuthContext } from '../../context/authContext';
 import { AxiosContext } from '../../context/axiosContext';
+import { UserContext } from '../../context/userContext';
 import { axiosPokeApi, AxiosPokeApiRoutes } from '../../utils/axiosPokeApi';
 import { AxiosPrivateRoutes } from '../../utils/axiosPrivate';
 import { Navigation } from '../Navigation/Navigation';
@@ -16,6 +17,7 @@ export const CatchPokemon = () => {
 
   const { axiosPrivate } = useContext(AxiosContext);
   const { setToken } = useContext(AuthContext);
+  const { user } = useContext(UserContext);
 
   const handleLogout = () => {
     console.log('logout');
@@ -72,7 +74,7 @@ export const CatchPokemon = () => {
 
   return (
     <>
-      <Navigation handleLogout={handleLogout} />
+      <Navigation handleLogout={handleLogout} user={user} />
       <form onSubmit={handleSubmit}>
         <Split
           sidebar={
