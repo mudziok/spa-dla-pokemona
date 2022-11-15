@@ -64,7 +64,7 @@ export const MockLogin = () => {
   );
 };
 
-const URL = 'http://localhost:1337/api/auth/local';
+const URL = 'http://localhost:1338/api/auth/local';
 
 export const server = setupServer(
   rest.post(URL, async (req, res, ctx) => {

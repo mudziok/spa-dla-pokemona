@@ -64,7 +64,7 @@ export const MockPokemonList = () => {
   );
 };
 
-const URL = 'http://localhost:1337/api/pokemons';
+const URL = 'http://localhost:1338/api/pokemons';
 
 export const serverPokemons = setupServer(
   rest.get(URL, (req, res, ctx) => {

@@ -16,7 +16,7 @@ on:
 
 env:
   HOST: '0.0.0.0'
-  REACT_APP_API_BASE: 'http://localhost:1337/api'
+  REACT_APP_API_BASE: 'http://localhost:1338/api'
   REACT_APP_POKEMON_API_BASE: 'https://pokeapi.co/api/v2'
   APP_KEYS: HNC+61o5qtC1z1pPlAp9mA==,FukCKk/d2gclW0m/xx7xuQ==,ZgVfi2Zv87/hjRGYZ5ueKA==,oa1opOkVHqpZ474vhXdkJQ==
   API_TOKEN_SALT: ghj6D+tYgorBZnFbV/85nA==
@@ -47,6 +47,6 @@ jobs:
         uses: cypress-io/github-action@v4
         with:
           start: lerna run --parallel dev
-          wait-on: http://localhost:1337, http://localhost:3000
+          wait-on: http://localhost:1338, http://localhost:3000
           working-directory: packages/front
           browser: chrome

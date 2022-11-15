@@ -85,7 +85,7 @@ let pokemons: { data: Array<Pokemon> } = { data: [] };
 self.addEventListener('fetch', async (event) => {
   const { url, method } = event.request;
 
-  if (url === 'http://localhost:1337/api/pokemons' && method === 'GET') {
+  if (url === 'http://localhost:1338/api/pokemons' && method === 'GET') {
     event.respondWith(cachePokemons(event.request));
   } else {
     event.respondWith(fetch(event.request));

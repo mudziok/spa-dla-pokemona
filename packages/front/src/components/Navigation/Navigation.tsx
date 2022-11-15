@@ -14,8 +14,10 @@ export const Navigation = () => {
 
   return (
     <NavigationWrapper>
-      <p>Trener: {user && user.username}</p>
-      <button onClick={handleLogout}>Zregeneruj się</button>
+      <p data-testid='trainer name'>Trener: {user && user.username}</p>
+      <button data-testid='logout-button' onClick={handleLogout}>
+        Zregeneruj się
+      </button>
     </NavigationWrapper>
   );
 };
