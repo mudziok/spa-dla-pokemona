@@ -2,6 +2,7 @@ import { ChangeEvent, FormEvent, useContext, useEffect, useState } from 'react';
 
 import { useNavigate } from 'react-router';
 
+import { AuthContext } from '../../context/authContext';
 import { AxiosContext } from '../../context/axiosContext';
 import { axiosPokeApi, AxiosPokeApiRoutes } from '../../utils/axiosPokeApi';
 import { AxiosPrivateRoutes } from '../../utils/axiosPrivate';
@@ -14,6 +15,12 @@ export const CatchPokemon = () => {
   const navigate = useNavigate();
 
   const { axiosPrivate } = useContext(AxiosContext);
+  const { setToken } = useContext(AuthContext);
+
+  const handleLogout = () => {
+    console.log('logout');
+    setToken('');
+  };
 
   const [avaliablePokemons, setAvaliablePokemons] = useState<
     Array<PokemonBrief>
@@ -65,7 +72,7 @@ export const CatchPokemon = () => {
 
   return (
     <>
-      <Navigation />
+      <Navigation handleLogout={handleLogout} />
       <form onSubmit={handleSubmit}>
         <Split
           sidebar={

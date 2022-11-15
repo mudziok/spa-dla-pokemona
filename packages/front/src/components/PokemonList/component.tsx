@@ -2,6 +2,7 @@ import { FC, useCallback, useContext, useEffect, useState } from 'react';
 
 import { useNavigate } from 'react-router';
 
+import { AuthContext } from '../../context/authContext';
 import { AxiosContext } from '../../context/axiosContext';
 import { Pokemon } from '../../types/pokemon';
 import { AxiosPrivateRoutes } from '../../utils/axiosPrivate';
@@ -33,9 +34,16 @@ export const PokemonList: FC = () => {
     watchAPI();
   }, [watchAPI]);
 
+  const { setToken } = useContext(AuthContext);
+
+  const handleLogout = () => {
+    console.log('logout');
+    setToken('');
+  };
+
   return (
     <>
-      <Navigation />
+      <Navigation handleLogout={handleLogout} />
       <Split
         main={
           <PokemonSelect
