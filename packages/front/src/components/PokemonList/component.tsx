@@ -45,11 +45,7 @@ export const PokemonList: FC = () => {
 
   return (
     <>
-<<<<<<< HEAD
       <Navigation handleLogout={handleLogout} user={user} />
-=======
-      <Navigation handleLogout={handleLogout} />
->>>>>>> ee5982e (change logic of component)
       <Split
         main={
           <PokemonSelect
