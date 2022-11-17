@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { rest } from 'msw';
 import { setupServer } from 'msw/node';
@@ -68,16 +68,23 @@ export const MockRegister = () => {
 
 const URL = 'http://localhost:1338/api/auth/local/register';
 
+const isEmail = (email: string) =>
+  /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(email);
+
 export const server = setupServer(
   rest.post(URL, async (req, res, ctx) => {
     const data = await req.json();
 
-    if (data.username === existedMockUser.identifier) {
+    if (
+      data.username === existedMockUser.identifier ||
+      !isEmail(data.email) ||
+      data.password.length < 6
+    ) {
       return res(
         ctx.status(400),
         ctx.json({
           error: {
-            message: 'User is already exists',
+            message: 'Error',
           },
         })
       );
@@ -119,7 +126,7 @@ describe('register test', () => {
     expect(screen.getByTestId('login-button-redirect')).toBeInTheDocument();
   });
 
-  test('input registration login is changed value', () => {
+  test('input login is changed value', () => {
     render(<MockRegister />);
     const inputElement = screen.getByTestId(
       'registration-login'

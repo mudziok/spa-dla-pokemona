@@ -33,6 +33,7 @@ export const Register = () => {
         navigate('/');
       })
       .catch((error) => {
+        console.log(error);
         setError(error.response.data.error.message);
       });
   };
