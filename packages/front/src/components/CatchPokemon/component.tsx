@@ -32,6 +32,7 @@ export const CatchPokemon = () => {
   const [date, setDate] = useState<string>('');
   const [time, setTime] = useState('');
   const [pokedexNumber, setPokedexNumber] = useState<string | undefined>();
+  const [error, setError] = useState('');
 
   const handleNickname = (e: ChangeEvent<HTMLInputElement>) =>
     setName(e.target.value);
@@ -40,7 +41,7 @@ export const CatchPokemon = () => {
   const handleTime = (e: ChangeEvent<HTMLInputElement>) =>
     setTime(e.target.value);
 
-  const coughtAt = date + 'T' + time;
+  const coughtAt = date === '' || time === '' ? undefined : date + 'T' + time;
 
   useEffect(() => {
     const fetchAvaliablePokemons = async () => {
@@ -61,6 +62,7 @@ export const CatchPokemon = () => {
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    console.log(name, pokedexNumber, coughtAt);
     axiosPrivate
       .post(AxiosPrivateRoutes.POKEMONS, {
         data: {
@@ -69,7 +71,14 @@ export const CatchPokemon = () => {
           coughtAt,
         },
       })
-      .then(() => navigate('/pokemons'));
+      .then(() => {
+        console.log('navi');
+        navigate('/pokemons');
+      })
+      .catch(() => {
+        console.log('er');
+        setError('Uzupełnij wszystkie pola');
+      });
   };
 
   return (
@@ -100,6 +109,7 @@ export const CatchPokemon = () => {
                 data-test-id='pokemon-time'
                 data-testid='pokemon-time'
               />
+              {error && <p data-testid='catch-pokemon-error'>{error}</p>}
               <button
                 type='submit'
                 data-test-id='catch-pokemon-button'

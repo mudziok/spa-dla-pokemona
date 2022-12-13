@@ -39,18 +39,22 @@ export const MockCatchPokemon = () => {
 const URL_CATCH = 'http://localhost:1338/api/pokemons';
 
 export const serverPokemons = setupServer(
-  rest.post(URL_CATCH, (req, res, ctx) => {
+  rest.post(URL_CATCH, async (req, res, ctx) => {
+    const data = await req.json();
+    if (
+      data.data.name === '' ||
+      !data.data.pokedexNumber ||
+      !data.data.coughtAt
+    ) {
+      return res(
+        ctx.status(400),
+        ctx.json({ error: { message: 'error occurred' } })
+      );
+    }
     return res(
       ctx.status(200),
       ctx.json({
-        data: {
-          coughtAt: '2022-12-13T14:20:00.000Z',
-          createdAt: '2022-12-12T14:20:45.554Z',
-          id: 1,
-          name: 'Bulba',
-          pokedexNumber: 1,
-          updatedAt: '2022-12-12T14:20:45.554Z',
-        },
+        data: data,
       })
     );
   })
@@ -87,9 +91,92 @@ describe('catch pokemon', () => {
     await screen.findByText('BULBASAUR');
     userEvent.click(await screen.findByText('BULBASAUR'));
 
-    const inputName = (await screen.findByTestId(
-      'pokemon-name'
+    const inputName = screen.getByTestId('pokemon-name') as HTMLInputElement;
+    userEvent.type(inputName, 'Bulba');
+
+    const inputDate = screen.getByTestId('pokemon-date') as HTMLInputElement;
+    userEvent.type(inputDate, '2022-09-29');
+
+    const inputTime = screen.getByTestId('pokemon-time') as HTMLInputElement;
+    userEvent.type(inputTime, '14:20');
+
+    userEvent.click(await screen.findByTestId('catch-pokemon-button'));
+
+    await new Promise(process.nextTick);
+
+    expect(mockedFunction).toBeCalled();
+  });
+
+  test('did not working, when is missing name', async () => {
+    render(<MockCatchPokemon />);
+    await screen.findByText('BULBASAUR');
+    userEvent.click(await screen.findByText('BULBASAUR'));
+
+    const inputDate = (await screen.findByTestId(
+      'pokemon-date'
     )) as HTMLInputElement;
+    userEvent.type(inputDate, '2022-09-29');
+
+    const inputTime = (await screen.findByTestId(
+      'pokemon-time'
+    )) as HTMLInputElement;
+    userEvent.type(inputTime, '14:20');
+
+    userEvent.click(await screen.findByTestId('catch-pokemon-button'));
+
+    await new Promise(process.nextTick);
+
+    expect(
+      await screen.findByTestId('catch-pokemon-error')
+    ).toBeInTheDocument();
+  });
+
+  test('did not working, when is missing date', async () => {
+    render(<MockCatchPokemon />);
+    await screen.findByText('BULBASAUR');
+    userEvent.click(await screen.findByText('BULBASAUR'));
+
+    const inputName = screen.getByTestId('pokemon-name') as HTMLInputElement;
+    userEvent.type(inputName, 'Bulba');
+
+    const inputTime = (await screen.findByTestId(
+      'pokemon-time'
+    )) as HTMLInputElement;
+    userEvent.type(inputTime, '14:20');
+
+    userEvent.click(await screen.findByTestId('catch-pokemon-button'));
+    await new Promise(process.nextTick);
+
+    expect(
+      await screen.findByTestId('catch-pokemon-error')
+    ).toBeInTheDocument();
+  });
+
+  test('did not working, when is missing time', async () => {
+    render(<MockCatchPokemon />);
+    await screen.findByText('BULBASAUR');
+    userEvent.click(await screen.findByText('BULBASAUR'));
+
+    const inputName = screen.getByTestId('pokemon-name') as HTMLInputElement;
+    userEvent.type(inputName, 'Bulba');
+
+    const inputDate = (await screen.findByTestId(
+      'pokemon-date'
+    )) as HTMLInputElement;
+    userEvent.type(inputDate, '2022-09-29');
+
+    userEvent.click(await screen.findByTestId('catch-pokemon-button'));
+    await new Promise(process.nextTick);
+
+    expect(
+      await screen.findByTestId('catch-pokemon-error')
+    ).toBeInTheDocument();
+  });
+
+  test('did not working, when is missing picked pokemon', async () => {
+    render(<MockCatchPokemon />);
+
+    const inputName = screen.getByTestId('pokemon-name') as HTMLInputElement;
     userEvent.type(inputName, 'Bulba');
 
     const inputDate = (await screen.findByTestId(
@@ -105,6 +192,8 @@ describe('catch pokemon', () => {
     userEvent.click(await screen.findByTestId('catch-pokemon-button'));
     await new Promise(process.nextTick);
 
-    expect(mockedFunction).toBeCalled();
+    expect(
+      await screen.findByTestId('catch-pokemon-error')
+    ).toBeInTheDocument();
   });
 });

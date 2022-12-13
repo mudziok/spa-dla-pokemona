@@ -26,7 +26,6 @@ export const UserContextProvider: ContextProvider = ({ children }) => {
   useEffect(() => {
     if (token) {
       axiosPrivate.get(AxiosPrivateRoutes.USER).then((response) => {
-        console.log('xd', response);
         setUser(response.data);
       });
     }
