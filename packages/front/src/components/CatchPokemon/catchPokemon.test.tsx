@@ -36,10 +36,10 @@ export const MockCatchPokemon = () => {
   );
 };
 
-const URL_CATCH = 'http://localhost:1338/api/pokemons';
+const URL = 'http://localhost:1338/api/pokemons';
 
 export const serverPokemons = setupServer(
-  rest.post(URL_CATCH, async (req, res, ctx) => {
+  rest.post(URL, async (req, res, ctx) => {
     const data = await req.json();
     if (
       data.data.name === '' ||
