@@ -100,6 +100,7 @@ describe('pokemon list', () => {
     render(<MockPokemonList />);
 
     const listElement = screen.getByRole('list');
+
     expect(listElement).toBeInTheDocument();
   });
 

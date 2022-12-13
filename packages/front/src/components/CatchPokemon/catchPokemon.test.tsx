@@ -38,7 +38,7 @@ export const MockCatchPokemon = () => {
 
 const URL = 'http://localhost:1338/api/pokemons';
 
-export const serverPokemons = setupServer(
+export const server = setupServer(
   rest.post(URL, async (req, res, ctx) => {
     const data = await req.json();
     if (
@@ -60,13 +60,13 @@ export const serverPokemons = setupServer(
   })
 );
 
-beforeAll(() => serverPokemons.listen({ onUnhandledRequest: 'warn' }));
+beforeAll(() => server.listen({ onUnhandledRequest: 'warn' }));
 
 afterEach(() => {
-  serverPokemons.resetHandlers();
+  server.resetHandlers();
 });
 
-afterAll(() => serverPokemons.close());
+afterAll(() => server.close());
 
 describe('catch pokemon', () => {
   test('component is render', () => {

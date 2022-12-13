@@ -6,6 +6,7 @@ import { User } from '../../context/userContext';
 import { Navigation } from './Navigation';
 
 export const mockedFunction = jest.fn();
+const mockLogout = jest.fn();
 
 const mockUser = {
   id: 1,
@@ -14,8 +15,6 @@ const mockUser = {
   password: '123456',
   confirmed: true,
 };
-
-const mockLogout = jest.fn();
 
 const MockNavigationComponent = ({
   handleLogout,

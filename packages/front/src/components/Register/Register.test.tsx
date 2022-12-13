@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { fireEvent, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { rest } from 'msw';
 import { setupServer } from 'msw/node';
@@ -131,7 +131,8 @@ describe('register test', () => {
     const inputElement = screen.getByTestId(
       'registration-login'
     ) as HTMLInputElement;
-    fireEvent.change(inputElement, { target: { value: 'przemek@wp.pl' } });
+
+    userEvent.type(inputElement, 'przemek@wp.pl');
 
     expect(inputElement.value).toBe('przemek@wp.pl');
   });
@@ -141,7 +142,8 @@ describe('register test', () => {
     const inputElement = screen.getByTestId(
       'registration-password'
     ) as HTMLInputElement;
-    fireEvent.change(inputElement, { target: { value: '123456' } });
+
+    userEvent.type(inputElement, '123456');
 
     expect(inputElement.value).toBe('123456');
   });
@@ -151,15 +153,15 @@ describe('register test', () => {
     const inputUser = screen.getByTestId(
       'registration-login'
     ) as HTMLInputElement;
-    userEvent.type(inputUser, 'przemek@gmail.com');
 
     const inputPassword = screen.getByTestId(
       'registration-password'
     ) as HTMLInputElement;
 
+    userEvent.type(inputUser, 'przemek@gmail.com');
     userEvent.type(inputPassword, '123456');
-
     userEvent.click(await screen.findByTestId('registration-button'));
+
     await new Promise(process.nextTick);
 
     expect(mockedFunction).toBeCalled();
@@ -180,17 +182,16 @@ describe('register test', () => {
     const inputUser = screen.getByTestId(
       'registration-login'
     ) as HTMLInputElement;
-    userEvent.type(inputUser, 'test@gmail.com');
 
     const inputPassword = screen.getByTestId(
       'registration-password'
     ) as HTMLInputElement;
 
+    userEvent.type(inputUser, 'test@gmail.com');
     userEvent.type(inputPassword, '123456');
-
     userEvent.click(await screen.findByTestId('registration-button'));
 
-    await screen.findByTestId('registration-error');
+    expect(await screen.findByTestId('registration-error')).toBeInTheDocument();
   });
 
   test('show error after entered invalid email', async () => {
@@ -198,14 +199,12 @@ describe('register test', () => {
     const inputUser = screen.getByTestId(
       'registration-login'
     ) as HTMLInputElement;
-    userEvent.type(inputUser, 'przem');
-
     const inputPassword = screen.getByTestId(
       'registration-password'
     ) as HTMLInputElement;
 
+    userEvent.type(inputUser, 'przem');
     userEvent.type(inputPassword, '123456');
-
     userEvent.click(await screen.findByTestId('registration-button'));
 
     expect(await screen.findByTestId('registration-error')).toBeInTheDocument();
@@ -216,14 +215,13 @@ describe('register test', () => {
     const inputUser = screen.getByTestId(
       'registration-login'
     ) as HTMLInputElement;
-    userEvent.type(inputUser, 'przemek1@gmail.com');
 
     const inputPassword = screen.getByTestId(
       'registration-password'
     ) as HTMLInputElement;
 
+    userEvent.type(inputUser, 'przemek1@gmail.com');
     userEvent.type(inputPassword, '1');
-
     userEvent.click(await screen.findByTestId('registration-button'));
 
     expect(await screen.findByTestId('registration-error')).toBeInTheDocument();
