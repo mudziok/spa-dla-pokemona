@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { fireEvent, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { rest } from 'msw';
 import { setupServer } from 'msw/node';
@@ -64,7 +64,7 @@ export const MockLogin = () => {
   );
 };
 
-const URL = 'http://localhost:1337/api/auth/local';
+const URL = 'http://localhost:1338/api/auth/local';
 
 export const server = setupServer(
   rest.post(URL, async (req, res, ctx) => {
@@ -114,43 +114,29 @@ describe('login test', () => {
 
     expect(screen.getByTestId('login-button')).toBeInTheDocument();
     expect(screen.getByTestId('create-user-btn')).toBeInTheDocument();
-  });
-
-  test('input user is rendered', () => {
-    render(<MockLogin />);
     expect(screen.getByTestId('login')).toBeInTheDocument();
-  });
-
-  test('input password is rendered', () => {
-    render(<MockLogin />);
     expect(screen.getByTestId('password')).toBeInTheDocument();
   });
 
-  test('input user is changed value', () => {
+  test('inputs change values', () => {
     render(<MockLogin />);
-    const inputElement = screen.getByTestId('login') as HTMLInputElement;
-    fireEvent.change(inputElement, { target: { value: 'przemek@wp.pl' } });
+    const inputLogin = screen.getByTestId('login') as HTMLInputElement;
+    const inputPassword = screen.getByTestId('password') as HTMLInputElement;
 
-    expect(inputElement.value).toBe('przemek@wp.pl');
-  });
+    userEvent.type(inputLogin, 'przemek@wp.pl');
+    userEvent.type(inputPassword, '123456');
 
-  test('input password is changed value', () => {
-    render(<MockLogin />);
-    const inputElement = screen.getByTestId('password') as HTMLInputElement;
-    fireEvent.change(inputElement, { target: { value: '123456' } });
-
-    expect(inputElement.value).toBe('123456');
+    expect(inputLogin.value).toBe('przemek@wp.pl');
+    expect(inputPassword.value).toBe('123456');
   });
 
   test('redirect after correct login', async () => {
     render(<MockLogin />);
     const inputUser = screen.getByTestId('login') as HTMLInputElement;
-    userEvent.type(inputUser, 'przemek@gmail.com');
-
     const inputPassword = screen.getByTestId('password') as HTMLInputElement;
 
+    userEvent.type(inputUser, 'przemek@gmail.com');
     userEvent.type(inputPassword, '123456');
-
     userEvent.click(await screen.findByTestId('login-button'));
 
     await new Promise(process.nextTick);
@@ -161,13 +147,12 @@ describe('login test', () => {
   test('show error after entered wrong user mail', async () => {
     render(<MockLogin />);
     const inputUser = screen.getByTestId('login') as HTMLInputElement;
-    userEvent.type(inputUser, 'przemek123@gmail.com');
-
     const inputPassword = screen.getByTestId('password') as HTMLInputElement;
 
+    userEvent.type(inputUser, 'przemek123@gmail.com');
     userEvent.type(inputPassword, '123456');
-
     userEvent.click(await screen.findByTestId('login-button'));
+
     await new Promise(process.nextTick);
 
     await screen.findByText('Invalid identifier or password');
@@ -176,13 +161,12 @@ describe('login test', () => {
   test('show error after entered wrong password', async () => {
     render(<MockLogin />);
     const inputUser = screen.getByTestId('login') as HTMLInputElement;
-    userEvent.type(inputUser, 'przemek@gmail.com');
-
     const inputPassword = screen.getByTestId('password') as HTMLInputElement;
 
+    userEvent.type(inputUser, 'przemek@gmail.com');
     userEvent.type(inputPassword, '12345678');
-
     userEvent.click(await screen.findByTestId('login-button'));
+
     await new Promise(process.nextTick);
 
     await screen.findByText('Invalid identifier or password');

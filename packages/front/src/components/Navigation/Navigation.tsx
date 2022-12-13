@@ -1,21 +1,20 @@
-import { useContext } from 'react';
+import { FC } from 'react';
 
-import { AuthContext } from '../../context/authContext';
-import { UserContext } from '../../context/userContext';
+import { User } from '../../context/userContext';
 import { NavigationWrapper } from './Navigation.styles';
 
-export const Navigation = () => {
-  const { user } = useContext(UserContext);
-  const { setToken } = useContext(AuthContext);
+interface NavigationProps {
+  handleLogout: () => void;
+  user: User | null;
+}
 
-  const handleLogout = () => {
-    setToken('');
-  };
-
+export const Navigation: FC<NavigationProps> = ({ handleLogout, user }) => {
   return (
     <NavigationWrapper>
-      <p>Trener: {user && user.username}</p>
-      <button onClick={handleLogout}>Zregeneruj się</button>
+      <p data-testid='trainer-name'>Trener: {user && user.username}</p>
+      <button data-testid='logout-button' onClick={handleLogout}>
+        Zregeneruj się
+      </button>
     </NavigationWrapper>
   );
 };

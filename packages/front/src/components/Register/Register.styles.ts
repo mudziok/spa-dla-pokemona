@@ -15,7 +15,7 @@ export const FormWrapper = styled.form`
   gap: 20px;
 `;
 
-export const ErrorWrapper = styled.form`
+export const ErrorWrapper = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;

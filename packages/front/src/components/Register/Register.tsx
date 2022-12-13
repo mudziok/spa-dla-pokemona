@@ -33,6 +33,7 @@ export const Register = () => {
         navigate('/');
       })
       .catch((error) => {
+        console.log(error);
         setError(error.response.data.error.message);
       });
   };
@@ -46,6 +47,7 @@ export const Register = () => {
             type='text'
             onChange={handleUser}
             data-test-id='registration-login'
+            data-testid='registration-login'
           ></input>
         </div>
         <div>
@@ -54,15 +56,31 @@ export const Register = () => {
             type='password'
             onChange={handlePassword}
             data-test-id='registration-password'
+            data-testid='registration-password'
           ></input>
         </div>
         {error && (
-          <ErrorWrapper data-test-id='register-error'>{error}</ErrorWrapper>
+          <ErrorWrapper
+            data-test-id='register-error'
+            data-testid='registration-error'
+          >
+            {error}
+          </ErrorWrapper>
         )}
-        <button data-test-id='registration-button'>Register</button>
+        <button
+          data-test-id='registration-button'
+          data-testid='registration-button'
+        >
+          Register
+        </button>
       </FormWrapper>
       <Link to='/'>
-        <button data-test-id='login-button-redirect'>Go to log in page</button>
+        <button
+          data-test-id='login-button-redirect'
+          data-testid='login-button-redirect'
+        >
+          Go to log in page
+        </button>
       </Link>
     </RegisterWrapper>
   );

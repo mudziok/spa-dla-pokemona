@@ -2,7 +2,9 @@ import { ChangeEvent, FormEvent, useContext, useEffect, useState } from 'react';
 
 import { useNavigate } from 'react-router';
 
+import { AuthContext } from '../../context/authContext';
 import { AxiosContext } from '../../context/axiosContext';
+import { UserContext } from '../../context/userContext';
 import { axiosPokeApi, AxiosPokeApiRoutes } from '../../utils/axiosPokeApi';
 import { AxiosPrivateRoutes } from '../../utils/axiosPrivate';
 import { Navigation } from '../Navigation/Navigation';
@@ -14,6 +16,13 @@ export const CatchPokemon = () => {
   const navigate = useNavigate();
 
   const { axiosPrivate } = useContext(AxiosContext);
+  const { setToken } = useContext(AuthContext);
+  const { user } = useContext(UserContext);
+
+  const handleLogout = () => {
+    console.log('logout');
+    setToken('');
+  };
 
   const [avaliablePokemons, setAvaliablePokemons] = useState<
     Array<PokemonBrief>
@@ -23,6 +32,7 @@ export const CatchPokemon = () => {
   const [date, setDate] = useState<string>('');
   const [time, setTime] = useState('');
   const [pokedexNumber, setPokedexNumber] = useState<string | undefined>();
+  const [error, setError] = useState('');
 
   const handleNickname = (e: ChangeEvent<HTMLInputElement>) =>
     setName(e.target.value);
@@ -31,7 +41,7 @@ export const CatchPokemon = () => {
   const handleTime = (e: ChangeEvent<HTMLInputElement>) =>
     setTime(e.target.value);
 
-  const coughtAt = date + 'T' + time;
+  const coughtAt = date === '' || time === '' ? undefined : date + 'T' + time;
 
   useEffect(() => {
     const fetchAvaliablePokemons = async () => {
@@ -52,6 +62,7 @@ export const CatchPokemon = () => {
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    console.log(name, pokedexNumber, coughtAt);
     axiosPrivate
       .post(AxiosPrivateRoutes.POKEMONS, {
         data: {
@@ -60,12 +71,19 @@ export const CatchPokemon = () => {
           coughtAt,
         },
       })
-      .then(() => navigate('/pokemons'));
+      .then(() => {
+        console.log('navi');
+        navigate('/pokemons');
+      })
+      .catch(() => {
+        console.log('er');
+        setError('Uzupełnij wszystkie pola');
+      });
   };
 
   return (
     <>
-      <Navigation />
+      <Navigation handleLogout={handleLogout} user={user} />
       <form onSubmit={handleSubmit}>
         <Split
           sidebar={
@@ -75,20 +93,28 @@ export const CatchPokemon = () => {
                 value={name}
                 onChange={handleNickname}
                 data-test-id='pokemon-name'
+                data-testid='pokemon-name'
               />
               <input
                 type='date'
                 value={date}
                 onChange={handleDate}
                 data-test-id='pokemon-date'
+                data-testid='pokemon-date'
               />
               <input
                 type='time'
                 value={time}
                 onChange={handleTime}
                 data-test-id='pokemon-time'
+                data-testid='pokemon-time'
               />
-              <button type='submit' data-test-id='catch-pokemon-button'>
+              {error && <p data-testid='catch-pokemon-error'>{error}</p>}
+              <button
+                type='submit'
+                data-test-id='catch-pokemon-button'
+                data-testid='catch-pokemon-button'
+              >
                 Złap pokemona
               </button>
             </Stack>

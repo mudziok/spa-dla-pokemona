@@ -1,5 +1,3 @@
-import { useState } from 'react';
-
 import {
   fireEvent,
   render,
@@ -10,21 +8,14 @@ import {
 import '@testing-library/jest-dom/extend-expect';
 import { rest } from 'msw';
 import { setupServer } from 'msw/lib/node';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
 
 import { theme } from '../../App';
-import { AuthContext, AuthProvider } from '../../context/authContext';
-import { AxiosContext, AxiosProvider } from '../../context/axiosContext';
+import { AuthProvider } from '../../context/authContext';
+import { AxiosProvider } from '../../context/axiosContext';
 import { composeProviders } from '../../context/composeProviders';
 import { OnlineProvider } from '../../context/onlineContext';
-import { User, UserContext } from '../../context/userContext';
-import { axiosPokeApi } from '../../utils/axiosPokeApi';
-import { axiosPrivate } from '../../utils/axiosPrivate';
-import { axiosPublic } from '../../utils/axiosPublic';
-import { Login } from '../Login/component';
 import { PokemonList } from '../PokemonList/component';
-import { RequireAuth } from '../RequireAuth/component';
 
 export const pokemons = [
   {
@@ -63,44 +54,6 @@ const ComposedProviders = composeProviders([
   OnlineProvider,
 ]);
 
-// export const MockPokemonList = () => {
-//   const [token, setToken] = useState('');
-//   const value = { token, setToken };
-//   const mockUser = {
-//     id: 1,
-//     username: 'remek@wp.pl',
-//     email: 'remek@wp.pl',
-//     confirmed: true,
-//   };
-//   const [user, setUser] = useState<User>(mockUser);
-
-//   return (
-//     <BrowserRouter>
-//       <AuthContext.Provider value={value}>
-//         <AxiosContext.Provider
-//           value={{ axiosPublic, axiosPokeApi, axiosPrivate }}
-//         >
-//           <UserContext.Provider value={{ user }}>
-//             <ThemeProvider theme={theme}>
-//               <Routes>
-//                 <Route path='/' element={<Login />} />
-//                 <Route
-//                   path='/pokemons'
-//                   element={
-//                     <RequireAuth>
-//                       <PokemonList />
-//                     </RequireAuth>
-//                   }
-//                 />
-//               </Routes>
-//             </ThemeProvider>
-//           </UserContext.Provider>
-//         </AxiosContext.Provider>
-//       </AuthContext.Provider>{' '}
-//     </BrowserRouter>
-//   );
-// };
-
 export const MockPokemonList = () => {
   return (
     <ThemeProvider theme={theme}>
@@ -111,7 +64,7 @@ export const MockPokemonList = () => {
   );
 };
 
-const URL = 'http://localhost:1337/api/pokemons';
+const URL = 'http://localhost:1338/api/pokemons';
 
 export const serverPokemons = setupServer(
   rest.get(URL, (req, res, ctx) => {
@@ -147,6 +100,7 @@ describe('pokemon list', () => {
     render(<MockPokemonList />);
 
     const listElement = screen.getByRole('list');
+
     expect(listElement).toBeInTheDocument();
   });
 
